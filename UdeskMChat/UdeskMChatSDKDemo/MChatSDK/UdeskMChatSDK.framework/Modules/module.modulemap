@@ -1,6 +1,0 @@
-framework module UdeskMChatSDK {
-  umbrella header "UdeskMChatSDK.h"
-
-  export *
-  module * { export * }
-}

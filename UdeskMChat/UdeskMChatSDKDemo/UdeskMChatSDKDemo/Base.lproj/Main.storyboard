@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YXz-te-zka">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="YXz-te-zka">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -39,7 +38,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <viewLayoutGuide key="safeArea" id="TDe-as-pEn"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="message" id="z4f-lo-vbW"/>
                     <navigationItem key="navigationItem" id="80s-cf-TgO"/>
@@ -92,7 +90,6 @@
                             <constraint firstItem="fhD-jM-CdO" firstAttribute="leading" secondItem="UlA-ut-FUB" secondAttribute="leading" id="hp0-9k-T3W"/>
                             <constraint firstItem="fhD-jM-CdO" firstAttribute="top" secondItem="pu6-ul-7VE" secondAttribute="bottom" id="jMk-p6-nfu"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="NIC-NF-eQX"/>
                     </view>
                     <tabBarItem key="tabBarItem" image="home" selectedImage="home" id="Or6-zm-QDt"/>
                     <navigationItem key="navigationItem" id="KNU-n0-HFP"/>
@@ -136,7 +133,6 @@
                             <constraint firstItem="Y5m-nj-dCj" firstAttribute="leading" secondItem="URI-Ml-wBO" secondAttribute="leading" id="wih-6x-0jg"/>
                             <constraint firstItem="ZAB-5w-LcQ" firstAttribute="top" secondItem="zTU-Za-VN3" secondAttribute="bottom" id="x7G-XG-0hA"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="LR2-tx-WBt"/>
                     </view>
                     <navigationItem key="navigationItem" id="Je2-61-36E"/>
                 </viewController>
@@ -164,9 +160,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="home" width="16" height="16"/>
-        <image name="homeShow" width="16" height="16"/>
-        <image name="message" width="16" height="16"/>
-        <image name="product" width="16" height="16"/>
+        <image name="home" width="24" height="24"/>
+        <image name="homeShow" width="766" height="1092"/>
+        <image name="message" width="24" height="24"/>
+        <image name="product" width="766" height="1196"/>
     </resources>
 </document>

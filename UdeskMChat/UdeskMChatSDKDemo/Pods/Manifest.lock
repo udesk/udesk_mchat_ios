@@ -1,0 +1,18 @@
+PODS:
+  - AliyunOSSiOS (2.6.5)
+  - JCore (1.1.6)
+  - JPush (3.0.7):
+    - JCore (~> 1.1.6)
+
+DEPENDENCIES:
+  - AliyunOSSiOS
+  - JPush
+
+SPEC CHECKSUMS:
+  AliyunOSSiOS: 6d7f1f6aae0176095d147a88d60b23bbef93e0b7
+  JCore: 18fc8725124f26e55625eaf224659b3a999dcf63
+  JPush: 111b79b8a0169ab8fd4c486dac3ed166ed69293e
+
+PODFILE CHECKSUM: 2993d0a1eb438e6f525018cad7f691b8d5c689a3
+
+COCOAPODS: 1.2.0

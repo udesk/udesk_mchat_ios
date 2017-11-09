@@ -22,6 +22,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    //获取未读消息
     [UMCManager merchantsUnreadCountWithEuid:nil completion:^(NSInteger unreadCount) {
         
         UINavigationController *nav = self.tabBarController.viewControllers[1];
@@ -33,6 +34,7 @@
         }
     }];
 
+    //当未读消息发生改变的时候
     [UMCSDKConfig sharedConfig].unreadCountDidChange = ^(BOOL isPlus, NSString *count) {
         
         UINavigationController *nav = self.tabBarController.viewControllers[1];
