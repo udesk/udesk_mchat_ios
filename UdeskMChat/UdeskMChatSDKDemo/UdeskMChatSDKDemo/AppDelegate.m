@@ -19,8 +19,8 @@ static NSString *channel = @"Merchants";
 static NSString *UUID = @"c6042aa7-a1b2-4594-aed8-bf15b547627f";
 static NSString *key = @"240858ffb00b1c814259a6569393bf4e";
 
-static NSString *euid = @"123123123123123";
-static NSString *name = @"测试账号";
+static NSString *euid = @"889123123dsdasd123";
+static NSString *name = @"测试账号22111";
 
 @interface AppDelegate ()
 
@@ -40,7 +40,7 @@ static NSString *name = @"测试账号";
     
     system.UUID = UUID;
     system.timestamp = [NSString stringWithFormat:@"%.f",s];
-    system.sign = [self sha1:sha1];;
+    system.sign = [self sha1:sha1];
     
     UMCCustomer *customer = [UMCCustomer new];
     //euid为客户ID，请保证唯一性，并且请勿传特殊字符。

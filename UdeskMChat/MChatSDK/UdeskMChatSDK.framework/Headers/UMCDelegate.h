@@ -27,4 +27,6 @@
 
 - (void)addDelegate:(id<UMCMessageDelegate>)delegate;
 
+- (void)removeDelegate:(id<UMCMessageDelegate>)delegate;
+
 @end

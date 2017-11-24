@@ -21,9 +21,6 @@
 /** 导航栏返回按钮文字 */
 @property (nonatomic, copy  ) NSString *navBackButtonTitle;
 
-/** 咨询对象发送文字 */
-@property (nonatomic, copy  ) NSString *productSendText;
-
 /** 客户头像 */
 @property (nonatomic, strong) UIImage  *customerImage;
 

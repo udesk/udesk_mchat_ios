@@ -42,9 +42,11 @@
             nav.tabBarItem.badgeValue = [NSString stringWithFormat:@"%ld",nav.tabBarItem.badgeValue.integerValue + count.integerValue];
         }
         else {
-            nav.tabBarItem.badgeValue = [NSString stringWithFormat:@"%ld",nav.tabBarItem.badgeValue.integerValue - count.integerValue];
-            if (nav.tabBarItem.badgeValue.integerValue - count.integerValue == 0) {
-                nav.tabBarItem.badgeValue = nil;
+            if (nav.tabBarItem.badgeValue.integerValue > 0) {
+                nav.tabBarItem.badgeValue = [NSString stringWithFormat:@"%ld",nav.tabBarItem.badgeValue.integerValue - count.integerValue];
+                if (nav.tabBarItem.badgeValue.integerValue == 0) {
+                    nav.tabBarItem.badgeValue = nil;
+                }
             }
         }
     };

@@ -26,6 +26,8 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
 @property (nonatomic, strong) UMCMerchantsDataSource *dataSource;
 @property (nonatomic, strong) UITableView            *merchantsTableView;
 @property (nonatomic, strong) UISearchBar            *searchBar;
+//正在会话的商户ID
+@property (nonatomic, strong) NSString               *currentMerchantId;
 
 @end
 
@@ -98,6 +100,8 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
     @udWeakify(self);
     [self.merchantsManager deleteMerchantsWithModel:merchant completion:^(BOOL result) {
         @udStrongify(self);
+        //改变未读消息
+        [self unreadCountDidChange:NO count:merchant.unreadCount];
         [self reloadMerchantsTableView];
     }];
 }
@@ -115,19 +119,17 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
     
     //清空未读消息
     if (merchant.unreadCount.integerValue > 0) {
-     
-        if ([UMCSDKConfig sharedConfig].unreadCountDidChange) {
-            [UMCSDKConfig sharedConfig].unreadCountDidChange(NO,merchant.unreadCount);
-        }
-        
+
         [self.merchantsManager readMerchantsWithEuid:merchant.euid completion:^(BOOL result) {
             if (result) {
+                [self unreadCountDidChange:NO count:merchant.unreadCount];
                 merchant.unreadCount = @"";
                 [self.merchantsTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             }
         }];
     }
     
+    _currentMerchantId = merchant.euid;
     _sdkConfig.imTitle = merchant.name;
     UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithSDKConfig:_sdkConfig merchantId:merchant.euid];
     [sdkManager pushUdeskInViewController:self.viewController completion:nil];
@@ -136,6 +138,11 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
     sdkManager.UpdateLastMessageBlock = ^(UMCMessage *message) {
         @udStrongify(self);
         [self didReceiveMessage:message];
+    };
+    
+    self.sdkConfig.leaveChatViewController = ^{
+        @udStrongify(self);
+        self.currentMerchantId = nil;
     };
 }
 
@@ -154,10 +161,6 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
 
 #pragma mark - UMCManagerDelegate
 - (void)didReceiveMessage:(UMCMessage *)message {
-
-    if ([UMCSDKConfig sharedConfig].unreadCountDidChange) {
-        [UMCSDKConfig sharedConfig].unreadCountDidChange(YES,@"1");
-    }
     
     NSArray *euidArray = [self.merchantsManager.merchantsArray valueForKey:@"euid"];
     if ([euidArray containsObject:message.merchantEuid]) {
@@ -165,9 +168,23 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
         UMCMerchant *merchant = [self.merchantsManager.merchantsArray objectAtIndex:index];
         if (!merchant) return;
         
-        merchant.unreadCount = [NSString stringWithFormat:@"%ld",merchant.unreadCount.integerValue + 1];
+        if (![message.merchantEuid isEqualToString:self.currentMerchantId]) {
+            merchant.unreadCount = [NSString stringWithFormat:@"%ld",merchant.unreadCount.integerValue + 1];
+            [self unreadCountDidChange:YES count:@"1"];
+        }
         merchant.lastMessage = message;
         [self.merchantsTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    }
+    else {
+        [self fetchMerchants];
+        [self unreadCountDidChange:YES count:@"1"];
+    }
+}
+
+- (void)unreadCountDidChange:(BOOL)isPlus count:(NSString *)count {
+    
+    if ([UMCSDKConfig sharedConfig].unreadCountDidChange) {
+        [UMCSDKConfig sharedConfig].unreadCountDidChange(isPlus,count);
     }
 }
 

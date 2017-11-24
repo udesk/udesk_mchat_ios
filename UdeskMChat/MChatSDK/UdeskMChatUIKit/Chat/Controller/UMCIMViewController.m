@@ -16,6 +16,7 @@
 #import "UMCInputBarHelper.h"
 #import "UMCHelper.h"
 #import "UMCBundleHelper.h"
+#import "UMCProductView.h"
 
 #import "YYKeyboardManager.h"
 
@@ -27,6 +28,8 @@ static CGFloat const InputBarHeight = 80.0f;
 @property (nonatomic, strong) UMCSDKConfig         *sdkConfig;
 /** im逻辑处理 */
 @property (nonatomic, strong) UMCIMManager         *UIManager;
+/** 咨询对象 */
+@property (nonatomic, strong) UMCProductView       *productView;
 /** 输入框 */
 @property (nonatomic, strong) UMCInputBar          *inputBar;
 /** 表情 */
@@ -84,6 +87,13 @@ static CGFloat const InputBarHeight = 80.0f;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapChatTableView:)];
     tap.cancelsTouchesInView = false;
     [_imTableView addGestureRecognizer:tap];
+    
+    //咨询对象
+    if (_sdkConfig.product) {
+        self.productView.productModel = _sdkConfig.product;
+        _imTableView.umcTop = self.productView.umcBottom;
+        _imTableView.umcHeight = _imTableView.umcHeight - self.productView.umcBottom;
+    }
     
     _inputBar = [[UMCInputBar alloc] initWithFrame:CGRectMake(0, self.view.umcHeight - InputBarHeight, self.view.umcWidth,InputBarHeight) tableView:_imTableView];
     _inputBar.delegate = self;
@@ -329,9 +339,18 @@ static CGFloat const InputBarHeight = 80.0f;
     return _recordView;
 }
 
+//咨询对象
+- (UMCProductView *)productView {
+    
+    if (!_productView) {
+        _productView = [[UMCProductView alloc] initWithFrame:CGRectMake(0, 0, kUMCScreenWidth, kUDProductHeight)];
+        [self.view addSubview:_productView];
+    }
+    return _productView;
+}
+
 #pragma mark - @protocol UdeskVoiceRecordViewDelegate
 //完成录音
-#warning 要删除原来存储的
 - (void)finishRecordedWithVoicePath:(NSString *)voicePath withAudioDuration:(NSString *)duration {
     
     @udWeakify(self);
@@ -438,6 +457,11 @@ static CGFloat const InputBarHeight = 80.0f;
 
 #pragma mark - dismissChatViewController
 - (void)dismissChatViewController {
+    
+    //离开页面回调
+    if (self.sdkConfig.leaveChatViewController) {
+        self.sdkConfig.leaveChatViewController();
+    }
     
     //离开页面 标记已读
     [UMCManager readMerchantsWithEuid:self.merchantId completion:nil];

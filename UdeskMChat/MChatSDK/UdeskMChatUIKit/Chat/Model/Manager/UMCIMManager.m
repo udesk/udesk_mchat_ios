@@ -11,7 +11,6 @@
 #import "UMCTextMessage.h"
 #import "UMCImageMessage.h"
 #import "UMCVoiceMessage.h"
-#import "UMCProductMessage.h"
 #import "UMCEventMessage.h"
 #import "NSDate+UMC.h"
 #import "UMCHelper.h"
@@ -234,12 +233,6 @@
                                 [mMessages addObject:voiceMessage];
                                 break;
                             }
-                            case UMCMessageContentTypeProduct: {
-                                
-                                UMCProductMessage *productMessage = [[UMCProductMessage alloc] initWithMessage:message];
-                                [mMessages addObject:productMessage];
-                                break;
-                            }
                                 
                             default:
                                 break;
@@ -307,8 +300,10 @@
 #pragma mark - @protocol UMCManagerDelegate
 - (void)didReceiveMessage:(UMCMessage *)message {
     
-    //转换成要展示的model
-    [self appendMessages:@[message]];
+    if ([message.merchantEuid isEqualToString:self.merchantId]) {
+        //转换成要展示的model
+        [self appendMessages:@[message]];
+    }
 }
 
 @end

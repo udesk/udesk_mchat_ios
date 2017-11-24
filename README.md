@@ -121,3 +121,32 @@ UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithSDKConfig:[self getCo
 	[UMCManager endUdeskMChatPush];
 }
 ```
+
+### 4.接口说明
+
+##### 1.接受消息代理
+
+```objective-c
+//添加当前类为代理，
+[[UMCDelegate shareInstance] addDelegate:self];
+//实现接受消息方法
+- (void)didReceiveMessage:(UMCMessage *)message {
+  	NSLog(@"%@",message);
+}
+
+//移除代理
+[[UMCDelegate shareInstance] removeDelegate:self];
+```
+
+##### 2.未读消息回调
+
+```objective-c
+//当未读消息发生改变时的回调
+[UMCSDKConfig sharedConfig].unreadCountDidChange = ^(BOOL isPlus, NSString *count) {
+    //isPlus 为YES时 是增加未读消息数，反之则是已读
+  	//cont是此次操作的未读消息数
+};
+```
+
+> 其他API参考UMCManager.h
+

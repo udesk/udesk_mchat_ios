@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		42CAF94B86166B78E5F72823 /* Pods_UdeskMChatSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 133D7E26C56DF244B55DF6FC /* Pods_UdeskMChatSDKDemo.framework */; };
+		440A89B31FC40914006B0EC5 /* UMCProductView.m in Sources */ = {isa = PBXBuildFile; fileRef = 440A89B21FC40913006B0EC5 /* UMCProductView.m */; };
 		444BB9B01FB4397D0013F3DF /* UdeskMChatBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444BB8D11FB4397D0013F3DF /* UdeskMChatBundle.bundle */; };
 		444BB9B11FB4397D0013F3DF /* UMCIMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8D51FB4397D0013F3DF /* UMCIMViewController.m */; };
 		444BB9B21FB4397D0013F3DF /* UMCIMDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8D91FB4397D0013F3DF /* UMCIMDataSource.m */; };
@@ -15,13 +16,11 @@
 		444BB9B41FB4397D0013F3DF /* UMCBaseMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8DF1FB4397D0013F3DF /* UMCBaseMessage.m */; };
 		444BB9B51FB4397D0013F3DF /* UMCEventMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8E11FB4397D0013F3DF /* UMCEventMessage.m */; };
 		444BB9B61FB4397D0013F3DF /* UMCImageMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8E31FB4397D0013F3DF /* UMCImageMessage.m */; };
-		444BB9B71FB4397D0013F3DF /* UMCProductMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8E51FB4397D0013F3DF /* UMCProductMessage.m */; };
 		444BB9B81FB4397D0013F3DF /* UMCTextMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8E71FB4397D0013F3DF /* UMCTextMessage.m */; };
 		444BB9B91FB4397D0013F3DF /* UMCVoiceMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8E91FB4397D0013F3DF /* UMCVoiceMessage.m */; };
 		444BB9BA1FB4397D0013F3DF /* UMCBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8ED1FB4397D0013F3DF /* UMCBaseCell.m */; };
 		444BB9BB1FB4397D0013F3DF /* UMCEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8EF1FB4397D0013F3DF /* UMCEventCell.m */; };
 		444BB9BC1FB4397D0013F3DF /* UMCImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8F11FB4397D0013F3DF /* UMCImageCell.m */; };
-		444BB9BD1FB4397D0013F3DF /* UMCProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8F31FB4397D0013F3DF /* UMCProductCell.m */; };
 		444BB9BE1FB4397D0013F3DF /* UMCTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8F51FB4397D0013F3DF /* UMCTextCell.m */; };
 		444BB9BF1FB4397D0013F3DF /* UMCVoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8F71FB4397D0013F3DF /* UMCVoiceCell.m */; };
 		444BB9C01FB4397D0013F3DF /* UMCEmojiView.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8FA1FB4397D0013F3DF /* UMCEmojiView.m */; };
@@ -130,6 +129,8 @@
 		133D7E26C56DF244B55DF6FC /* Pods_UdeskMChatSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UdeskMChatSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B098BEC27384749D14611A5 /* Pods-UdeskMChatSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UdeskMChatSDKDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-UdeskMChatSDKDemo/Pods-UdeskMChatSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		3B79B23507315B84E59A78B9 /* Pods-UdeskMChatSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UdeskMChatSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UdeskMChatSDKDemo/Pods-UdeskMChatSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		440A89B11FC40913006B0EC5 /* UMCProductView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCProductView.h; sourceTree = "<group>"; };
+		440A89B21FC40913006B0EC5 /* UMCProductView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCProductView.m; sourceTree = "<group>"; };
 		444BB8CE1FB4397D0013F3DF /* UdeskMChatSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UdeskMChatSDK.framework; sourceTree = "<group>"; };
 		444BB8D11FB4397D0013F3DF /* UdeskMChatBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UdeskMChatBundle.bundle; sourceTree = "<group>"; };
 		444BB8D41FB4397D0013F3DF /* UMCIMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCIMViewController.h; sourceTree = "<group>"; };
@@ -144,8 +145,6 @@
 		444BB8E11FB4397D0013F3DF /* UMCEventMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCEventMessage.m; sourceTree = "<group>"; };
 		444BB8E21FB4397D0013F3DF /* UMCImageMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCImageMessage.h; sourceTree = "<group>"; };
 		444BB8E31FB4397D0013F3DF /* UMCImageMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCImageMessage.m; sourceTree = "<group>"; };
-		444BB8E41FB4397D0013F3DF /* UMCProductMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCProductMessage.h; sourceTree = "<group>"; };
-		444BB8E51FB4397D0013F3DF /* UMCProductMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCProductMessage.m; sourceTree = "<group>"; };
 		444BB8E61FB4397D0013F3DF /* UMCTextMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCTextMessage.h; sourceTree = "<group>"; };
 		444BB8E71FB4397D0013F3DF /* UMCTextMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCTextMessage.m; sourceTree = "<group>"; };
 		444BB8E81FB4397D0013F3DF /* UMCVoiceMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCVoiceMessage.h; sourceTree = "<group>"; };
@@ -156,8 +155,6 @@
 		444BB8EF1FB4397D0013F3DF /* UMCEventCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCEventCell.m; sourceTree = "<group>"; };
 		444BB8F01FB4397D0013F3DF /* UMCImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCImageCell.h; sourceTree = "<group>"; };
 		444BB8F11FB4397D0013F3DF /* UMCImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCImageCell.m; sourceTree = "<group>"; };
-		444BB8F21FB4397D0013F3DF /* UMCProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCProductCell.h; sourceTree = "<group>"; };
-		444BB8F31FB4397D0013F3DF /* UMCProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCProductCell.m; sourceTree = "<group>"; };
 		444BB8F41FB4397D0013F3DF /* UMCTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCTextCell.h; sourceTree = "<group>"; };
 		444BB8F51FB4397D0013F3DF /* UMCTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCTextCell.m; sourceTree = "<group>"; };
 		444BB8F61FB4397D0013F3DF /* UMCVoiceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCVoiceCell.h; sourceTree = "<group>"; };
@@ -347,6 +344,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		440A89B01FC40913006B0EC5 /* Product */ = {
+			isa = PBXGroup;
+			children = (
+				440A89B11FC40913006B0EC5 /* UMCProductView.h */,
+				440A89B21FC40913006B0EC5 /* UMCProductView.m */,
+			);
+			path = Product;
+			sourceTree = "<group>";
+		};
 		444BB8CD1FB4397D0013F3DF /* MChatSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -433,8 +439,6 @@
 				444BB8E11FB4397D0013F3DF /* UMCEventMessage.m */,
 				444BB8E21FB4397D0013F3DF /* UMCImageMessage.h */,
 				444BB8E31FB4397D0013F3DF /* UMCImageMessage.m */,
-				444BB8E41FB4397D0013F3DF /* UMCProductMessage.h */,
-				444BB8E51FB4397D0013F3DF /* UMCProductMessage.m */,
 				444BB8E61FB4397D0013F3DF /* UMCTextMessage.h */,
 				444BB8E71FB4397D0013F3DF /* UMCTextMessage.m */,
 				444BB8E81FB4397D0013F3DF /* UMCVoiceMessage.h */,
@@ -446,6 +450,7 @@
 		444BB8EA1FB4397D0013F3DF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				440A89B01FC40913006B0EC5 /* Product */,
 				444BB8EB1FB4397D0013F3DF /* Cell */,
 				444BB8F81FB4397D0013F3DF /* Emoji */,
 				444BB8FB1FB4397D0013F3DF /* Input */,
@@ -465,8 +470,6 @@
 				444BB8EF1FB4397D0013F3DF /* UMCEventCell.m */,
 				444BB8F01FB4397D0013F3DF /* UMCImageCell.h */,
 				444BB8F11FB4397D0013F3DF /* UMCImageCell.m */,
-				444BB8F21FB4397D0013F3DF /* UMCProductCell.h */,
-				444BB8F31FB4397D0013F3DF /* UMCProductCell.m */,
 				444BB8F41FB4397D0013F3DF /* UMCTextCell.h */,
 				444BB8F51FB4397D0013F3DF /* UMCTextCell.m */,
 				444BB8F61FB4397D0013F3DF /* UMCVoiceCell.h */,
@@ -1115,7 +1118,6 @@
 				444BB9E81FB4397D0013F3DF /* FLAnimatedImage.m in Sources */,
 				444BB9BF1FB4397D0013F3DF /* UMCVoiceCell.m in Sources */,
 				444BB9CB1FB4397D0013F3DF /* UMCMerchantsCell.m in Sources */,
-				444BB9B71FB4397D0013F3DF /* UMCProductMessage.m in Sources */,
 				444BB9FB1FB4397E0013F3DF /* UIImage+ForceDecode.m in Sources */,
 				444BB9EB1FB4397D0013F3DF /* MKAnnotationView+WebCache.m in Sources */,
 				444BB9CE1FB4397D0013F3DF /* UMCShareTransitioningDelegateImpl.m in Sources */,
@@ -1133,6 +1135,7 @@
 				444BB9F11FB4397D0013F3DF /* SDWebImageCodersManager.m in Sources */,
 				444BB9BA1FB4397D0013F3DF /* UMCBaseCell.m in Sources */,
 				444BB9D91FB4397D0013F3DF /* UMCSDKManager.m in Sources */,
+				440A89B31FC40914006B0EC5 /* UMCProductView.m in Sources */,
 				444BB9C71FB4397D0013F3DF /* UMCIMTableView.m in Sources */,
 				444BB9EF1FB4397D0013F3DF /* SDImageCacheConfig.m in Sources */,
 				444BB9B21FB4397D0013F3DF /* UMCIMDataSource.m in Sources */,
@@ -1165,7 +1168,6 @@
 				444BB9C81FB4397D0013F3DF /* UMCTitleView.m in Sources */,
 				444BB9BB1FB4397D0013F3DF /* UMCEventCell.m in Sources */,
 				444BB9CF1FB4397D0013F3DF /* UMCTransitioningAnimation.m in Sources */,
-				444BB9BD1FB4397D0013F3DF /* UMCProductCell.m in Sources */,
 				444BB9F61FB4397D0013F3DF /* SDWebImageImageIOCoder.m in Sources */,
 				444BB9C51FB4397D0013F3DF /* UMCVoiceRecordHUD.m in Sources */,
 				444BB9B11FB4397D0013F3DF /* UMCIMViewController.m in Sources */,
