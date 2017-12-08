@@ -7,6 +7,7 @@
 //
 
 #import "UMCInputBarHelper.h"
+#import "UMCUIMacro.h"
 
 @implementation UMCInputBarHelper
 
@@ -25,21 +26,26 @@
         __block CGRect inputViewFrame = inputBar.frame;
         __block CGRect otherMenuViewFrame = CGRectMake(0, 0, 0, 0);
         
+        CGFloat spacing = 0;
+        if (kUMCIsIPhoneX) {
+            spacing = 34;
+        }
+        
         void (^InputViewAnimation)(BOOL hide) = ^(BOOL hide) {
-            inputViewFrame.origin.y = (hide ? (CGRectGetHeight(superView.bounds) - CGRectGetHeight(inputViewFrame)) : (CGRectGetMinY(otherMenuViewFrame) - CGRectGetHeight(inputViewFrame)));
+            inputViewFrame.origin.y = (hide ? (CGRectGetHeight(superView.bounds) - CGRectGetHeight(inputViewFrame)) - spacing : (CGRectGetMinY(otherMenuViewFrame) - CGRectGetHeight(inputViewFrame)));
             inputBar.frame = inputViewFrame;
         };
         
         void (^EmotionManagerViewAnimation)(BOOL hide) = ^(BOOL hide) {
             otherMenuViewFrame = emojiView.frame;
-            otherMenuViewFrame.origin.y = (hide ? CGRectGetHeight(superView.frame) : (CGRectGetHeight(superView.frame) - CGRectGetHeight(otherMenuViewFrame)));
+            otherMenuViewFrame.origin.y = (hide ? CGRectGetHeight(superView.frame) - spacing : (CGRectGetHeight(superView.frame) - CGRectGetHeight(otherMenuViewFrame)) - spacing);
             emojiView.alpha = !hide;
             emojiView.frame = otherMenuViewFrame;
         };
         
         void (^VoiceManagerViewAnimation)(BOOL hide) = ^(BOOL hide) {
             otherMenuViewFrame = recordView.frame;
-            otherMenuViewFrame.origin.y = (hide ? CGRectGetHeight(superView.frame) : (CGRectGetHeight(superView.frame) - CGRectGetHeight(otherMenuViewFrame)));
+            otherMenuViewFrame.origin.y = (hide ? CGRectGetHeight(superView.frame) - spacing : (CGRectGetHeight(superView.frame) - CGRectGetHeight(otherMenuViewFrame)) - spacing);
             recordView.alpha = !hide;
             recordView.frame = otherMenuViewFrame;
             

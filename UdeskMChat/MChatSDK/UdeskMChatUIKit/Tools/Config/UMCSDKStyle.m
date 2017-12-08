@@ -41,6 +41,7 @@
         
         //im
         self.tableViewBackGroundColor = [UIColor whiteColor];
+        self.chatViewControllerBackGroundColor = [UIColor whiteColor];
         self.chatTimeColor = [UIColor umcColorWithHexString:@"#8E8E93"];
         self.inputViewColor = [UIColor whiteColor];
         self.textViewColor = [UIColor whiteColor];

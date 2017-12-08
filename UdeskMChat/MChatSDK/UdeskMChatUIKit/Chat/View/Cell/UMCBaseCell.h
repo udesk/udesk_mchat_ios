@@ -11,8 +11,6 @@
 
 @protocol UMCBaseCellDelegate <NSObject>
 
-//发送咨询对象URL
-- (void)sendProductURL:(NSString *)url;
 //重发消息
 - (void)resendMessageInCell:(UITableViewCell *)cell resendMessage:(UMCMessage *)resendMessage;
 

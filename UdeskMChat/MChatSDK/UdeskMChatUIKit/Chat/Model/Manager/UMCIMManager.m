@@ -65,6 +65,7 @@
 - (void)fetchNewMessages:(void (^)(void))completion {
     
     [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:nil completion:^(NSArray<UMCMessage *> *merchantsArray) {
+        self.hasMore = merchantsArray.count;
         [self appendMessages:merchantsArray];
     }];
 }
@@ -84,7 +85,8 @@
 - (void)serverMessages:(void (^)(void))completion {
     
     NSArray *array = [self.messagesArray valueForKey:@"messageId"];
-    [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:array.lastObject completion:^(NSArray<UMCMessage *> *merchantsArray) {
+    [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:array.firstObject completion:^(NSArray<UMCMessage *> *merchantsArray) {
+        self.hasMore = merchantsArray.count;
         [self appendMessages:merchantsArray];
     }];
 }

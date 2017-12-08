@@ -88,6 +88,9 @@ static CGFloat const InputBarHeight = 80.0f;
     tap.cancelsTouchesInView = false;
     [_imTableView addGestureRecognizer:tap];
     
+    //设置颜色
+    [self setBackgroundColor];
+    
     //咨询对象
     if (_sdkConfig.product) {
         self.productView.productModel = _sdkConfig.product;
@@ -112,6 +115,13 @@ static CGFloat const InputBarHeight = 80.0f;
     
     //监听app是否从后台进入前台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcIMApplicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
+    
+    //适配X
+    if (kUMCIsIPhoneX) {
+        _inputBar.umcBottom -= 34;
+        _imTableView.umcHeight -= 34;
+        [_imTableView setTableViewInsetsWithBottomValue:self.view.umcHeight - _inputBar.umcTop];
+    }
 }
 
 //监听app是否从后台进入前台
@@ -290,11 +300,6 @@ static CGFloat const InputBarHeight = 80.0f;
 }
 
 #pragma mark - UMCBaseCellDelegate
-//发送咨询对象URL
-- (void)sendProductURL:(NSString *)url {
-    [self inputBar:self.inputBar didSendText:url];
-}
-
 //重发消息
 - (void)resendMessageInCell:(UITableViewCell *)cell resendMessage:(UMCMessage *)resendMessage {
     
@@ -409,7 +414,10 @@ static CGFloat const InputBarHeight = 80.0f;
     CGRect toFrame =  [[YYKeyboardManager defaultManager] convertRect:transition.toFrame toView:self.view];
     [UIView animateWithDuration:0.35 animations:^{
         self.inputBar.umcBottom = CGRectGetMinY(toFrame);
-        [self.imTableView setTableViewInsetsWithBottomValue:CGRectGetHeight(toFrame)+64+20];
+        if (!transition.toVisible && kUMCIsIPhoneX) {
+            self.inputBar.umcBottom -= 34;
+        }
+        [self.imTableView setTableViewInsetsWithBottomValue:self.view.umcHeight - self.inputBar.umcTop];
         if (transition.toVisible) {
             [self.imTableView scrollToBottomAnimated:NO];
             self.emojiView.alpha = 0.0;
@@ -450,9 +458,9 @@ static CGFloat const InputBarHeight = 80.0f;
 }
 
 #pragma mark - 设置背景颜色
-- (void)setBackgroundColor:(UIColor *)color {
-    self.view.backgroundColor = color;
-    self.imTableView.backgroundColor = color;
+- (void)setBackgroundColor {
+    self.view.backgroundColor = self.sdkConfig.sdkStyle.chatViewControllerBackGroundColor;
+    self.imTableView.backgroundColor = self.sdkConfig.sdkStyle.tableViewBackGroundColor;
 }
 
 #pragma mark - dismissChatViewController

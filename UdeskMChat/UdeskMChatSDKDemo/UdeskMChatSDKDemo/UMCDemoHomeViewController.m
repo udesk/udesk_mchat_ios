@@ -10,7 +10,7 @@
 #import <UdeskMChatSDK/UdeskMChatSDK.h>
 #import "UdeskMChatUIKit.h"
 #import "UMCDemoMessageViewController.h"
-#import<CommonCrypto/CommonDigest.h>
+#import <CommonCrypto/CommonDigest.h>
 
 @interface UMCDemoHomeViewController ()
 

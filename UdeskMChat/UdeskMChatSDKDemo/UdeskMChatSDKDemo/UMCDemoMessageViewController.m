@@ -8,6 +8,7 @@
 
 #import "UMCDemoMessageViewController.h"
 #import "UdeskMChatUIKit.h"
+#import "UMCUIMacro.h"
 
 @interface UMCDemoMessageViewController ()
 
@@ -19,8 +20,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    CGFloat spacing = 0;
+    if (kUMCIsIPhoneX) {
+        spacing = 24;
+    }
+    
     //商户列表
-    UMCMerchantsView *merchats = [[UMCMerchantsView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height) sdkConfig:[self getConfig]];
+    UMCMerchantsView *merchats = [[UMCMerchantsView alloc] initWithFrame:CGRectMake(0, 64+spacing, self.view.frame.size.width, self.view.frame.size.height) sdkConfig:[self getConfig]];
     [self.view addSubview:merchats];
 }
 

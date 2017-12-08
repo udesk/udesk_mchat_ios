@@ -319,10 +319,10 @@ static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
 {
     CGFloat buttonY = self.umcHeight-UDInputBarViewToVerticalEdgeSpacing-UDInputBarViewButtonDiameter;
     
-    _emotionButton.frame = CGRectMake(UDInputBarViewButtonToHorizontalEdgeSpacing, buttonY, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-    _voiceButton.frame = CGRectMake(_emotionButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing, buttonY, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-    _cameraButton.frame = CGRectMake(_voiceButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing, buttonY, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-    _albumButton.frame = CGRectMake(_cameraButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing, buttonY, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
+    _emotionButton.umcTop = buttonY;
+    _voiceButton.umcTop = buttonY;
+    _cameraButton.umcTop = buttonY;
+    _albumButton.umcTop = buttonY;
 }
 
 //隐藏相册

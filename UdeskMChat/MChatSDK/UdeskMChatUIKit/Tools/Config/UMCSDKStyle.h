@@ -81,6 +81,9 @@ typedef NS_ENUM(NSUInteger, UDChatViewStyleType) {
 /** 背景颜色 */
 @property (nonatomic, strong) UIColor  *tableViewBackGroundColor;
 
+/** 聊天vc背景颜色 (在iPhone x上这个和inputViewColor结合使用) */
+@property (nonatomic, strong) UIColor  *chatViewControllerBackGroundColor;
+
 /** 咨询对象背景颜色 */
 @property (nonatomic, strong) UIColor  *productBackGroundColor;
 

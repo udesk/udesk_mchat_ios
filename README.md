@@ -20,6 +20,18 @@
 >
 > 在AppDelegate、或者登陆成功之后里初始化SDK
 
+##### 备注：签名生成规则：建议由客户的服务端提供接口计算签名并返回对应的参数
+
+| 数据名称      | 说明         |
+| --------- | ---------- |
+| uuid      | Udesk后台提供  |
+| secret    | Udesk后台提供  |
+| timestamp | 获取精确到秒的时间戳 |
+
+```
+sign = SHA1("uuid+secret+timestamp")
+```
+
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   

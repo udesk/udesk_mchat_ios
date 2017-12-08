@@ -14,12 +14,13 @@
 #import "UMCSDKConfig.h"
 #import "UMCBundleHelper.h"
 #import "UMCVoiceRecordHelper.h"
+#import "UMCButton.h"
 
 @interface UMCVoiceRecordView()<AVAudioRecorderDelegate,MZTimerLabelDelegate> {
     
     UILabel  *tipLabel;
-    UIButton *deleteButton;
-    UIButton *recordButton;
+    UMCButton *deleteButton;
+    UMCButton *recordButton;
     UMCSpectrumView *spectrumView;
     BOOL        isInDeleteButton;
     float  recordTime;
@@ -59,14 +60,14 @@
         
         [self addSubview:spectrumView];
         
-        tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 25, CGRectGetMaxX(self.frame),30)];
+        tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 25, CGRectGetMaxX(self.frame),30)];
         tipLabel.textColor = [UIColor grayColor];
         tipLabel.font = [UIFont systemFontOfSize:18];
         tipLabel.text = UMCLocalizedString(@"udesk_hold_to_talk");
         [tipLabel setTextAlignment:NSTextAlignmentCenter];
         [self addSubview:tipLabel];
         
-        recordButton = [[UIButton alloc]initWithFrame:CGRectMake((kUMCScreenWidth-100)/2, 77, 100, 100)];
+        recordButton = [[UMCButton alloc] initWithFrame:CGRectMake((kUMCScreenWidth-100)/2, 77, 100, 100)];
         
         [recordButton setBackgroundImage:[UIImage umcDefaultRecordVoiceImage] forState:UIControlStateNormal];
         [recordButton setBackgroundImage:[UIImage umcDefaultRecordVoiceHighImage] forState:UIControlStateHighlighted];
@@ -84,7 +85,7 @@
         [self addSubview:recordButton];
         
         
-        deleteButton = [[UIButton alloc]initWithFrame:CGRectMake(kUMCScreenWidth-40-25, 25, 40, 40)];
+        deleteButton = [[UMCButton alloc] initWithFrame:CGRectMake(kUMCScreenWidth-40-25, 25, 40, 40)];
         deleteButton.hidden = YES;
         [deleteButton setImage:[UIImage umcDefaultDeleteRecordVoiceImage] forState:UIControlStateNormal];
         

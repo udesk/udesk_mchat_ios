@@ -63,9 +63,6 @@
 		444BB9E51FB4397D0013F3DF /* UdeskOneScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9611FB4397D0013F3DF /* UdeskOneScrollView.m */; };
 		444BB9E61FB4397D0013F3DF /* UdeskPhotoManeger.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9631FB4397D0013F3DF /* UdeskPhotoManeger.m */; };
 		444BB9E71FB4397D0013F3DF /* UdeskPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9651FB4397D0013F3DF /* UdeskPhotoView.m */; };
-		444BB9E81FB4397D0013F3DF /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9691FB4397D0013F3DF /* FLAnimatedImage.m */; };
-		444BB9E91FB4397D0013F3DF /* FLAnimatedImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB96B1FB4397D0013F3DF /* FLAnimatedImageView+WebCache.m */; };
-		444BB9EA1FB4397D0013F3DF /* FLAnimatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB96D1FB4397D0013F3DF /* FLAnimatedImageView.m */; };
 		444BB9EB1FB4397D0013F3DF /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB96F1FB4397D0013F3DF /* MKAnnotationView+WebCache.m */; };
 		444BB9EC1FB4397D0013F3DF /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9711FB4397D0013F3DF /* NSData+ImageContentType.m */; };
 		444BB9ED1FB4397D0013F3DF /* NSImage+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9731FB4397D0013F3DF /* NSImage+WebCache.m */; };
@@ -98,6 +95,10 @@
 		444BBA081FB4397E0013F3DF /* YYKeyboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9AD1FB4397D0013F3DF /* YYKeyboardManager.m */; };
 		444BBA0E1FB43A4E0013F3DF /* UdeskMChatSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444BB8CE1FB4397D0013F3DF /* UdeskMChatSDK.framework */; };
 		444BBA0F1FB43A560013F3DF /* UdeskMChatSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 444BB8CE1FB4397D0013F3DF /* UdeskMChatSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		449DB3901FD94C2100A98F81 /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB38B1FD94C2000A98F81 /* FLAnimatedImage.m */; };
+		449DB3911FD94C2100A98F81 /* FLAnimatedImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB38D1FD94C2000A98F81 /* FLAnimatedImageView+WebCache.m */; };
+		449DB3921FD94C2100A98F81 /* FLAnimatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB38F1FD94C2000A98F81 /* FLAnimatedImageView.m */; };
+		449DB3961FDA25B300A98F81 /* UMCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB3951FDA25B300A98F81 /* UMCButton.m */; };
 		44A8D4C91FB42A2700CBD7F5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A8D4C81FB42A2700CBD7F5 /* AppDelegate.m */; };
 		44A8D4CC1FB42A2700CBD7F5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A8D4CB1FB42A2700CBD7F5 /* ViewController.m */; };
 		44A8D4CF1FB42A2700CBD7F5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44A8D4CD1FB42A2700CBD7F5 /* Main.storyboard */; };
@@ -240,12 +241,6 @@
 		444BB9631FB4397D0013F3DF /* UdeskPhotoManeger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UdeskPhotoManeger.m; sourceTree = "<group>"; };
 		444BB9641FB4397D0013F3DF /* UdeskPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdeskPhotoView.h; sourceTree = "<group>"; };
 		444BB9651FB4397D0013F3DF /* UdeskPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UdeskPhotoView.m; sourceTree = "<group>"; };
-		444BB9681FB4397D0013F3DF /* FLAnimatedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLAnimatedImage.h; sourceTree = "<group>"; };
-		444BB9691FB4397D0013F3DF /* FLAnimatedImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLAnimatedImage.m; sourceTree = "<group>"; };
-		444BB96A1FB4397D0013F3DF /* FLAnimatedImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FLAnimatedImageView+WebCache.h"; sourceTree = "<group>"; };
-		444BB96B1FB4397D0013F3DF /* FLAnimatedImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FLAnimatedImageView+WebCache.m"; sourceTree = "<group>"; };
-		444BB96C1FB4397D0013F3DF /* FLAnimatedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLAnimatedImageView.h; sourceTree = "<group>"; };
-		444BB96D1FB4397D0013F3DF /* FLAnimatedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLAnimatedImageView.m; sourceTree = "<group>"; };
 		444BB96E1FB4397D0013F3DF /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		444BB96F1FB4397D0013F3DF /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		444BB9701FB4397D0013F3DF /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -308,6 +303,14 @@
 		444BB9AC1FB4397D0013F3DF /* YYKeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYKeyboardManager.h; sourceTree = "<group>"; };
 		444BB9AD1FB4397D0013F3DF /* YYKeyboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYKeyboardManager.m; sourceTree = "<group>"; };
 		444BB9AE1FB4397D0013F3DF /* UdeskMChatUIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdeskMChatUIKit.h; sourceTree = "<group>"; };
+		449DB38A1FD94C2000A98F81 /* FLAnimatedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLAnimatedImage.h; sourceTree = "<group>"; };
+		449DB38B1FD94C2000A98F81 /* FLAnimatedImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLAnimatedImage.m; sourceTree = "<group>"; };
+		449DB38C1FD94C2000A98F81 /* FLAnimatedImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FLAnimatedImageView+WebCache.h"; sourceTree = "<group>"; };
+		449DB38D1FD94C2000A98F81 /* FLAnimatedImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FLAnimatedImageView+WebCache.m"; sourceTree = "<group>"; };
+		449DB38E1FD94C2000A98F81 /* FLAnimatedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLAnimatedImageView.h; sourceTree = "<group>"; };
+		449DB38F1FD94C2000A98F81 /* FLAnimatedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLAnimatedImageView.m; sourceTree = "<group>"; };
+		449DB3941FDA25B300A98F81 /* UMCButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UMCButton.h; sourceTree = "<group>"; };
+		449DB3951FDA25B300A98F81 /* UMCButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UMCButton.m; sourceTree = "<group>"; };
 		44A8D4C41FB42A2700CBD7F5 /* UdeskMChatSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UdeskMChatSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44A8D4C71FB42A2700CBD7F5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		44A8D4C81FB42A2700CBD7F5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -450,6 +453,7 @@
 		444BB8EA1FB4397D0013F3DF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				449DB3931FDA25A800A98F81 /* Button */,
 				440A89B01FC40913006B0EC5 /* Product */,
 				444BB8EB1FB4397D0013F3DF /* Cell */,
 				444BB8F81FB4397D0013F3DF /* Emoji */,
@@ -744,6 +748,7 @@
 		444BB9561FB4397D0013F3DF /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				449DB3891FD94C2000A98F81 /* FLAnimatedImage */,
 				444BB9571FB4397D0013F3DF /* HPGrowingTextView */,
 				444BB95C1FB4397D0013F3DF /* JSCustomBadge */,
 				444BB95F1FB4397D0013F3DF /* PhotoViewer */,
@@ -791,7 +796,6 @@
 		444BB9661FB4397D0013F3DF /* SDWebImage */ = {
 			isa = PBXGroup;
 			children = (
-				444BB9671FB4397D0013F3DF /* FLAnimatedImage */,
 				444BB96E1FB4397D0013F3DF /* MKAnnotationView+WebCache.h */,
 				444BB96F1FB4397D0013F3DF /* MKAnnotationView+WebCache.m */,
 				444BB9701FB4397D0013F3DF /* NSData+ImageContentType.h */,
@@ -845,19 +849,6 @@
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
-		444BB9671FB4397D0013F3DF /* FLAnimatedImage */ = {
-			isa = PBXGroup;
-			children = (
-				444BB9681FB4397D0013F3DF /* FLAnimatedImage.h */,
-				444BB9691FB4397D0013F3DF /* FLAnimatedImage.m */,
-				444BB96A1FB4397D0013F3DF /* FLAnimatedImageView+WebCache.h */,
-				444BB96B1FB4397D0013F3DF /* FLAnimatedImageView+WebCache.m */,
-				444BB96C1FB4397D0013F3DF /* FLAnimatedImageView.h */,
-				444BB96D1FB4397D0013F3DF /* FLAnimatedImageView.m */,
-			);
-			path = FLAnimatedImage;
-			sourceTree = "<group>";
-		};
 		444BB99F1FB4397D0013F3DF /* TTTAttributedLabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -889,6 +880,28 @@
 				444BB9AD1FB4397D0013F3DF /* YYKeyboardManager.m */,
 			);
 			path = YYKeyboardManager;
+			sourceTree = "<group>";
+		};
+		449DB3891FD94C2000A98F81 /* FLAnimatedImage */ = {
+			isa = PBXGroup;
+			children = (
+				449DB38A1FD94C2000A98F81 /* FLAnimatedImage.h */,
+				449DB38B1FD94C2000A98F81 /* FLAnimatedImage.m */,
+				449DB38C1FD94C2000A98F81 /* FLAnimatedImageView+WebCache.h */,
+				449DB38D1FD94C2000A98F81 /* FLAnimatedImageView+WebCache.m */,
+				449DB38E1FD94C2000A98F81 /* FLAnimatedImageView.h */,
+				449DB38F1FD94C2000A98F81 /* FLAnimatedImageView.m */,
+			);
+			path = FLAnimatedImage;
+			sourceTree = "<group>";
+		};
+		449DB3931FDA25A800A98F81 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				449DB3941FDA25B300A98F81 /* UMCButton.h */,
+				449DB3951FDA25B300A98F81 /* UMCButton.m */,
+			);
+			path = Button;
 			sourceTree = "<group>";
 		};
 		44A8D4BB1FB42A2700CBD7F5 = {
@@ -990,10 +1003,10 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.Push = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -1095,7 +1108,6 @@
 				444BBA061FB4397E0013F3DF /* YYKVStorage.m in Sources */,
 				444BB9F41FB4397D0013F3DF /* SDWebImageDownloaderOperation.m in Sources */,
 				444BB9D41FB4397D0013F3DF /* UIColor+UMC.m in Sources */,
-				444BB9E91FB4397D0013F3DF /* FLAnimatedImageView+WebCache.m in Sources */,
 				444BB9B41FB4397D0013F3DF /* UMCBaseMessage.m in Sources */,
 				444BB9E51FB4397D0013F3DF /* UdeskOneScrollView.m in Sources */,
 				444BB9D71FB4397D0013F3DF /* UMCLanguageTool.m in Sources */,
@@ -1106,7 +1118,9 @@
 				444BB9FC1FB4397E0013F3DF /* UIImage+GIF.m in Sources */,
 				444BB9D21FB4397D0013F3DF /* NSAttributedString+UMC.m in Sources */,
 				444BB9BE1FB4397D0013F3DF /* UMCTextCell.m in Sources */,
+				449DB3911FD94C2100A98F81 /* FLAnimatedImageView+WebCache.m in Sources */,
 				444BB9B81FB4397D0013F3DF /* UMCTextMessage.m in Sources */,
+				449DB3901FD94C2100A98F81 /* FLAnimatedImage.m in Sources */,
 				444BBA011FB4397E0013F3DF /* UIView+WebCache.m in Sources */,
 				444BBA081FB4397E0013F3DF /* YYKeyboardManager.m in Sources */,
 				44A8D4CC1FB42A2700CBD7F5 /* ViewController.m in Sources */,
@@ -1115,7 +1129,6 @@
 				44A8D4D71FB42A2700CBD7F5 /* main.m in Sources */,
 				444BBA001FB4397E0013F3DF /* UIImageView+WebCache.m in Sources */,
 				444BB9D61FB4397D0013F3DF /* UIView+UMC.m in Sources */,
-				444BB9E81FB4397D0013F3DF /* FLAnimatedImage.m in Sources */,
 				444BB9BF1FB4397D0013F3DF /* UMCVoiceCell.m in Sources */,
 				444BB9CB1FB4397D0013F3DF /* UMCMerchantsCell.m in Sources */,
 				444BB9FB1FB4397E0013F3DF /* UIImage+ForceDecode.m in Sources */,
@@ -1125,6 +1138,7 @@
 				444BB9DB1FB4397D0013F3DF /* UMCSDKStyle.m in Sources */,
 				444BB9D31FB4397D0013F3DF /* NSString+UMC.m in Sources */,
 				444BB9F51FB4397D0013F3DF /* SDWebImageGIFCoder.m in Sources */,
+				449DB3921FD94C2100A98F81 /* FLAnimatedImageView.m in Sources */,
 				444BB9B31FB4397D0013F3DF /* UMCIMManager.m in Sources */,
 				444BB9DE1FB4397D0013F3DF /* UMCHelper.m in Sources */,
 				444BB9ED1FB4397D0013F3DF /* NSImage+WebCache.m in Sources */,
@@ -1140,7 +1154,6 @@
 				444BB9EF1FB4397D0013F3DF /* SDImageCacheConfig.m in Sources */,
 				444BB9B21FB4397D0013F3DF /* UMCIMDataSource.m in Sources */,
 				444BB9FD1FB4397E0013F3DF /* UIImage+MultiFormat.m in Sources */,
-				444BB9EA1FB4397D0013F3DF /* FLAnimatedImageView.m in Sources */,
 				44A8D8991FB42B0500CBD7F5 /* UMCDemoProductViewController.m in Sources */,
 				444BB9F01FB4397D0013F3DF /* SDWebImageCoder.m in Sources */,
 				444BB9B51FB4397D0013F3DF /* UMCEventMessage.m in Sources */,
@@ -1175,6 +1188,7 @@
 				444BB9EE1FB4397D0013F3DF /* SDImageCache.m in Sources */,
 				444BB9CD1FB4397D0013F3DF /* UMCAnimatorPush.m in Sources */,
 				444BB9C31FB4397D0013F3DF /* UMCTimerLabel.m in Sources */,
+				449DB3961FDA25B300A98F81 /* UMCButton.m in Sources */,
 				444BB9C21FB4397D0013F3DF /* UMCSpectrumView.m in Sources */,
 				444BB9C91FB4397D0013F3DF /* UMCMerchantsDataSource.m in Sources */,
 			);
@@ -1311,9 +1325,8 @@
 			baseConfigurationReference = 3B79B23507315B84E59A78B9 /* Pods-UdeskMChatSDKDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = UdeskMChatSDKDemo/UdeskMChatSDKDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = DVNW3ZM7G9;
+				DEVELOPMENT_TEAM = YJKWMFZ763;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../MChatSDK/\"",
@@ -1326,7 +1339,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo/Lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.merchants;
+				PRODUCT_BUNDLE_IDENTIFIER = xucheniphonex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1337,9 +1350,8 @@
 			baseConfigurationReference = 2B098BEC27384749D14611A5 /* Pods-UdeskMChatSDKDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = UdeskMChatSDKDemo/UdeskMChatSDKDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = DVNW3ZM7G9;
+				DEVELOPMENT_TEAM = YJKWMFZ763;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../MChatSDK/\"",
@@ -1352,7 +1364,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo/Lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.merchants;
+				PRODUCT_BUNDLE_IDENTIFIER = xucheniphonex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

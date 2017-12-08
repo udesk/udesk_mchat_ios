@@ -74,6 +74,9 @@ _Pragma("clang diagnostic pop")
 // 是否iPad
 #define kUMCIsPad                   (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
+//是否是iPhonex
+#define kUMCIsIPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+
 // View 圆角和加边框
 #define kUMCViewBorderRadius(View, Radius, Width, Color)\
 \
