@@ -76,7 +76,8 @@ UMCMerchantsView *merchats = [[UMCMerchantsView alloc] initWithFrame:CGRectMake(
 ###### 客户通过某个商品详情页点击咨询按钮直接和客服进行会话
 
 ```objective-c
-UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithSDKConfig:[self getConfig] merchantId:@"商户ID"];
+UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantId:@"商户ID"];
+sdkManager.sdkConfig = [self getConfig];
 [sdkManager pushUdeskInViewController:self completion:nil];
             
 - (UMCSDKConfig *)getConfig {
@@ -153,11 +154,18 @@ UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithSDKConfig:[self getCo
 ##### 2.未读消息回调
 
 ```objective-c
-//当未读消息发生改变时的回调
-[UMCSDKConfig sharedConfig].unreadCountDidChange = ^(BOOL isPlus, NSString *count) {
-    //isPlus 为YES时 是增加未读消息数，反之则是已读
-  	//cont是此次操作的未读消息数
-};
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msgUnreadCountHasChange:) name:UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION object:nil];
+
+- (void)msgUnreadCountHasChange:(NSNotification *)notif {
+    [UMCManager merchantsUnreadCountWithEuid:nil completion:^(NSInteger unreadCount) {
+        
+        UINavigationController *nav = self.tabBarController.viewControllers[1];
+        nav.tabBarItem.badgeValue = [NSString stringWithFormat:@"%ld",unreadCount];
+        if (unreadCount == 0) {
+            nav.tabBarItem.badgeValue = nil;
+        }
+    }];
+}
 ```
 
 > 其他API参考UMCManager.h

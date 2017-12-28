@@ -45,9 +45,6 @@
 /** 离开聊天页面回调 */
 @property (nonatomic, copy) void (^leaveChatViewController)(void);
 
-/** 未读消息发生改变 */
-@property (nonatomic, copy) void (^unreadCountDidChange)(BOOL isPlus, NSString *count);
-
 /** 是否隐藏语音 */
 @property (nonatomic, assign) BOOL     hiddenVoiceButton;
 

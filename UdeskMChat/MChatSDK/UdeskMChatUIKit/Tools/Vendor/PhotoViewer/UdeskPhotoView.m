@@ -8,12 +8,15 @@
 
 #import "UdeskPhotoView.h"
 #import "UdeskOneScrollView.h"
+#import "UMCBundleHelper.h"
+#import "UMCButton.h"
 
 #define Gap 10   //俩照片间黑色间距
 
 @implementation UdeskPhotoView {
 
     NSString *imageUrl;
+    UIImage *localImage;
 }
 
 #pragma mark - 自己的属性设置一下
@@ -36,6 +39,7 @@
 -(void)setPhotoData:(UIImageView *)photoImageView withMessageURL:(NSString *)url {
     
     imageUrl = url;
+    localImage = photoImageView.image;
     //传值给单个滚动器
     UdeskOneScrollView *oneScroll = [[UdeskOneScrollView alloc]init];
     oneScroll.mydelegate = self;
@@ -46,11 +50,11 @@
     
     [oneScroll setLocalImage:photoImageView withMessageURL:url];
  
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UMCButton *button = [UMCButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(kUMCPhotoScreenWidth-45-15, kUMCPhotoScreenHeight-26-15, 45, 26);
-//    [button setTitle:getUDLocalizedString(@"udesk_save") forState:UIControlStateNormal];
+    [button setTitle:UMCLocalizedString(@"udesk_save") forState:UIControlStateNormal];
     [button setBackgroundColor:[UIColor blackColor]];
-    [button addTarget:self action:@selector(saveImageAction:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(umcSaveImageAction) forControlEvents:UIControlEventTouchUpInside];
     button.titleLabel.font = [UIFont systemFontOfSize:14];
     [button.layer setCornerRadius:3];
     [button.layer setMasksToBounds:YES];
@@ -59,38 +63,35 @@
     [self addSubview:button];
 }
 
-- (void)saveImageAction:(UIButton *)button {
-    
-    UIImage *image;
-//    if ([[Udesk_YYWebImageManager sharedManager].cache containsImageForKey:imageUrl]) {
-//        image = [[Udesk_YYWebImageManager sharedManager].cache getImageForKey:imageUrl];
-//    }
-//    else {
-    
-        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]];
-        image = [UIImage imageWithData:data];
-//    }
-    
-    if (image) {
+- (void)umcSaveImageAction {
+        
+    if (localImage) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+            UIImageWriteToSavedPhotosAlbum(localImage, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
         });
+    }
+    else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:UMCLocalizedString(@"udesk_failed_save") delegate:self cancelButtonTitle:nil otherButtonTitles:UMCLocalizedString(@"udesk_sure"), nil];
+        [alert show];
+#pragma clang diagnostic pop
     }
 }
 
 - (void)image: (UIImage *) image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
 {
-//    NSString *msg = nil ;
-//    if(error != NULL){
-//        msg = getUDLocalizedString(@"udesk_failed_save");
-//    }else{
-//        msg = getUDLocalizedString(@"udesk_success_save");
-//    }
+    NSString *msg = nil ;
+    if(error != NULL){
+        msg = UMCLocalizedString(@"udesk_failed_save");
+    }else{
+        msg = UMCLocalizedString(@"udesk_success_save");
+    }
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
-//    [alert show];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:nil otherButtonTitles:UMCLocalizedString(@"udesk_sure"), nil];
+    [alert show];
 #pragma clang diagnostic pop
 }
 

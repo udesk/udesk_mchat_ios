@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <UdeskMChatSDK/UdeskMChatSDK.h>
+#import <Bugtags/Bugtags.h>
 
 #import "JPUSHService.h"
 
@@ -19,8 +20,8 @@ static NSString *channel = @"Merchants";
 static NSString *UUID = @"c6042aa7-a1b2-4594-aed8-bf15b547627f";
 static NSString *key = @"240858ffb00b1c814259a6569393bf4e";
 
-static NSString *euid = @"889123123dsdasd123";
-static NSString *name = @"测试账号22111";
+static NSString *euid = @"xinlixuegang2";
+static NSString *name = @"新李雪刚2";
 
 @interface AppDelegate ()
 
@@ -31,6 +32,8 @@ static NSString *name = @"测试账号22111";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [Bugtags startWithAppKey:@"e295aa1df3a7124c5e2929077ba37f95" invocationEvent:BTGInvocationEventNone];
     
     //客户端自己算签名，此方法仅用于开发测试。正式上线需要后端算好签名和时间戳返给前端
     UMCSystem *system = [UMCSystem new];

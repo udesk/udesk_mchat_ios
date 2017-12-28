@@ -49,6 +49,7 @@ static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
     if (self) {
         
         _imTableView = tabelView;
+        _originalTableViewFrame = tabelView.frame;
         [self setup];
     }
     return self;
@@ -274,9 +275,9 @@ static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
     }
     _emotionButton.selected = NO;
     _voiceButton.selected = NO;
-    
+
     self.selectInputBarType = UMCInputBarTypeText;
-    
+
     return YES;
 }
 

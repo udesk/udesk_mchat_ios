@@ -12,7 +12,7 @@
 #import "UMCDemoMessageViewController.h"
 #import <CommonCrypto/CommonDigest.h>
 
-@interface UMCDemoHomeViewController ()
+@interface UMCDemoHomeViewController ()<UMCMessageDelegate>
 
 @end
 
@@ -34,22 +34,24 @@
         }
     }];
 
-    //当未读消息发生改变的时候
-    [UMCSDKConfig sharedConfig].unreadCountDidChange = ^(BOOL isPlus, NSString *count) {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msgUnreadCountHasChange:) name:UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION object:nil];
+    
+    [[UMCDelegate shareInstance] addDelegate:self];
+}
+
+- (void)msgUnreadCountHasChange:(NSNotification *)notif {
+    [UMCManager merchantsUnreadCountWithEuid:nil completion:^(NSInteger unreadCount) {
         
         UINavigationController *nav = self.tabBarController.viewControllers[1];
-        if (isPlus) {
-            nav.tabBarItem.badgeValue = [NSString stringWithFormat:@"%ld",nav.tabBarItem.badgeValue.integerValue + count.integerValue];
+        nav.tabBarItem.badgeValue = [NSString stringWithFormat:@"%ld",unreadCount];
+        if (unreadCount == 0) {
+            nav.tabBarItem.badgeValue = nil;
         }
-        else {
-            if (nav.tabBarItem.badgeValue.integerValue > 0) {
-                nav.tabBarItem.badgeValue = [NSString stringWithFormat:@"%ld",nav.tabBarItem.badgeValue.integerValue - count.integerValue];
-                if (nav.tabBarItem.badgeValue.integerValue == 0) {
-                    nav.tabBarItem.badgeValue = nil;
-                }
-            }
-        }
-    };
+    }];
+}
+
+- (void)didReceiveMessage:(UMCMessage *)message {
+    NSLog(@"1111111:%@",message.content);
 }
 
 - (void)didReceiveMemoryWarning {

@@ -66,6 +66,7 @@
     
     [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:nil completion:^(NSArray<UMCMessage *> *merchantsArray) {
         self.hasMore = merchantsArray.count;
+        self.messagesArray = nil;
         [self appendMessages:merchantsArray];
     }];
 }
@@ -106,13 +107,7 @@
     UMCMessage *message = [[UMCMessage alloc] initImageChatMessage:image];
     
     NSData *data = UIImageJPEGRepresentation(image, 0.5);
-    [UMCManager uploadFile:data fileName:message.UUID completion:^(NSString *address, NSError *error) {
-        
-        if (!error) {
-            message.content = address;
-            [self createMessage:message completion:completion];
-        }
-    }];
+    [self createMediaMessage:message mediaData:data completion:completion];
 }
 
 /** 发送gif图片消息 */
@@ -120,13 +115,8 @@
                  completion:(void(^)(UMCMessage *message))completion {
     
     UMCMessage *message = [[UMCMessage alloc] initGIFImageChatMessage:gifData];
-    [UMCManager uploadFile:gifData fileName:message.UUID completion:^(NSString *address, NSError *error) {
-
-        if (!error) {
-            message.content = address;
-            [self createMessage:message completion:completion];
-        }
-    }];
+    
+    [self createMediaMessage:message mediaData:gifData completion:completion];
 }
 
 /** 发送语音消息 */
@@ -135,13 +125,8 @@
               completion:(void(^)(UMCMessage *message))completion {
     
     UMCMessage *message = [[UMCMessage alloc] initVoiceChatMessage:[NSData dataWithContentsOfFile:voicePath] duration:voiceDuration];
-    [UMCManager uploadFile:[NSData dataWithContentsOfFile:voicePath] fileName:message.UUID completion:^(NSString *address, NSError *error) {
-        
-        if (!error) {
-            message.content = address;
-            [self createMessage:message completion:completion];
-        }
-    }];
+    
+    [self createMediaMessage:message mediaData:[NSData dataWithContentsOfFile:voicePath] completion:completion];
 }
 
 - (void)createMessage:(UMCMessage *)message completion:(void(^)(UMCMessage *message))completion {
@@ -156,6 +141,30 @@
         [self updateCache:message newMessage:newMessage];
         if (completion) {
             completion(message);
+        }
+    }];
+}
+
+- (void)createMediaMessage:(UMCMessage *)message mediaData:(NSData *)mediaData completion:(void(^)(UMCMessage *message))completion {
+    
+    if (!message || message == (id)kCFNull) return ;
+    
+    //转换成要展示的model
+    [self appendMessages:@[message]];
+    
+    //上传文件
+    [UMCManager uploadFile:mediaData fileName:message.UUID completion:^(NSString *address, NSError *error) {
+        
+        if (!error) {
+            
+            message.content = address;
+            [UMCManager createMessageWithMerchantsEuid:self.merchantId message:message completion:^(UMCMessage *newMessage) {
+                
+                [self updateCache:message newMessage:newMessage];
+                if (completion) {
+                    completion(message);
+                }
+            }];
         }
     }];
 }

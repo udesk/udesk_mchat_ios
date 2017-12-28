@@ -35,7 +35,8 @@
         if (textField.text.length) {
             
             //直接进入im咨询
-            UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithSDKConfig:[self getConfig] merchantId:textField.text];
+            UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantId:textField.text];
+            sdkManager.sdkConfig = [self getConfig];
             [sdkManager pushUdeskInViewController:self completion:nil];
         }
         else {

@@ -238,13 +238,11 @@
 {
 
     _isdoubleTap = YES;
-    CGPoint touchPoint = [tap locationInView:self.mainImageView];
-    if (self.zoomScale == self.maximumZoomScale) {//缩小
+    if (self.zoomScale > 1) {//缩小
         [self setZoomScale:1.0 animated:YES];
     } else {//放大
-       
-        CGRect zoomRect = CGRectMake(touchPoint.x, touchPoint.y, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height);
-        [self zoomToRect:zoomRect animated:YES];
+
+        [self setZoomScale:2.5 animated:YES];
     }
 }
 

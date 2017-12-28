@@ -11,10 +11,13 @@
 #endif
 
 #import "AliyunOSSiOS.h"
+#import "aos_crc64.h"
+#import "NSMutableData+OSS_CRC.h"
 #import "OSSClient.h"
 #import "OSSCompat.h"
 #import "OSSDefine.h"
 #import "OSSHttpdns.h"
+#import "OSSInputStreamHelper.h"
 #import "OSSLog.h"
 #import "OSSModel.h"
 #import "OSSNetworking.h"

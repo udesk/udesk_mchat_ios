@@ -13,9 +13,9 @@
 #import "UMCMerchant.h"
 
 /**
- *  Udesk客服系统当前有新消息，开发者可注册该通知接受未读消息，显示小红点未读标识
+ *  当未读消息发生改变时会发送通知
  */
-#define UD_RECEIVED_NEW_MESSAGES_NOTIFICATION @"UD_RECEIVED_NEW_MESSAGES_NOTIFICATION"
+#define UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION @"UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION"
 
 @interface UMCManager : NSObject
 
@@ -127,6 +127,12 @@
  设置用户的设备唯一标识
  */
 + (void)registerDeviceToken:(id)deviceToken;
+
+/** 断开链接（app进入后台时调用） */
++ (void)disconnect;
+
+/** 链接（app进入前台时调用） */
++ (void)connect;
 
 /** 进入聊天页面调用 */
 + (void)enterChatViewController;

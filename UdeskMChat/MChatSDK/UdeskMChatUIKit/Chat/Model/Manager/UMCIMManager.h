@@ -55,4 +55,7 @@
            voiceDuration:(NSString *)voiceDuration
               completion:(void(^)(UMCMessage *message))completion;
 
+//更新缓存
+- (void)updateCache:(UMCMessage *)oldMessage newMessage:(UMCMessage *)newMessage;
+
 @end

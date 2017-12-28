@@ -12,26 +12,39 @@
 #import "UIImage+UMC.h"
 #import "UMCHelper.h"
 
-@implementation UMCSDKManager {
-    
-    UMCSDKConfig *_sdkConfig;
-    UMCSDKShow *_show;
-    NSString *_merchantId;
-}
+@interface UMCSDKManager()
 
-/**
- * 对象方法调用
- */
-- (instancetype)initWithSDKConfig:(UMCSDKConfig *)config  merchantId:(NSString *)merchantId {
+@property (nonatomic, strong) UMCSDKShow *show;
+@property (nonatomic, copy  ) NSString *merchantId;
+
+@end
+
+@implementation UMCSDKManager
+
+- (instancetype)initWithMerchantId:(NSString *)merchantId {
     
     self = [super init];
     if (self) {
         
+        //清除之前的配置
+        [self cleanSDKConfigData];
         _merchantId = merchantId;
-        _sdkConfig = config;
-        _show = [[UMCSDKShow alloc] initWithConfig:_sdkConfig];
     }
     return self;
+}
+
+- (UMCSDKShow *)show {
+    if (!_show) {
+        _show = [[UMCSDKShow alloc] initWithConfig:self.sdkConfig];
+    }
+    return _show;
+}
+
+- (UMCSDKConfig *)sdkConfig {
+    if (!_sdkConfig) {
+        _sdkConfig = [UMCSDKConfig sharedConfig];
+    }
+    return _sdkConfig;
 }
 
 /**
@@ -46,8 +59,10 @@
         return;
     }
     
+    //把会话设置为已读
+    [self readIMSession];
     UMCIMViewController *chatViewController = [[UMCIMViewController alloc] initWithSDKConfig:_sdkConfig merchantId:_merchantId];
-    [_show presentOnViewController:viewController udeskViewController:chatViewController completion:completion];
+    [self.show presentOnViewController:viewController udeskViewController:chatViewController completion:completion];
     
     chatViewController.UpdateLastMessageBlock = ^(UMCMessage *message) {
         if (self.UpdateLastMessageBlock) {
@@ -56,29 +71,25 @@
     };
 }
 
-/**
- 未读消息发生改变时
- 
- @param completion 回调
- */
-- (void)unreadCountDidChange:(void(^)(BOOL isPlus, NSString *count))completion {
+- (void)readIMSession {
     
-    _sdkConfig.unreadCountDidChange = completion;
+    //设置已读
+    [UMCManager readMerchantsWithEuid:self.merchantId completion:^(BOOL result) {
+        if (result) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION object:nil userInfo:nil];
+        }
+    }];
 }
 
 - (void)cleanSDKConfigData {
     
-    if (!_sdkConfig) {
-        return;
-    }
+    [UMCSDKConfig sharedConfig].customerImage = [UIImage umcDefaultCustomerImage];
+    [UMCSDKConfig sharedConfig].customerImageURL = nil;
+    [UMCSDKConfig sharedConfig].merchantImage = [UIImage umcIMMerchantAvatarImage];
+    [UMCSDKConfig sharedConfig].merchantImageURL = nil;
     
-    _sdkConfig.customerImage = [UIImage umcDefaultCustomerImage];
-    _sdkConfig.customerImageURL = nil;
-    _sdkConfig.merchantImage = [UIImage umcIMMerchantAvatarImage];
-    _sdkConfig.merchantImageURL = nil;
-    
-    _sdkConfig.imTitle = nil;
-    _sdkConfig.product = nil;
+    [UMCSDKConfig sharedConfig].imTitle = nil;
+    [UMCSDKConfig sharedConfig].product = nil;
 }
 
 @end

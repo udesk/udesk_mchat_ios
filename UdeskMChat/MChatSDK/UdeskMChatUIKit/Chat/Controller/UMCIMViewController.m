@@ -275,7 +275,11 @@ static CGFloat const InputBarHeight = 80.0f;
     };
     
     //获取商户信息
-    [self.UIManager fetchMerchantWithMerchantId:self.merchantId completion:nil];
+    [self.UIManager fetchMerchantWithMerchantId:self.merchantId completion:^(UMCMerchant *merchant) {
+        @udStrongify(self);
+        self.title = merchant.name;
+        if (merchant.euid) { self.merchantId = merchant.euid;}
+    }];
 }
 
 //刷新UI
@@ -306,7 +310,8 @@ static CGFloat const InputBarHeight = 80.0f;
     @udWeakify(self);
     [UMCManager createMessageWithMerchantsEuid:self.merchantId message:resendMessage completion:^(UMCMessage *message) {
         @udStrongify(self);
-        [self updateSendCompletedMessage:message];
+        [self.UIManager updateCache:resendMessage newMessage:message];
+        [self updateSendCompletedMessage:resendMessage];
     }];
 }
 
@@ -411,13 +416,19 @@ static CGFloat const InputBarHeight = 80.0f;
 
 #pragma mark - @protocol YYKeyboardObserver
 - (void)keyboardChangedWithTransition:(YYKeyboardTransition)transition {
+    
+    if (self.inputBar.selectInputBarType != UMCInputBarTypeText) {
+        return;
+    }
+    
     CGRect toFrame =  [[YYKeyboardManager defaultManager] convertRect:transition.toFrame toView:self.view];
     [UIView animateWithDuration:0.35 animations:^{
         self.inputBar.umcBottom = CGRectGetMinY(toFrame);
         if (!transition.toVisible && kUMCIsIPhoneX) {
             self.inputBar.umcBottom -= 34;
         }
-        [self.imTableView setTableViewInsetsWithBottomValue:self.view.umcHeight - self.inputBar.umcTop];
+        self.imTableView.umcTop = _sdkConfig.product?self.productView.umcBottom:0;
+        self.imTableView.contentInset = UIEdgeInsetsMake(0, 0, self.view.umcHeight - CGRectGetMinY(self.inputBar.frame), 0);
         if (transition.toVisible) {
             [self.imTableView scrollToBottomAnimated:NO];
             self.emojiView.alpha = 0.0;
@@ -453,9 +464,51 @@ static CGFloat const InputBarHeight = 80.0f;
     
     NSArray *array = [self.UIManager.messagesArray valueForKey:@"messageId"];
     if ([array containsObject:message.UUID]) {
-        [self.imTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[array indexOfObject:message.UUID] inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        [self didUpdateCellModelWithIndexPath:[NSIndexPath indexPathForRow:[array indexOfObject:message.UUID] inSection:0]];
     }
 }
+
+- (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f/*延迟执行时间*/ * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [self safeCellUpdate:indexPath.section row:indexPath.row];
+    });
+}
+
+- (void)safeCellUpdate:(NSUInteger)section row: (NSUInteger) row {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSUInteger lastSection = [self.imTableView numberOfSections];
+        if (lastSection == 0) {
+            return;
+        }
+        lastSection -= 1;
+        if (section > lastSection) {
+            return;
+        }
+        NSUInteger lastRowNumber = [self.imTableView numberOfRowsInSection:section];
+        if (lastRowNumber == 0) {
+            return;
+        }
+        lastRowNumber -= 1;
+        if (row > lastRowNumber) {
+            return;
+        }
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+        @try {
+            if ([[self.imTableView indexPathsForVisibleRows] indexOfObject:indexPath] == NSNotFound) {
+                return;
+            }
+            [self.imTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        
+        @catch (NSException *exception) {
+            NSLog(@"%@",exception);
+            return;
+        }
+    });
+}
+
 
 #pragma mark - 设置背景颜色
 - (void)setBackgroundColor {
@@ -471,8 +524,6 @@ static CGFloat const InputBarHeight = 80.0f;
         self.sdkConfig.leaveChatViewController();
     }
     
-    //离开页面 标记已读
-    [UMCManager readMerchantsWithEuid:self.merchantId completion:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -481,6 +532,8 @@ static CGFloat const InputBarHeight = 80.0f;
     // 停止播放语音
     [[UMCAudioPlayerHelper shareInstance] stopAudio];
     [UMCManager leaveChatViewController];
+    //离开页面 标记已读
+    [UMCManager readMerchantsWithEuid:self.merchantId completion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
