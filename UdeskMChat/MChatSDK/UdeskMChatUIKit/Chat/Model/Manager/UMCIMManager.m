@@ -56,7 +56,7 @@
 
 /** 标记商户消息为已读 */
 - (void)readMerchantsWithMerchantId:(NSString *)merchantId
-                   completion:(void(^)(BOOL result))completion {
+                         completion:(void(^)(BOOL result))completion {
     
     [UMCManager readMerchantsWithEuid:merchantId completion:completion];
 }
@@ -67,7 +67,7 @@
     [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:nil completion:^(NSArray<UMCMessage *> *merchantsArray) {
         self.hasMore = merchantsArray.count;
         self.messagesArray = nil;
-        [self appendMessages:merchantsArray];
+        [self appendServerMessages:merchantsArray];
     }];
 }
 
@@ -88,7 +88,7 @@
     NSArray *array = [self.messagesArray valueForKey:@"messageId"];
     [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:array.firstObject completion:^(NSArray<UMCMessage *> *merchantsArray) {
         self.hasMore = merchantsArray.count;
-        [self appendMessages:merchantsArray];
+        [self appendServerMessages:merchantsArray];
     }];
 }
 
@@ -134,10 +134,10 @@
     if (!message || message == (id)kCFNull) return ;
     
     //转换成要展示的model
-    [self appendMessages:@[message]];
+    [self appendReceiveMsg:message];
     
     [UMCManager createMessageWithMerchantsEuid:self.merchantId message:message completion:^(UMCMessage *newMessage) {
-    
+        
         [self updateCache:message newMessage:newMessage];
         if (completion) {
             completion(message);
@@ -150,7 +150,7 @@
     if (!message || message == (id)kCFNull) return ;
     
     //转换成要展示的model
-    [self appendMessages:@[message]];
+    [self appendReceiveMsg:message];
     
     //上传文件
     [UMCManager uploadFile:mediaData fileName:message.UUID completion:^(NSString *address, NSError *error) {
@@ -191,7 +191,7 @@
             break;
         }
         case UMCMessageContentTypeVoice:{
-         
+            
             YYCache *cache = [[YYCache alloc] initWithName:UMCVoiceCache];
             NSData *data = (NSData *)[cache objectForKey:oldMessage.UUID];
             [cache removeObjectForKey:oldMessage.UUID];
@@ -206,83 +206,34 @@
     oldMessage.UUID = newMessage.UUID;
 }
 
-- (void)appendMessages:(NSArray *)messages {
+- (void)appendServerMessages:(NSArray *)messages {
+    
+    if (messages.count < 1) {
+        return;
+    }
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-       
-        NSMutableArray *mMessages = [NSMutableArray arrayWithArray:self.messagesArray];
-        [messages enumerateObjectsUsingBlock:^(UMCMessage *message, NSUInteger idx, BOOL * _Nonnull stop) {
-            
-            @try {
-                
-                switch (message.category) {
-                    case UMCMessageCategoryTypeEvent:{
-                        
-                        UMCEventMessage *eventMessage = [[UMCEventMessage alloc] initWithMessage:message];
-                        [mMessages addObject:eventMessage];
-                        
-                        break;
-                    }
-                    case UMCMessageCategoryTypeChat:{
-                     
-                        switch (message.contentType) {
-                            case UMCMessageContentTypeText:{
-                                
-                                UMCTextMessage *textMessage = [[UMCTextMessage alloc] initWithMessage:message];
-                                [mMessages addObject:textMessage];
-                                break;
-                            }
-                            case UMCMessageContentTypeImage:{
-                                
-                                UMCImageMessage *imageMessage = [[UMCImageMessage alloc] initWithMessage:message];
-                                [mMessages addObject:imageMessage];
-                                break;
-                            }
-                            case UMCMessageContentTypeVoice: {
-                                
-                                UMCVoiceMessage *voiceMessage = [[UMCVoiceMessage alloc] initWithMessage:message];
-                                [mMessages addObject:voiceMessage];
-                                break;
-                            }
-                                
-                            default:
-                                break;
-                        }
-                        
-                        break;
-                    }
-                    default:
-                        break;
+        
+        NSMutableArray *mMessages = [NSMutableArray arrayWithArray:[[self.messagesArray reverseObjectEnumerator] allObjects]];
+        @try {
+         
+            for (UMCMessage *message in messages) {
+                UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
+                if (baseMsg) {
+                    [mMessages addObject:baseMsg];
                 }
-                
-            } @catch (NSException *exception) {
-                NSLog(@"%@",exception);
-            } @finally {
             }
-        }];
+        } @catch (NSException *exception) {
+            NSLog(@"%@",exception);
+        } @finally {
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-       
-            self.messagesArray = [self sortMessages:mMessages];
+            
+            self.messagesArray = [[[mMessages reverseObjectEnumerator] allObjects] copy];
             [self reloadMessages];
         });
     });
-}
-
-#pragma mark - 消息排序
-- (NSArray *)sortMessages:(NSArray *)messagesArray {
-    
-    // 利用block进行排序
-    NSArray *array = [messagesArray sortedArrayUsingComparator:
-                      ^NSComparisonResult(UMCBaseMessage *obj1, UMCBaseMessage *obj2) {
-                          
-                          NSDate *lastDate1 = [NSDate dateWithString:obj1.message.createdAt format:kUMCDateFormat];
-                          NSDate *lastDate2 = [NSDate dateWithString:obj2.message.createdAt format:kUMCDateFormat];
-                          
-                          return [lastDate1 compare:lastDate2];
-                      }];
-    
-    return array;
 }
 
 - (void)reloadMessages {
@@ -302,9 +253,6 @@
         return;
     }
     
-    UMCMessage *meesage = [[UMCMessage alloc] initWithProductMessage:self.sdkConfig.product];
-    [self appendMessages:@[meesage]];
-    
     [UMCManager createProductWithMerchantsEuid:self.merchantId product:self.sdkConfig.product completion:nil];
 }
 
@@ -313,8 +261,72 @@
     
     if ([message.merchantEuid isEqualToString:self.merchantId]) {
         //转换成要展示的model
-        [self appendMessages:@[message]];
+        [self appendReceiveMsg:message];
     }
 }
 
+- (void)appendReceiveMsg:(UMCMessage *)message {
+    
+    @try {
+     
+        NSMutableArray *mMessages = [NSMutableArray arrayWithArray:self.messagesArray];
+        UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
+        if (baseMsg) {
+            [mMessages addObject:baseMsg];
+        }
+        self.messagesArray = [mMessages copy];
+        [self reloadMessages];
+        
+    } @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    } @finally {
+    }
+}
+
+- (UMCBaseMessage *)umcChatMessageWithMessage:(UMCMessage *)message {
+    
+    switch (message.category) {
+        case UMCMessageCategoryTypeEvent:{
+            
+            UMCEventMessage *eventMessage = [[UMCEventMessage alloc] initWithMessage:message];
+            return eventMessage;
+            
+            break;
+        }
+        case UMCMessageCategoryTypeChat:{
+            
+            switch (message.contentType) {
+                case UMCMessageContentTypeText:{
+                    
+                    UMCTextMessage *textMessage = [[UMCTextMessage alloc] initWithMessage:message];
+                    return textMessage;
+                    break;
+                }
+                case UMCMessageContentTypeImage:{
+                    
+                    UMCImageMessage *imageMessage = [[UMCImageMessage alloc] initWithMessage:message];
+                    return imageMessage;
+                    break;
+                }
+                case UMCMessageContentTypeVoice: {
+                    
+                    UMCVoiceMessage *voiceMessage = [[UMCVoiceMessage alloc] initWithMessage:message];
+                    return voiceMessage;
+                    break;
+                }
+                    
+                default:
+                    break;
+            }
+            
+            break;
+        }
+        default:
+            break;
+    }
+    
+    return nil;
+}
+
 @end
+

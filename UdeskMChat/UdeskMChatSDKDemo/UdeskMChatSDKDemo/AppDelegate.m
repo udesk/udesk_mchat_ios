@@ -20,8 +20,8 @@ static NSString *channel = @"Merchants";
 static NSString *UUID = @"c6042aa7-a1b2-4594-aed8-bf15b547627f";
 static NSString *key = @"240858ffb00b1c814259a6569393bf4e";
 
-static NSString *euid = @"xinlixuegang2";
-static NSString *name = @"新李雪刚2";
+static NSString *euid = @"xinlixuegang5";
+static NSString *name = @"新李雪刚5";
 
 @interface AppDelegate ()
 
