@@ -12,10 +12,10 @@
 #import "UMCMessage.h"
 #import "UMCMerchant.h"
 
-/**
- *  当未读消息发生改变时会发送通知
- */
+/** 当未读消息发生改变时会发送通知 */
 #define UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION @"UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION"
+/** 登录成功 */
+#define UMC_LOGIN_SUCCESS_NOTIFICATION @"UMC_LOGIN_SUCCESS_NOTIFICATION"
 
 @interface UMCManager : NSObject
 

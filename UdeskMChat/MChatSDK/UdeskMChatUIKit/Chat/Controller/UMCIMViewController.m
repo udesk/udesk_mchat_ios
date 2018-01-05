@@ -115,6 +115,8 @@ static CGFloat const InputBarHeight = 80.0f;
     
     //监听app是否从后台进入前台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcIMApplicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
+    //登录成功
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcLoginSuccess) name:UMC_LOGIN_SUCCESS_NOTIFICATION object:nil];
     
     //适配X
     if (kUMCIsIPhoneX) {
@@ -122,6 +124,15 @@ static CGFloat const InputBarHeight = 80.0f;
         _imTableView.umcHeight -= 34;
         [_imTableView setTableViewInsetsWithBottomValue:self.view.umcHeight - _inputBar.umcTop];
     }
+}
+
+//登录成功
+- (void)umcLoginSuccess {
+    @udWeakify(self);
+    [self.UIManager fetchNewMessages:^{
+        @udStrongify(self);
+        [self reloadIMTableView];
+    }];
 }
 
 //监听app是否从后台进入前台
@@ -546,6 +557,7 @@ static CGFloat const InputBarHeight = 80.0f;
     NSLog(@"%@销毁了",[self class]);
     [[YYKeyboardManager defaultManager] removeObserver:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UMC_LOGIN_SUCCESS_NOTIFICATION object:nil];
 }
 
 /*
