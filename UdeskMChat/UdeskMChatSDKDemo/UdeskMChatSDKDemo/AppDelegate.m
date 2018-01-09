@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <UdeskMChatSDK/UdeskMChatSDK.h>
-#import <Bugtags/Bugtags.h>
 
 #import "JPUSHService.h"
 
@@ -33,7 +32,7 @@ static NSString *name = @"新李雪刚5";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    [Bugtags startWithAppKey:@"e295aa1df3a7124c5e2929077ba37f95" invocationEvent:BTGInvocationEventNone];
+//    [Bugtags startWithAppKey:@"e295aa1df3a7124c5e2929077ba37f95" invocationEvent:BTGInvocationEventNone];
     
     //客户端自己算签名，此方法仅用于开发测试。正式上线需要后端算好签名和时间戳返给前端
     UMCSystem *system = [UMCSystem new];

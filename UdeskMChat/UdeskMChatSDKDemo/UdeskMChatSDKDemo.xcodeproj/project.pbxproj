@@ -1000,10 +1000,10 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.Push = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -1323,9 +1323,9 @@
 			baseConfigurationReference = 3B79B23507315B84E59A78B9 /* Pods-UdeskMChatSDKDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = UdeskMChatSDKDemo/UdeskMChatSDKDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = DVNW3ZM7G9;
+				DEVELOPMENT_TEAM = YJKWMFZ763;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../MChatSDK/\"",
@@ -1338,7 +1338,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo/Lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.merchant;
+				PRODUCT_BUNDLE_IDENTIFIER = xucheniphonexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1349,9 +1349,9 @@
 			baseConfigurationReference = 2B098BEC27384749D14611A5 /* Pods-UdeskMChatSDKDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = UdeskMChatSDKDemo/UdeskMChatSDKDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = DVNW3ZM7G9;
+				DEVELOPMENT_TEAM = YJKWMFZ763;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../MChatSDK/\"",
@@ -1364,7 +1364,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo/Lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.merchant;
+				PRODUCT_BUNDLE_IDENTIFIER = xucheniphonexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

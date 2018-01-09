@@ -4,5 +4,5 @@ use_frameworks!
 target 'UdeskMChatSDKDemo' do
   pod 'JPush'
   pod 'AliyunOSSiOS'
-  pod 'Bugtags'
+  pod 'AFNetworking'
 end

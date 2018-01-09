@@ -60,15 +60,21 @@
         imageUrl = imageMessage.message.UUID;
     }
     
-    [[SDWebImageManager sharedManager].imageCache queryCacheOperationForKey:imageMessage.message.UUID done:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
-        
-        if (image) {
-            self.chatImageView.image = image;
-        }
-        else {
-            [self.chatImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
-        }
-    }];
+    if (baseMessage.message.direction == UMCMessageDirectionIn) {
+     
+        [[SDWebImageManager sharedManager].imageCache queryCacheOperationForKey:imageMessage.message.UUID done:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
+            
+            if (image) {
+                self.chatImageView.image = image;
+            }
+            else {
+                [self.chatImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+            }
+        }];
+    }
+    else {
+        [self.chatImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+    }
     
     self.chatImageView.frame = imageMessage.imageFrame;
     
