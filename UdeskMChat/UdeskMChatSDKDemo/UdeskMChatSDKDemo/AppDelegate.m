@@ -19,8 +19,11 @@ static NSString *channel = @"Merchants";
 static NSString *UUID = @"c6042aa7-a1b2-4594-aed8-bf15b547627f";
 static NSString *key = @"240858ffb00b1c814259a6569393bf4e";
 
-static NSString *euid = @"xinlixuegang5";
-static NSString *name = @"新李雪刚5";
+//static NSString *UUID = @"75a27920-c678-4629-bbc6-2a3f39faac1c";
+//static NSString *key = @"e39814da1893eae6d10af5e80ecad4c7";
+
+static NSString *euid = @"houjuntest123";
+static NSString *name = @"Test5";
 
 @interface AppDelegate ()
 

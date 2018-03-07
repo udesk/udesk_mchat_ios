@@ -6,12 +6,10 @@
 - 在TARGETS里检查Embedded Binaries 下是否已经引入了 `UdeskMChatSDK.framework` ，没有则需要手动添加。
 
 
-- UdeskMChatSDK 依赖阿里OSS文件存储系统SDK，如果你们App没有该SDK则需要添加。
-
-
 #### 1.1.注意事项
 
 - 多商户SDK使用了以下第三方框架，如果你们APP中也使用了则需要把我们SDK里的第三方框架删除。（框架路径：UdeskMChat/UdeskMChatUIKit/Tools/Vendor）
+- Udesk SDK 文件夹中的 `UdeskMChatSDK.framework` 只打包了真机的架构，请用真机测试。
 
 
 ### 2.快速使用
