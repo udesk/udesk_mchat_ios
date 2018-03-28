@@ -3,9 +3,6 @@
 - 把Udesk SDK 文件夹中的 `UdeskMChatSDK.framework` 、 `UdeskMChatUIKit`文件夹 拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者将这两个个文件拖入 Xcode 工程目录结构中。
 
 
-- 在TARGETS里检查Embedded Binaries 下是否已经引入了 `UdeskMChatSDK.framework` ，没有则需要手动添加。
-
-
 #### 1.1 引入依赖库
 
 - libxml2.tbd
