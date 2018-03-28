@@ -22,8 +22,8 @@ static NSString *key = @"240858ffb00b1c814259a6569393bf4e";
 //static NSString *UUID = @"75a27920-c678-4629-bbc6-2a3f39faac1c";
 //static NSString *key = @"e39814da1893eae6d10af5e80ecad4c7";
 
-static NSString *euid = @"houjuntest123";
-static NSString *name = @"Test5";
+static NSString *euid = @"lilinqian1223123";
+static NSString *name = @"李林倩";
 
 @interface AppDelegate ()
 

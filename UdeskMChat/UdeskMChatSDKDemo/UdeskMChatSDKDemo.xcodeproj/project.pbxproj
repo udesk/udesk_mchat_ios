@@ -10,6 +10,7 @@
 		42CAF94B86166B78E5F72823 /* Pods_UdeskMChatSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 133D7E26C56DF244B55DF6FC /* Pods_UdeskMChatSDKDemo.framework */; };
 		440A89B31FC40914006B0EC5 /* UMCProductView.m in Sources */ = {isa = PBXBuildFile; fileRef = 440A89B21FC40913006B0EC5 /* UMCProductView.m */; };
 		4445AD0E1FECAAC400E94438 /* UMCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4445AD0D1FECAAC400E94438 /* UMCSettingViewController.m */; };
+		44474ECA206B3EAB00306E7E /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 449982DF2069DC90002BAAA9 /* libxml2.tbd */; };
 		444BB9B01FB4397D0013F3DF /* UdeskMChatBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444BB8D11FB4397D0013F3DF /* UdeskMChatBundle.bundle */; };
 		444BB9B11FB4397D0013F3DF /* UMCIMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8D51FB4397D0013F3DF /* UMCIMViewController.m */; };
 		444BB9B21FB4397D0013F3DF /* UMCIMDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8D91FB4397D0013F3DF /* UMCIMDataSource.m */; };
@@ -94,8 +95,9 @@
 		444BBA061FB4397E0013F3DF /* YYKVStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9A81FB4397D0013F3DF /* YYKVStorage.m */; };
 		444BBA071FB4397E0013F3DF /* YYMemoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9AA1FB4397D0013F3DF /* YYMemoryCache.m */; };
 		444BBA081FB4397E0013F3DF /* YYKeyboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9AD1FB4397D0013F3DF /* YYKeyboardManager.m */; };
-		444BBA0E1FB43A4E0013F3DF /* UdeskMChatSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444BB8CE1FB4397D0013F3DF /* UdeskMChatSDK.framework */; };
-		444BBA0F1FB43A560013F3DF /* UdeskMChatSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 444BB8CE1FB4397D0013F3DF /* UdeskMChatSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		449982E12069DE58002BAAA9 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 44A8D8AB1FB42FF400CBD7F5 /* libresolv.tbd */; };
+		449982E82069EA57002BAAA9 /* UdeskMChatSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 449982DD2069DC6E002BAAA9 /* UdeskMChatSDK.framework */; };
+		449982E92069EA57002BAAA9 /* UdeskMChatSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 449982DD2069DC6E002BAAA9 /* UdeskMChatSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		449DB3901FD94C2100A98F81 /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB38B1FD94C2000A98F81 /* FLAnimatedImage.m */; };
 		449DB3911FD94C2100A98F81 /* FLAnimatedImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB38D1FD94C2000A98F81 /* FLAnimatedImageView+WebCache.m */; };
 		449DB3921FD94C2100A98F81 /* FLAnimatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB38F1FD94C2000A98F81 /* FLAnimatedImageView.m */; };
@@ -108,19 +110,17 @@
 		44A8D8971FB42B0500CBD7F5 /* UMCDemoHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A8D8911FB42B0500CBD7F5 /* UMCDemoHomeViewController.m */; };
 		44A8D8981FB42B0500CBD7F5 /* UMCDemoMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A8D8921FB42B0500CBD7F5 /* UMCDemoMessageViewController.m */; };
 		44A8D8991FB42B0500CBD7F5 /* UMCDemoProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A8D8961FB42B0500CBD7F5 /* UMCDemoProductViewController.m */; };
-		44A8D8AC1FB4300600CBD7F5 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 44A8D8AB1FB42FF400CBD7F5 /* libresolv.tbd */; };
-		44A8D8AE1FB4302800CBD7F5 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 44A8D8AD1FB4302800CBD7F5 /* libz.tbd */; };
 		44D0EB4C1FF0936600712814 /* UMCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D0EB4B1FF0936600712814 /* UMCButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		444BBA0D1FB43A2E0013F3DF /* Embed Frameworks */ = {
+		449982EA2069EA57002BAAA9 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				444BBA0F1FB43A560013F3DF /* UdeskMChatSDK.framework in Embed Frameworks */,
+				449982E92069EA57002BAAA9 /* UdeskMChatSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,7 +135,6 @@
 		440A89B21FC40913006B0EC5 /* UMCProductView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCProductView.m; sourceTree = "<group>"; };
 		4445AD0C1FECAAC400E94438 /* UMCSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UMCSettingViewController.h; sourceTree = "<group>"; };
 		4445AD0D1FECAAC400E94438 /* UMCSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UMCSettingViewController.m; sourceTree = "<group>"; };
-		444BB8CE1FB4397D0013F3DF /* UdeskMChatSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UdeskMChatSDK.framework; sourceTree = "<group>"; };
 		444BB8D11FB4397D0013F3DF /* UdeskMChatBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UdeskMChatBundle.bundle; sourceTree = "<group>"; };
 		444BB8D41FB4397D0013F3DF /* UMCIMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCIMViewController.h; sourceTree = "<group>"; };
 		444BB8D51FB4397D0013F3DF /* UMCIMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCIMViewController.m; sourceTree = "<group>"; };
@@ -306,6 +305,8 @@
 		444BB9AC1FB4397D0013F3DF /* YYKeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYKeyboardManager.h; sourceTree = "<group>"; };
 		444BB9AD1FB4397D0013F3DF /* YYKeyboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYKeyboardManager.m; sourceTree = "<group>"; };
 		444BB9AE1FB4397D0013F3DF /* UdeskMChatUIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdeskMChatUIKit.h; sourceTree = "<group>"; };
+		449982DD2069DC6E002BAAA9 /* UdeskMChatSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UdeskMChatSDK.framework; sourceTree = "<group>"; };
+		449982DF2069DC90002BAAA9 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		449DB38A1FD94C2000A98F81 /* FLAnimatedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLAnimatedImage.h; sourceTree = "<group>"; };
 		449DB38B1FD94C2000A98F81 /* FLAnimatedImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLAnimatedImage.m; sourceTree = "<group>"; };
 		449DB38C1FD94C2000A98F81 /* FLAnimatedImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FLAnimatedImageView+WebCache.h"; sourceTree = "<group>"; };
@@ -340,9 +341,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				444BBA0E1FB43A4E0013F3DF /* UdeskMChatSDK.framework in Frameworks */,
-				44A8D8AC1FB4300600CBD7F5 /* libresolv.tbd in Frameworks */,
-				44A8D8AE1FB4302800CBD7F5 /* libz.tbd in Frameworks */,
+				44474ECA206B3EAB00306E7E /* libxml2.tbd in Frameworks */,
+				449982E82069EA57002BAAA9 /* UdeskMChatSDK.framework in Frameworks */,
+				449982E12069DE58002BAAA9 /* libresolv.tbd in Frameworks */,
 				42CAF94B86166B78E5F72823 /* Pods_UdeskMChatSDKDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -362,7 +363,7 @@
 		444BB8CD1FB4397D0013F3DF /* MChatSDK */ = {
 			isa = PBXGroup;
 			children = (
-				444BB8CE1FB4397D0013F3DF /* UdeskMChatSDK.framework */,
+				449982DD2069DC6E002BAAA9 /* UdeskMChatSDK.framework */,
 				444BB8CF1FB4397D0013F3DF /* UdeskMChatUIKit */,
 			);
 			name = MChatSDK;
@@ -946,6 +947,7 @@
 		44A8D8AA1FB42FF300CBD7F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				449982DF2069DC90002BAAA9 /* libxml2.tbd */,
 				44A8D8AD1FB4302800CBD7F5 /* libz.tbd */,
 				44A8D8AB1FB42FF400CBD7F5 /* libresolv.tbd */,
 				133D7E26C56DF244B55DF6FC /* Pods_UdeskMChatSDKDemo.framework */,
@@ -973,9 +975,9 @@
 				44A8D4C01FB42A2700CBD7F5 /* Sources */,
 				44A8D4C11FB42A2700CBD7F5 /* Frameworks */,
 				44A8D4C21FB42A2700CBD7F5 /* Resources */,
-				444BBA0D1FB43A2E0013F3DF /* Embed Frameworks */,
 				BE95B6323E5F2CBA4FC05050 /* [CP] Embed Pods Frameworks */,
 				67DB1DA30A482BE51422FE2D /* [CP] Copy Pods Resources */,
+				449982EA2069EA57002BAAA9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1081,9 +1083,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-UdeskMChatSDKDemo/Pods-UdeskMChatSDKDemo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1329,7 +1334,7 @@
 				CODE_SIGN_ENTITLEMENTS = UdeskMChatSDKDemo/UdeskMChatSDKDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DVNW3ZM7G9;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../MChatSDK/\"",
@@ -1342,7 +1347,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo/Lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.udeskapp11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.merchants;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1356,7 +1361,7 @@
 				CODE_SIGN_ENTITLEMENTS = UdeskMChatSDKDemo/UdeskMChatSDKDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DVNW3ZM7G9;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../MChatSDK/\"",
@@ -1369,7 +1374,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo/Lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.udeskapp11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.merchants;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

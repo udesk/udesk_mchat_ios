@@ -97,7 +97,7 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
 #pragma mark - @protocol UMCMerchantsDataSourceDelegate
 - (void)deleteMerchantForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UMCMerchant *merchant = self.merchantsManager.merchantsArray[indexPath.row];
+    UMCMerchant *merchant = self.dataSource.merchantsArray[indexPath.row];
     @udWeakify(self);
     [self.merchantsManager deleteMerchantsWithModel:merchant completion:^(BOOL result) {
         @udStrongify(self);
@@ -114,16 +114,16 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    UMCMerchant *merchant = self.merchantsManager.merchantsArray[indexPath.row];
+    UMCMerchant *merchant = self.dataSource.merchantsArray[indexPath.row];
     
     //清空未读消息
     if (merchant.unreadCount.integerValue > 0) {
         merchant.unreadCount = @"";
         [self.merchantsTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
-    
+
     _currentMerchantId = merchant.euid;
     _sdkConfig.imTitle = merchant.name;
     UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantId:merchant.euid];
@@ -158,17 +158,17 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
 #pragma mark - UMCManagerDelegate
 - (void)didReceiveMessage:(UMCMessage *)message {
     
-    NSArray *euidArray = [self.merchantsManager.merchantsArray valueForKey:@"euid"];
+    NSArray *euidArray = [self.dataSource.merchantsArray valueForKey:@"euid"];
     if ([euidArray containsObject:message.merchantEuid]) {
         NSInteger index = [euidArray indexOfObject:message.merchantEuid];
-        UMCMerchant *merchant = [self.merchantsManager.merchantsArray objectAtIndex:index];
+        UMCMerchant *merchant = [self.dataSource.merchantsArray objectAtIndex:index];
         if (!merchant) return;
         
         if (![message.merchantEuid isEqualToString:self.currentMerchantId]) {
             merchant.unreadCount = [NSString stringWithFormat:@"%ld",merchant.unreadCount.integerValue + 1];
         }
         merchant.lastMessage = message;
-        [self.merchantsTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        [self.merchantsTableView reloadData];
     }
     else {
         [self fetchMerchants];

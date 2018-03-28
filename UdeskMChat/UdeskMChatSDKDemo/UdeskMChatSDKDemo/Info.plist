@@ -22,14 +22,12 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>cameraDesciption</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>microphoneDesciption</string>
+	<string>App需要访问您的麦克风</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Udesk需要为您添加图片</string>
+	<string>App需要为您添加图片</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>photoLibraryDesciption</string>
+	<string>App需要访问您的相册</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
@@ -45,8 +43,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

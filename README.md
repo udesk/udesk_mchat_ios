@@ -6,11 +6,34 @@
 - 在TARGETS里检查Embedded Binaries 下是否已经引入了 `UdeskMChatSDK.framework` ，没有则需要手动添加。
 
 
-#### 1.1.注意事项
+#### 1.1 引入依赖库
+
+- libxml2.tbd
+- libresolv.tbd
+
+#### 1.2 注意事项
 
 - 多商户SDK使用了以下第三方框架，如果你们APP中也使用了则需要把我们SDK里的第三方框架删除。（框架路径：UdeskMChat/UdeskMChatUIKit/Tools/Vendor）
-- Udesk SDK 文件夹中的 `UdeskMChatSDK.framework` 只打包了真机的架构，请用真机测试。
+- 如果你使用的是xcode8 请在你项目的Info.plist文件里添加使用相册、相机、麦克风、保存图片到相册的权限
 
+
+```objective-c
+<key>NSCameraUsageDescription</key>
+
+<string>App需要访问您的相机</string>
+
+<key>NSMicrophoneUsageDescription</key>
+
+<string>App需要访问您的麦克风</string>
+
+<key>NSPhotoLibraryAddUsageDescription</key>
+
+<string>App需要为您添加图片</string>
+
+<key>NSPhotoLibraryUsageDescription</key>
+
+<string>App需要访问您的相册</string>
+```
 
 ### 2.快速使用
 
@@ -18,7 +41,9 @@
 >
 > 在AppDelegate、或者登陆成功之后里初始化SDK
 
-##### 备注：签名生成规则：建议由客户的服务端提供接口计算签名并返回对应的参数
+##### 签名生成规则：
+
+##### 出于安全的考虑，建议租户将 key 保存在自己的服务器端，App 端通过租户提供的接口获取经过 SHA1  计算后的加密字符串(sign)和时间戳(timestamp),时间戳精确到秒，然后传给 SDK。密码的有效期为时间戳 +/- 5分钟     SHA1("租户uuid+租户key+时间戳")加密字符粗的格式
 
 | 数据名称      | 说明         |
 | --------- | ---------- |
