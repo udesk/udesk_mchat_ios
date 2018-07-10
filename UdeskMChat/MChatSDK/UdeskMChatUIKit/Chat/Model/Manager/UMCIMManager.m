@@ -12,6 +12,7 @@
 #import "UMCImageMessage.h"
 #import "UMCVoiceMessage.h"
 #import "UMCEventMessage.h"
+#import "UMCGoodsMessage.h"
 #import "NSDate+UMC.h"
 #import "UMCHelper.h"
 
@@ -56,7 +57,7 @@
 
 /** 标记商户消息为已读 */
 - (void)readMerchantsWithMerchantId:(NSString *)merchantId
-                         completion:(void(^)(BOOL result))completion {
+                   completion:(void(^)(BOOL result))completion {
     
     [UMCManager readMerchantsWithEuid:merchantId completion:completion];
 }
@@ -96,7 +97,7 @@
 - (void)sendTextMessage:(NSString *)text
              completion:(void(^)(UMCMessage *message))completion {
     
-    UMCMessage *message = [[UMCMessage alloc] initTextChatMessage:text];
+    UMCMessage *message = [[UMCMessage alloc] initWithText:text];
     [self createMessage:message completion:completion];
 }
 
@@ -104,7 +105,7 @@
 - (void)sendImageMessage:(UIImage *)image
               completion:(void(^)(UMCMessage *message))completion {
     
-    UMCMessage *message = [[UMCMessage alloc] initImageChatMessage:image];
+    UMCMessage *message = [[UMCMessage alloc] initWithImage:image];
     
     NSData *data = UIImageJPEGRepresentation(image, 0.5);
     [self createMediaMessage:message mediaData:data completion:completion];
@@ -114,8 +115,7 @@
 - (void)sendGIFImageMessage:(NSData *)gifData
                  completion:(void(^)(UMCMessage *message))completion {
     
-    UMCMessage *message = [[UMCMessage alloc] initGIFImageChatMessage:gifData];
-    
+    UMCMessage *message = [[UMCMessage alloc] initWithGIFImage:gifData];
     [self createMediaMessage:message mediaData:gifData completion:completion];
 }
 
@@ -124,9 +124,15 @@
            voiceDuration:(NSString *)voiceDuration
               completion:(void(^)(UMCMessage *message))completion {
     
-    UMCMessage *message = [[UMCMessage alloc] initVoiceChatMessage:[NSData dataWithContentsOfFile:voicePath] duration:voiceDuration];
-    
+    UMCMessage *message = [[UMCMessage alloc] initWithVoice:[NSData dataWithContentsOfFile:voicePath] duration:voiceDuration];
     [self createMediaMessage:message mediaData:[NSData dataWithContentsOfFile:voicePath] completion:completion];
+}
+
+/** 发送商品消息 */
+- (void)sendGoodsMessage:(UMCGoodsModel *)goodsModel completion:(void(^)(UMCMessage *message))completion {
+    
+    UMCMessage *message = [[UMCMessage alloc] initWithGoodsModel:goodsModel];
+    [self createMessage:message completion:completion];
 }
 
 - (void)createMessage:(UMCMessage *)message completion:(void(^)(UMCMessage *message))completion {
@@ -134,10 +140,10 @@
     if (!message || message == (id)kCFNull) return ;
     
     //转换成要展示的model
-    [self appendReceiveMsg:message];
+    [self appendMessage:message];
     
     [UMCManager createMessageWithMerchantsEuid:self.merchantId message:message completion:^(UMCMessage *newMessage) {
-        
+    
         [self updateCache:message newMessage:newMessage];
         if (completion) {
             completion(message);
@@ -150,7 +156,7 @@
     if (!message || message == (id)kCFNull) return ;
     
     //转换成要展示的model
-    [self appendReceiveMsg:message];
+    [self appendMessage:message];
     
     //上传文件
     [UMCManager uploadFile:mediaData fileName:message.UUID completion:^(NSString *address, NSError *error) {
@@ -191,7 +197,7 @@
             break;
         }
         case UMCMessageContentTypeVoice:{
-            
+         
             YYCache *cache = [[YYCache alloc] initWithName:UMCVoiceCache];
             NSData *data = (NSData *)[cache objectForKey:oldMessage.UUID];
             [cache removeObjectForKey:oldMessage.UUID];
@@ -213,23 +219,17 @@
     }
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        
+       
         NSMutableArray *mMessages = [NSMutableArray arrayWithArray:[[self.messagesArray reverseObjectEnumerator] allObjects]];
-        @try {
-         
-            for (UMCMessage *message in messages) {
-                UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
-                if (baseMsg) {
-                    [mMessages addObject:baseMsg];
-                }
+        for (UMCMessage *message in messages) {
+            UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
+            if (baseMsg) {
+                [mMessages addObject:baseMsg];
             }
-        } @catch (NSException *exception) {
-            NSLog(@"%@",exception);
-        } @finally {
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+       
             self.messagesArray = [[[mMessages reverseObjectEnumerator] allObjects] copy];
             [self reloadMessages];
         });
@@ -261,26 +261,20 @@
     
     if ([message.merchantEuid isEqualToString:self.merchantId]) {
         //转换成要展示的model
-        [self appendReceiveMsg:message];
+        [self appendMessage:message];
     }
 }
 
-- (void)appendReceiveMsg:(UMCMessage *)message {
+- (void)appendMessage:(UMCMessage *)message {
     
-    @try {
-     
-        NSMutableArray *mMessages = [NSMutableArray arrayWithArray:self.messagesArray];
-        UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
-        if (baseMsg) {
-            [mMessages addObject:baseMsg];
-        }
-        self.messagesArray = [mMessages copy];
-        [self reloadMessages];
-        
-    } @catch (NSException *exception) {
-        NSLog(@"%@",exception);
-    } @finally {
+    NSMutableArray *mMessages = [NSMutableArray arrayWithArray:self.messagesArray];
+    UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
+    if (baseMsg) {
+        [mMessages addObject:baseMsg];
     }
+    
+    self.messagesArray = [mMessages copy];
+    [self reloadMessages];
 }
 
 - (UMCBaseMessage *)umcChatMessageWithMessage:(UMCMessage *)message {
@@ -314,6 +308,12 @@
                     return voiceMessage;
                     break;
                 }
+                case UMCMessageContentTypeGoods: {
+                    
+                    UMCGoodsMessage *goodsMessage = [[UMCGoodsMessage alloc] initWithMessage:message];
+                    return goodsMessage;
+                    break;
+                }
                     
                 default:
                     break;
@@ -329,4 +329,3 @@
 }
 
 @end
-

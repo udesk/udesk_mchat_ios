@@ -9,6 +9,7 @@
 #import "UMCMessage+UMCChatMessage.h"
 #import "NSDate+UMC.h"
 #import "UMCUIMacro.h"
+#import "UMCHelper.h"
 
 #import "SDWebImageManager.h"
 #import "FLAnimatedImage.h"
@@ -16,7 +17,7 @@
 
 @implementation UMCMessage (UMCChatMessage)
 
-- (instancetype)initTextChatMessage:(NSString *)text {
+- (instancetype)initWithText:(NSString *)text {
     
     self = [super init];
     if (self) {
@@ -32,7 +33,7 @@
     return self;
 }
 
-- (instancetype)initImageChatMessage:(UIImage *)image {
+- (instancetype)initWithImage:(UIImage *)image {
     
     self = [super init];
     if (self) {
@@ -50,7 +51,7 @@
     return self;
 }
 
-- (instancetype)initGIFImageChatMessage:(NSData *)gifData {
+- (instancetype)initWithGIFImage:(NSData *)gifData {
     
     self = [super init];
     if (self) {
@@ -69,7 +70,7 @@
     return self;
 }
 
-- (instancetype)initVoiceChatMessage:(NSData *)voiceData duration:(NSString *)duration {
+- (instancetype)initWithVoice:(NSData *)voiceData duration:(NSString *)duration {
     
     self = [super init];
     if (self) {
@@ -104,6 +105,23 @@
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
         self.productMessage = product;
     }
+    return self;
+}
+
+- (instancetype)initWithGoodsModel:(UMCGoodsModel *)model {
+    
+    self = [super init];
+    if (self) {
+        
+        self.UUID = [[NSUUID UUID] UUIDString];
+        self.contentType = UMCMessageContentTypeGoods;
+        self.direction = UMCMessageDirectionIn;
+        self.messageStatus = UMCMessageStatusSending;
+        self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
+        self.goodsMessage = model;
+        self.content = @"";
+    }
+    
     return self;
 }
 

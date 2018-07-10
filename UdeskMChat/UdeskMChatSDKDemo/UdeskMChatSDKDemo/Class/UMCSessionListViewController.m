@@ -1,20 +1,20 @@
 //
-//  UMCDemoMessageViewController.m
+//  UMCSessionListViewController.m
 //  UdeskMChatExample
 //
 //  Created by xuchen on 2017/10/28.
 //  Copyright © 2017年 Udesk. All rights reserved.
 //
 
-#import "UMCDemoMessageViewController.h"
+#import "UMCSessionListViewController.h"
 #import "UdeskMChatUIKit.h"
 #import "UMCUIMacro.h"
 
-@interface UMCDemoMessageViewController ()
+@interface UMCSessionListViewController ()
 
 @end
 
-@implementation UMCDemoMessageViewController
+@implementation UMCSessionListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -24,8 +24,6 @@
     if (kUMCIsIPhoneX) {
         spacing = 24;
     }
-    
-    //商户列表
     UMCMerchantsView *merchats = [[UMCMerchantsView alloc] initWithFrame:CGRectMake(0, 64+spacing, self.view.frame.size.width, self.view.frame.size.height) sdkConfig:[self getConfig]];
     [self.view addSubview:merchats];
 }
@@ -33,6 +31,8 @@
 - (UMCSDKConfig *)getConfig {
     
     UMCSDKConfig *config = [UMCSDKConfig sharedConfig];
+    config.customButtons = self.customButtons;
+    config.showCustomButtons = YES;
     
     UMCSDKStyle *styly = [UMCSDKStyle defaultStyle];
     config.sdkStyle = styly;

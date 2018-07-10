@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "UdeskHPGrowingTextView.h"
+#import "UMCCustomToolBar.h"
 @class UMCIMTableView;
 @class UMCInputBar;
+@class UMCCustomButtonConfig;
 
 typedef NS_ENUM(NSUInteger, UMCInputBarType) {
     UMCInputBarTypeNormal = 0,
@@ -28,6 +30,8 @@ typedef NS_ENUM(NSUInteger, UMCInputBarType) {
  *  @param textView 输入框对象
  */
 - (void)inputBar:(UMCInputBar *)inputBar willBeginEditing:(UdeskHPGrowingTextView *)textView;
+/** 点击自定义按钮 */
+- (void)didSelectCustomToolBar:(UMCCustomToolBar *)toolBar atIndex:(NSInteger)index;
 
 @required
 /**
@@ -64,10 +68,13 @@ typedef NS_ENUM(NSUInteger, UMCInputBarType) {
 
 @property (nonatomic, assign) UMCInputBarType selectInputBarType;
 
+@property (nonatomic, strong) NSArray<UMCCustomButtonConfig *> *customButtonConfigs;
+
 @property (nonatomic, assign) BOOL     hiddenVoiceButton;
 @property (nonatomic, assign) BOOL     hiddenEmotionButton;
 @property (nonatomic, assign) BOOL     hiddenCameraButton;
 @property (nonatomic, assign) BOOL     hiddenAlbumButton;
+@property (nonatomic, assign) BOOL     showCustomButtons;
 
 - (instancetype)initWithFrame:(CGRect)frame
                     tableView:(UMCIMTableView *)tabelView;

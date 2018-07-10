@@ -99,6 +99,16 @@ typedef NS_ENUM(NSUInteger, UDChatViewStyleType) {
 /** 咨询对象发送按钮颜色 */
 @property (nonatomic, strong) UIColor  *productSendTitleColor;
 
+/** 超链接点击颜色 */
+@property (nonatomic, strong) UIColor *activeLinkColor;
+/** 超链接颜色 */
+@property (nonatomic, strong) UIColor *linkColor;
+
+/** 商品消息名称字体 */
+@property (nonatomic, strong) UIFont *goodsNameFont;
+/** 商品消息名称颜色 */
+@property (nonatomic, strong) UIColor *goodsNameTextColor;
+
 + (instancetype)defaultStyle;
 + (instancetype)customStyle;
 

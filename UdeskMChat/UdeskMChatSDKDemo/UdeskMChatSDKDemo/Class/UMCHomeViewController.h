@@ -1,5 +1,5 @@
 //
-//  UMCDemoMessageViewController.h
+//  UMCHomeViewController.h
 //  UdeskMChatExample
 //
 //  Created by xuchen on 2017/10/28.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UMCDemoMessageViewController : UIViewController
+@interface UMCHomeViewController : UIViewController
 
 @end

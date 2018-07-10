@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 @class UMCSDKConfig;
 @class UMCMessage;
+@class UMCGoodsModel;
 
 @interface UMCIMViewController : UIViewController
 
@@ -18,5 +19,16 @@
 - (instancetype)initWithSDKConfig:(UMCSDKConfig *)config merchantId:(NSString *)merchantId;
 
 - (void)dismissChatViewController;
+
+//发送文字
+- (void)sendTextMessageWithContent:(NSString *)content;
+//发送图片
+- (void)sendImageMessageWithImage:(UIImage *)image;
+//发送GIF图片
+- (void)sendGIFMessageWithGIFData:(NSData *)gifData;
+//发送语音
+- (void)sendVoiceMessageWithVoicePath:(NSString *)voicePath voiceDuration:(NSString *)voiceDuration;
+//发送商品
+- (void)sendGoodsMessageWithModel:(UMCGoodsModel *)goodsModel;
 
 @end

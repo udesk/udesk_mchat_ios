@@ -2,8 +2,8 @@
 //  UdeskMChatSDK.h
 //  UdeskMChatSDK
 //
-//  Created by xuchen on 2017/10/18.
-//  Copyright © 2017年 Udesk. All rights reserved.
+//  Created by xuchen on 2018/6/29.
+//  Copyright © 2018年 Udesk. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -18,4 +18,3 @@ FOUNDATION_EXPORT const unsigned char UdeskMChatSDKVersionString[];
 
 #import <UdeskMChatSDK/UMCManager.h>
 #import <UdeskMChatSDK/UMCDelegate.h>
-

@@ -11,6 +11,7 @@
 #import "UMCUIMacro.h"
 #import "UMCBundleHelper.h"
 #import "UMCSDKConfig.h"
+#import "UMCCustomButtonConfig.h"
 #import "UIImage+UMC.h"
 #import "UIView+UMC.h"
 #import <AVFoundation/AVFoundation.h>
@@ -28,8 +29,10 @@ static CGFloat const UDInputBarViewToHorizontalEdgeSpacing = 10.0;
 static CGFloat const UDInputBarViewButtonToHorizontalEdgeSpacing = 20.0;
 /** 输入框按钮距离顶部的垂直距离 */
 static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
+/** 自定义按钮高度 */
+static CGFloat const UDInputBarViewCustomToolBarHeight = 44.0;
 
-@interface UMCInputBar()<UITextViewDelegate>
+@interface UMCInputBar()<UITextViewDelegate,UMCCustomToolBarDelegate>
 
 @property (nonatomic, strong) UIButton *emotionButton;
 @property (nonatomic, strong) UIButton *voiceButton;
@@ -38,6 +41,8 @@ static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
 @property (nonatomic, strong) UMCIMTableView *imTableView;
 @property (nonatomic, assign) CGRect originalTableViewFrame;
 @property (nonatomic, assign) NSInteger textViewHeight;
+@property (nonatomic, strong) UMCCustomToolBar *customToolBar;
+@property (nonatomic, strong) UIView *defaultToolBar;
 
 @end
 
@@ -64,6 +69,11 @@ static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
 
 - (void)loadFuncationView {
     
+    //默认toolbar
+    _defaultToolBar = [[UIView alloc] initWithFrame:CGRectMake(0, 1, self.frame.size.width, self.frame.size.height-1)];
+    _defaultToolBar.backgroundColor = [UIColor whiteColor];
+    [self addSubview:_defaultToolBar];
+    
     //初始化输入框
     _inputTextView = [[UdeskHPGrowingTextView  alloc] initWithFrame:CGRectMake(UDInputBarViewToHorizontalEdgeSpacing, UDInputBarViewToVerticalEdgeSpacing, kUMCScreenWidth-UDInputBarViewToHorizontalEdgeSpacing*2, UDInputBarViewHeight)];
     _inputTextView.placeholder = UMCLocalizedString(@"udesk_typing");
@@ -72,14 +82,14 @@ static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
     _inputTextView.font = [UIFont systemFontOfSize:16];
     _inputTextView.backgroundColor = [UMCSDKConfig sharedConfig].sdkStyle.textViewColor;
     self.backgroundColor = [UMCSDKConfig sharedConfig].sdkStyle.inputViewColor;
-    [self addSubview:_inputTextView];
+    [_defaultToolBar addSubview:_inputTextView];
     
     //表情
     _emotionButton = [self createButtonWithImage:[UIImage umcDefaultSmileImage] HLImage:[UIImage umcDefaultSmileHighlightedImage]];
     _emotionButton.frame = CGRectMake(UDInputBarViewButtonToHorizontalEdgeSpacing, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
     _emotionButton.hidden = self.hiddenEmotionButton;
     [_emotionButton addTarget:self action:@selector(emotionClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_emotionButton];
+    [_defaultToolBar addSubview:_emotionButton];
     
     //语音
     _voiceButton = [self createButtonWithImage:[UIImage umcDefaultVoiceImage] HLImage:[UIImage umcDefaultVoiceHighlightedImage]];
@@ -90,7 +100,7 @@ static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
     _voiceButton.frame = CGRectMake(voiceButtonX, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
     _voiceButton.hidden = self.hiddenVoiceButton;
     [_voiceButton addTarget:self action:@selector(voiceClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_voiceButton];
+    [_defaultToolBar addSubview:_voiceButton];
     
     //相机
     _cameraButton = [self createButtonWithImage:[UIImage umcDefaultCameraImage] HLImage:[UIImage umcDefaultCameraHighlightedImage]];
@@ -106,7 +116,7 @@ static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
     _cameraButton.frame = CGRectMake(cameraButtonX, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
     _cameraButton.hidden = self.hiddenCameraButton;
     [_cameraButton addTarget:self action:@selector(cameraClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_cameraButton];
+    [_defaultToolBar addSubview:_cameraButton];
     
     CGFloat albumButtonX = _cameraButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing;
     if (self.hiddenCameraButton) {
@@ -124,7 +134,7 @@ static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
     _albumButton.frame = CGRectMake(albumButtonX, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
     _albumButton.hidden = self.hiddenAlbumButton;
     [_albumButton addTarget:self action:@selector(albumClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_albumButton];
+    [_defaultToolBar addSubview:_albumButton];
 }
 
 #pragma mark - layout subViews UI
@@ -320,10 +330,17 @@ static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
 {
     CGFloat buttonY = self.umcHeight-UDInputBarViewToVerticalEdgeSpacing-UDInputBarViewButtonDiameter;
     
-    _emotionButton.umcTop = buttonY;
-    _voiceButton.umcTop = buttonY;
-    _cameraButton.umcTop = buttonY;
-    _albumButton.umcTop = buttonY;
+    CGFloat customToolBarHeight = 0;
+    if (self.customToolBar) {
+        self.customToolBar.umcTop = 0;
+        customToolBarHeight = UDInputBarViewCustomToolBarHeight;
+        _defaultToolBar.umcTop = self.customToolBar.umcBottom;
+    }
+    
+    _emotionButton.umcTop = buttonY - customToolBarHeight;
+    _voiceButton.umcTop = buttonY - customToolBarHeight;
+    _cameraButton.umcTop = buttonY - customToolBarHeight;
+    _albumButton.umcTop = buttonY - customToolBarHeight;
 }
 
 //隐藏相册
@@ -391,6 +408,35 @@ static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
     self.umcHeight = inputViewHeight;
     self.umcTop += 30;
     [self.imTableView setTableViewInsetsWithBottomValue:inputViewHeight];
+}
+
+- (void)setCustomButtonConfigs:(NSArray<UMCCustomButtonConfig *> *)customButtonConfigs {
+    if (!customButtonConfigs || customButtonConfigs == (id)kCFNull) return ;
+    if (![customButtonConfigs isKindOfClass:[NSArray class]]) return ;
+    if (![customButtonConfigs.firstObject isKindOfClass:[UMCCustomButtonConfig class]]) return ;
+    if (customButtonConfigs.count <= 0) return;
+    
+    _customButtonConfigs = customButtonConfigs;
+    
+    if (!self.showCustomButtons) {
+        return;
+    }
+    
+    self.frame = CGRectMake(0, self.frame.origin.y - UDInputBarViewCustomToolBarHeight, self.frame.size.width, self.frame.size.height + UDInputBarViewCustomToolBarHeight);
+    self.defaultToolBar.umcTop = UDInputBarViewCustomToolBarHeight;
+    [self.imTableView setTableViewInsetsWithBottomValue:self.umcHeight];
+    
+    _customToolBar = [[UMCCustomToolBar alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, UDInputBarViewCustomToolBarHeight) customButtonConfigs:customButtonConfigs];
+    _customToolBar.delegate = self;
+    [self addSubview:_customToolBar];
+}
+
+#pragma mark - @protocol UMCCustomToolBarDelegate
+- (void)didSelectCustomToolBar:(UMCCustomToolBar *)toolBar atIndex:(NSInteger)index {
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectCustomToolBar:atIndex:)]) {
+        [self.delegate didSelectCustomToolBar:toolBar atIndex:index];
+    }
 }
 
 - (void)drawRect:(CGRect)rect

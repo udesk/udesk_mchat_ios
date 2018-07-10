@@ -1,5 +1,5 @@
 //
-//  UMCDemoHomeViewController.h
+//  UMCSessionListViewController.h
 //  UdeskMChatExample
 //
 //  Created by xuchen on 2017/10/28.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UMCDemoHomeViewController : UIViewController
+@interface UMCSessionListViewController : UIViewController
+
+@property (nonatomic, strong) NSArray *customButtons;
 
 @end

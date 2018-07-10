@@ -39,7 +39,7 @@
     self = [super init];
     if (self) {
         
-        [self setDefaultConfig];
+        [self setConfigToDefault];
         
         self.numberRegexs = [[NSMutableArray alloc] initWithArray:@[@"0?(13|14|15|18)[0-9]{9}",
                                                                     @"[0-9-()()]{7,18}"]];
@@ -49,12 +49,20 @@
     return self;
 }
 
-//默认配置
-- (void)setDefaultConfig {
-
+- (void)setConfigToDefault {
+    
     self.sdkStyle = [UMCSDKStyle defaultStyle];
     self.customerImage = [UIImage umcDefaultCustomerImage];
     self.merchantImage = [UIImage umcContactsMerchantAvatarImage];
+    
+    self.customerImageURL = nil;
+    self.merchantImageURL = nil;
+    
+    self.showCustomButtons = NO;
+    self.customButtons = nil;
+    
+    self.imTitle = nil;
+    self.product = nil;
 }
 
 @end

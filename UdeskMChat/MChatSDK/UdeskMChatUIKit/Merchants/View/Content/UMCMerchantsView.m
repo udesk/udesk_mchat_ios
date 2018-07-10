@@ -123,7 +123,7 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
         merchant.unreadCount = @"";
         [self.merchantsTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
-
+    
     _currentMerchantId = merchant.euid;
     _sdkConfig.imTitle = merchant.name;
     UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantId:merchant.euid];
@@ -222,7 +222,9 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
 
 - (void)dealloc
 {
+    [_sdkConfig setConfigToDefault];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 @end
+

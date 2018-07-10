@@ -11,6 +11,7 @@
 #import "UMCUIMacro.h"
 #import "NSDate+UMC.h"
 #import "UMCSDKConfig.h"
+#import "UMCGoodsCell.h"
 
 /** 头像距离屏幕水平边沿距离 */
 const CGFloat kUDAvatarToHorizontalEdgeSpacing = 15.0;
@@ -114,7 +115,7 @@ const CGFloat kUDCellBottomMargin = 10.0;
 
 - (UITableViewCell *)getCellWithReuseIdentifier:(NSString *)cellReuseIdentifer {
     
-    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifer];
+    return [[UMCGoodsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifer];
 }
 
 @end

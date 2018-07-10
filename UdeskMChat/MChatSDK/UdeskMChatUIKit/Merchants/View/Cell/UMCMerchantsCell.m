@@ -134,6 +134,9 @@ static CGFloat const kUDMerchantUnreadY = 5;
         case UMCMessageContentTypeVoice:
             return UMCLocalizedString(@"udesk_last_voice");
             break;
+        case UMCMessageContentTypeGoods:
+            return UMCLocalizedString(@"udesk_last_goods");
+            break;
             
         default:
             break;

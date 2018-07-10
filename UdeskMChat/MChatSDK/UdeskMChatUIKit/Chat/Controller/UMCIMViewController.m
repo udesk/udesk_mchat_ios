@@ -100,6 +100,8 @@ static CGFloat const InputBarHeight = 80.0f;
     
     _inputBar = [[UMCInputBar alloc] initWithFrame:CGRectMake(0, self.view.umcHeight - InputBarHeight, self.view.umcWidth,InputBarHeight) tableView:_imTableView];
     _inputBar.delegate = self;
+    _inputBar.showCustomButtons = _sdkConfig.showCustomButtons;
+    _inputBar.customButtonConfigs = _sdkConfig.customButtons;
     [self.view addSubview:_inputBar];
     //更新功能按钮隐藏属性
     [self updateInputFunctionButtonHidden];
@@ -146,6 +148,17 @@ static CGFloat const InputBarHeight = 80.0f;
 }
 
 #pragma mark - @protocol UMCInputBarDelegate
+- (void)didSelectCustomToolBar:(UMCCustomToolBar *)toolBar atIndex:(NSInteger)index {
+    
+    NSArray *customButtons = self.sdkConfig.customButtons;
+    if (index >= customButtons.count) return;
+    
+    UMCCustomButtonConfig *customButton = customButtons[index];
+    if (customButton.clickBlock) {
+        customButton.clickBlock(customButton,self);
+    }
+}
+
 //选择图片
 - (void)inputBar:(UMCInputBar *)inputBar didSelectImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
     
@@ -156,31 +169,19 @@ static CGFloat const InputBarHeight = 80.0f;
     @udWeakify(self);
     self.imagePicker.FinishGIFImageBlock = ^(NSData *GIFData) {
         @udStrongify(self);
-        [self.UIManager sendGIFImageMessage:GIFData completion:^(UMCMessage *message) {
-            [self updateSendCompletedMessage:message];
-        }];
+        [self sendGIFMessageWithGIFData:GIFData];
     };
     //选择了普通图片
     self.imagePicker.FinishNormalImageBlock = ^(UIImage *image) {
         @udStrongify(self);
-        [self.UIManager sendImageMessage:image completion:^(UMCMessage *message) {
-            [self updateSendCompletedMessage:message];
-        }];
+        [self sendImageMessageWithImage:image];
     };
 }
 
 //发送文本消息，包括系统的表情
 - (void)inputBar:(UMCInputBar *)inputBar didSendText:(NSString *)text {
     
-    if ([UMCHelper isBlankString:text]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:UMCLocalizedString(@"udesk_no_send_empty") preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:UMCLocalizedString(@"udesk_cancel") style:UIAlertActionStyleCancel handler:nil]];
-        [self presentViewController:alert animated:YES completion:nil];
-        return;
-    }
-    [self.UIManager sendTextMessage:text completion:^(UMCMessage *message) {
-        [self updateSendCompletedMessage:message];
-    }];
+    [self sendTextMessageWithContent:text];
 }
 
 //显示表情
@@ -326,6 +327,25 @@ static CGFloat const InputBarHeight = 80.0f;
     }];
 }
 
+//点击商品消息
+- (void)didTapGoodsMessageCell:(UITableViewCell *)cell goodsURL:(NSString *)goodsURL goodsId:(NSString *)goodsId {
+    
+    if (self.sdkConfig.clickGoodsBlock) {
+        self.sdkConfig.clickGoodsBlock(self,goodsURL,goodsId);
+        return;
+    }
+    
+    //跳转浏览器展示
+    if (!goodsURL || goodsURL == (id)kCFNull) return ;
+    if (![goodsURL isKindOfClass:[NSString class]]) return ;
+    if (goodsURL.length > 0) {
+        if ([goodsURL rangeOfString:@"://"].location == NSNotFound) {
+            goodsURL = [NSString stringWithFormat:@"http://%@",goodsURL];
+        }
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:goodsURL]];
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -374,11 +394,7 @@ static CGFloat const InputBarHeight = 80.0f;
 //完成录音
 - (void)finishRecordedWithVoicePath:(NSString *)voicePath withAudioDuration:(NSString *)duration {
     
-    @udWeakify(self);
-    [self.UIManager sendVoiceMessage:voicePath voiceDuration:duration completion:^(UMCMessage *message) {
-        @udStrongify(self);
-        [self updateSendCompletedMessage:message];
-    }];
+    [self sendVoiceMessageWithVoicePath:voicePath voiceDuration:duration];
 }
 
 //录音时间太短
@@ -421,7 +437,7 @@ static CGFloat const InputBarHeight = 80.0f;
 //点击表情面板的发送按钮
 - (void)didEmotionViewSendAction {
     
-    [self inputBar:self.inputBar didSendText:self.inputBar.inputTextView.text];
+    [self sendTextMessageWithContent:self.inputBar.inputTextView.text];
     self.inputBar.inputTextView.text = @"";
 }
 
@@ -438,7 +454,7 @@ static CGFloat const InputBarHeight = 80.0f;
         if (!transition.toVisible && kUMCIsIPhoneX) {
             self.inputBar.umcBottom -= 34;
         }
-        self.imTableView.umcTop = _sdkConfig.product?self.productView.umcBottom:0;
+        self.imTableView.umcTop = self.sdkConfig.product?self.productView.umcBottom:0;
         self.imTableView.contentInset = UIEdgeInsetsMake(0, 0, self.view.umcHeight - CGRectGetMinY(self.inputBar.frame), 0);
         if (transition.toVisible) {
             [self.imTableView scrollToBottomAnimated:NO];
@@ -462,6 +478,62 @@ static CGFloat const InputBarHeight = 80.0f;
         _imagePicker = [[UMCImagePicker alloc] init];
     }
     return _imagePicker;
+}
+
+#pragma mark - 发送文字
+- (void)sendTextMessageWithContent:(NSString *)content {
+    if (!content || content == (id)kCFNull) return ;
+    
+    if ([UMCHelper isBlankString:content]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:UMCLocalizedString(@"udesk_no_send_empty") preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:UMCLocalizedString(@"udesk_cancel") style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+    [self.UIManager sendTextMessage:content completion:^(UMCMessage *message) {
+        [self updateSendCompletedMessage:message];
+    }];
+}
+
+#pragma mark - 发送图片
+- (void)sendImageMessageWithImage:(UIImage *)image {
+    if (!image || image == (id)kCFNull) return ;
+    
+    [self.UIManager sendImageMessage:image completion:^(UMCMessage *message) {
+        [self updateSendCompletedMessage:message];
+    }];
+}
+
+//发送GIF图片
+- (void)sendGIFMessageWithGIFData:(NSData *)gifData {
+    if (!gifData || gifData == (id)kCFNull) return ;
+    
+    [self.UIManager sendGIFImageMessage:gifData completion:^(UMCMessage *message) {
+        [self updateSendCompletedMessage:message];
+    }];
+}
+
+#pragma mark - 发送语音
+- (void)sendVoiceMessageWithVoicePath:(NSString *)voicePath voiceDuration:(NSString *)voiceDuration {
+    if (!voicePath || voicePath == (id)kCFNull) return ;
+    if (!voiceDuration || voiceDuration == (id)kCFNull) return ;
+    
+    @udWeakify(self);
+    [self.UIManager sendVoiceMessage:voicePath voiceDuration:voiceDuration completion:^(UMCMessage *message) {
+        @udStrongify(self);
+        [self updateSendCompletedMessage:message];
+    }];
+}
+
+#pragma mark - 发送商品信息
+- (void)sendGoodsMessageWithModel:(UMCGoodsModel *)goodsModel {
+    if (!goodsModel || goodsModel == (id)kCFNull) return ;
+    
+    @udWeakify(self);
+    [self.UIManager sendGoodsMessage:goodsModel completion:^(UMCMessage *message) {
+        @udStrongify(self);
+        [self updateSendCompletedMessage:message];
+    }];
 }
 
 #pragma mark - 消息发送完成回调
@@ -535,6 +607,7 @@ static CGFloat const InputBarHeight = 80.0f;
         self.sdkConfig.leaveChatViewController();
     }
     
+    [_sdkConfig setConfigToDefault];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

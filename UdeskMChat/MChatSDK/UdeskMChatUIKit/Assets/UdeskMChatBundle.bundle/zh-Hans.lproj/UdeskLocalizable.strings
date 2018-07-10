@@ -69,5 +69,6 @@
 "udesk_rollback" = "撤回了一条消息";
 "udesk_last_image" = "[图片]";
 "udesk_last_voice" = "[语音]";
+"udesk_last_goods" = "[商品消息]";
 "udesk_location" = "位置";
 "udesk_delete" = "删除";

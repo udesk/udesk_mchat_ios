@@ -10,6 +10,8 @@
 #import <UdeskMChatSDK/UdeskMChatSDK.h>
 #import "UMCSDKConfig.h"
 
+@class UMCGoodsModel;
+
 @interface UMCIMManager : NSObject
 
 //消息数组
@@ -54,6 +56,9 @@
 - (void)sendVoiceMessage:(NSString *)voicePath
            voiceDuration:(NSString *)voiceDuration
               completion:(void(^)(UMCMessage *message))completion;
+
+/** 发送商品消息 */
+- (void)sendGoodsMessage:(UMCGoodsModel *)goodsModel completion:(void(^)(UMCMessage *message))completion;
 
 //更新缓存
 - (void)updateCache:(UMCMessage *)oldMessage newMessage:(UMCMessage *)newMessage;

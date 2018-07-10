@@ -47,6 +47,10 @@
         self.textViewColor = [UIColor whiteColor];
         self.messageContentFont = [UIFont systemFontOfSize:16];
         self.messageTimeFont = [UIFont systemFontOfSize:12];
+        self.linkColor = [UIColor blueColor];
+        self.activeLinkColor = [UIColor redColor];
+        self.goodsNameFont = [UIFont boldSystemFontOfSize:14];
+        self.goodsNameTextColor = [UIColor whiteColor];
         
         //nav
         self.navBackButtonColor = [UIColor umcColorWithHexString:@"#007AFF"];

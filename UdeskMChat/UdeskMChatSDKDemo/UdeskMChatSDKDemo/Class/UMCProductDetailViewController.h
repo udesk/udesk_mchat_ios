@@ -1,5 +1,5 @@
 //
-//  UMCDemoProductViewController.h
+//  UMCProductDetailViewController.h
 //  UdeskMChatExample
 //
 //  Created by xuchen on 2017/10/28.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UMCDemoProductViewController : UIViewController
+@interface UMCProductDetailViewController : UIViewController
 
 @end

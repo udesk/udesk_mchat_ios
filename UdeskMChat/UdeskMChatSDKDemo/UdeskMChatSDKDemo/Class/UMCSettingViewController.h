@@ -1,13 +1,13 @@
 //
 //  UMCSettingViewController.h
-//  UdeskMChatSDKDemo
+//  UdeskMChatExample
 //
-//  Created by xuchen on 2017/12/22.
+//  Created by xuchen on 2017/12/21.
 //  Copyright © 2017年 Udesk. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface UMCSettingViewController : UIViewController
+@interface UMCSettingViewController : UITableViewController
 
 @end

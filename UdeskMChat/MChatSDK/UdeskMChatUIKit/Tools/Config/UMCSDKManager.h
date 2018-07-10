@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "UMCSDKConfig.h"
+#import "UMCIMViewController.h"
 
 @interface UMCSDKManager : NSObject
 
@@ -28,8 +29,5 @@
  */
 - (void)pushUdeskInViewController:(UIViewController *)viewController
                        completion:(void (^)(void))completion;
-
-//做清除缓存数据操作
-- (void)cleanSDKConfigData;
 
 @end

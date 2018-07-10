@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		42CAF94B86166B78E5F72823 /* Pods_UdeskMChatSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 133D7E26C56DF244B55DF6FC /* Pods_UdeskMChatSDKDemo.framework */; };
 		440A89B31FC40914006B0EC5 /* UMCProductView.m in Sources */ = {isa = PBXBuildFile; fileRef = 440A89B21FC40913006B0EC5 /* UMCProductView.m */; };
-		4445AD0E1FECAAC400E94438 /* UMCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4445AD0D1FECAAC400E94438 /* UMCSettingViewController.m */; };
 		44474ECA206B3EAB00306E7E /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 449982DF2069DC90002BAAA9 /* libxml2.tbd */; };
+		44474ECB206B570F00306E7E /* UdeskMChatSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 449982DD2069DC6E002BAAA9 /* UdeskMChatSDK.framework */; };
 		444BB9B01FB4397D0013F3DF /* UdeskMChatBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444BB8D11FB4397D0013F3DF /* UdeskMChatBundle.bundle */; };
 		444BB9B11FB4397D0013F3DF /* UMCIMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8D51FB4397D0013F3DF /* UMCIMViewController.m */; };
 		444BB9B21FB4397D0013F3DF /* UMCIMDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB8D91FB4397D0013F3DF /* UMCIMDataSource.m */; };
@@ -96,8 +96,6 @@
 		444BBA071FB4397E0013F3DF /* YYMemoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9AA1FB4397D0013F3DF /* YYMemoryCache.m */; };
 		444BBA081FB4397E0013F3DF /* YYKeyboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9AD1FB4397D0013F3DF /* YYKeyboardManager.m */; };
 		449982E12069DE58002BAAA9 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 44A8D8AB1FB42FF400CBD7F5 /* libresolv.tbd */; };
-		449982E82069EA57002BAAA9 /* UdeskMChatSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 449982DD2069DC6E002BAAA9 /* UdeskMChatSDK.framework */; };
-		449982E92069EA57002BAAA9 /* UdeskMChatSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 449982DD2069DC6E002BAAA9 /* UdeskMChatSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		449DB3901FD94C2100A98F81 /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB38B1FD94C2000A98F81 /* FLAnimatedImage.m */; };
 		449DB3911FD94C2100A98F81 /* FLAnimatedImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB38D1FD94C2000A98F81 /* FLAnimatedImageView+WebCache.m */; };
 		449DB3921FD94C2100A98F81 /* FLAnimatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB38F1FD94C2000A98F81 /* FLAnimatedImageView.m */; };
@@ -107,25 +105,20 @@
 		44A8D4D11FB42A2700CBD7F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44A8D4D01FB42A2700CBD7F5 /* Assets.xcassets */; };
 		44A8D4D41FB42A2700CBD7F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44A8D4D21FB42A2700CBD7F5 /* LaunchScreen.storyboard */; };
 		44A8D4D71FB42A2700CBD7F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A8D4D61FB42A2700CBD7F5 /* main.m */; };
-		44A8D8971FB42B0500CBD7F5 /* UMCDemoHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A8D8911FB42B0500CBD7F5 /* UMCDemoHomeViewController.m */; };
-		44A8D8981FB42B0500CBD7F5 /* UMCDemoMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A8D8921FB42B0500CBD7F5 /* UMCDemoMessageViewController.m */; };
-		44A8D8991FB42B0500CBD7F5 /* UMCDemoProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A8D8961FB42B0500CBD7F5 /* UMCDemoProductViewController.m */; };
+		44B1A46820F48FD40031913A /* UMCHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A45A20F48FD30031913A /* UMCHomeViewController.m */; };
+		44B1A46920F48FD40031913A /* UMCProductDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A45C20F48FD30031913A /* UMCProductDetailViewController.m */; };
+		44B1A46A20F48FD40031913A /* UMCSessionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A45F20F48FD30031913A /* UMCSessionListViewController.m */; };
+		44B1A46B20F48FD40031913A /* UMCGoodsMessageTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A46320F48FD30031913A /* UMCGoodsMessageTestViewController.m */; };
+		44B1A46C20F48FD40031913A /* UMCOrderTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A46520F48FD30031913A /* UMCOrderTestViewController.m */; };
+		44B1A46D20F48FD40031913A /* UMCCustomButtonTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A46620F48FD30031913A /* UMCCustomButtonTableViewController.m */; };
+		44B1A46E20F48FD40031913A /* UMCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A46720F48FD30031913A /* UMCSettingViewController.m */; };
+		44B1A47120F4901A0031913A /* UMCGoodsMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A46F20F490190031913A /* UMCGoodsMessage.m */; };
+		44B1A47420F490240031913A /* UMCGoodsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A47220F490240031913A /* UMCGoodsCell.m */; };
+		44B1A47720F4908D0031913A /* UMCCustomButtonConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A47520F4908C0031913A /* UMCCustomButtonConfig.m */; };
+		44B1A47E20F492F80031913A /* NSObject+UMC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A47D20F492F80031913A /* NSObject+UMC.m */; };
+		44B1A48120F493690031913A /* UMCCustomToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A48020F493690031913A /* UMCCustomToolBar.m */; };
 		44D0EB4C1FF0936600712814 /* UMCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D0EB4B1FF0936600712814 /* UMCButton.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		449982EA2069EA57002BAAA9 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				449982E92069EA57002BAAA9 /* UdeskMChatSDK.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		133D7E26C56DF244B55DF6FC /* Pods_UdeskMChatSDKDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UdeskMChatSDKDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,8 +126,6 @@
 		3B79B23507315B84E59A78B9 /* Pods-UdeskMChatSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UdeskMChatSDKDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UdeskMChatSDKDemo/Pods-UdeskMChatSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		440A89B11FC40913006B0EC5 /* UMCProductView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCProductView.h; sourceTree = "<group>"; };
 		440A89B21FC40913006B0EC5 /* UMCProductView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCProductView.m; sourceTree = "<group>"; };
-		4445AD0C1FECAAC400E94438 /* UMCSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UMCSettingViewController.h; sourceTree = "<group>"; };
-		4445AD0D1FECAAC400E94438 /* UMCSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UMCSettingViewController.m; sourceTree = "<group>"; };
 		444BB8D11FB4397D0013F3DF /* UdeskMChatBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UdeskMChatBundle.bundle; sourceTree = "<group>"; };
 		444BB8D41FB4397D0013F3DF /* UMCIMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCIMViewController.h; sourceTree = "<group>"; };
 		444BB8D51FB4397D0013F3DF /* UMCIMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCIMViewController.m; sourceTree = "<group>"; };
@@ -323,15 +314,32 @@
 		44A8D4D31FB42A2700CBD7F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		44A8D4D51FB42A2700CBD7F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		44A8D4D61FB42A2700CBD7F5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		44A8D8911FB42B0500CBD7F5 /* UMCDemoHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCDemoHomeViewController.m; sourceTree = "<group>"; };
-		44A8D8921FB42B0500CBD7F5 /* UMCDemoMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCDemoMessageViewController.m; sourceTree = "<group>"; };
-		44A8D8931FB42B0500CBD7F5 /* UMCDemoHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCDemoHomeViewController.h; sourceTree = "<group>"; };
-		44A8D8941FB42B0500CBD7F5 /* UMCDemoMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCDemoMessageViewController.h; sourceTree = "<group>"; };
-		44A8D8951FB42B0500CBD7F5 /* UMCDemoProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCDemoProductViewController.h; sourceTree = "<group>"; };
-		44A8D8961FB42B0500CBD7F5 /* UMCDemoProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCDemoProductViewController.m; sourceTree = "<group>"; };
 		44A8D8AB1FB42FF400CBD7F5 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		44A8D8AD1FB4302800CBD7F5 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		44AFA3D21FB43213003A9BA5 /* UdeskMChatSDKDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UdeskMChatSDKDemo.entitlements; sourceTree = "<group>"; };
+		44B1A45A20F48FD30031913A /* UMCHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCHomeViewController.m; sourceTree = "<group>"; };
+		44B1A45B20F48FD30031913A /* UMCGoodsMessageTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCGoodsMessageTestViewController.h; sourceTree = "<group>"; };
+		44B1A45C20F48FD30031913A /* UMCProductDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCProductDetailViewController.m; sourceTree = "<group>"; };
+		44B1A45D20F48FD30031913A /* UMCCustomButtonTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCCustomButtonTableViewController.h; sourceTree = "<group>"; };
+		44B1A45E20F48FD30031913A /* UMCOrderTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCOrderTestViewController.h; sourceTree = "<group>"; };
+		44B1A45F20F48FD30031913A /* UMCSessionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCSessionListViewController.m; sourceTree = "<group>"; };
+		44B1A46020F48FD30031913A /* UMCSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCSettingViewController.h; sourceTree = "<group>"; };
+		44B1A46120F48FD30031913A /* UMCHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCHomeViewController.h; sourceTree = "<group>"; };
+		44B1A46220F48FD30031913A /* UMCProductDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCProductDetailViewController.h; sourceTree = "<group>"; };
+		44B1A46320F48FD30031913A /* UMCGoodsMessageTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCGoodsMessageTestViewController.m; sourceTree = "<group>"; };
+		44B1A46420F48FD30031913A /* UMCSessionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCSessionListViewController.h; sourceTree = "<group>"; };
+		44B1A46520F48FD30031913A /* UMCOrderTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCOrderTestViewController.m; sourceTree = "<group>"; };
+		44B1A46620F48FD30031913A /* UMCCustomButtonTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCCustomButtonTableViewController.m; sourceTree = "<group>"; };
+		44B1A46720F48FD30031913A /* UMCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCSettingViewController.m; sourceTree = "<group>"; };
+		44B1A46F20F490190031913A /* UMCGoodsMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCGoodsMessage.m; sourceTree = "<group>"; };
+		44B1A47020F4901A0031913A /* UMCGoodsMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCGoodsMessage.h; sourceTree = "<group>"; };
+		44B1A47220F490240031913A /* UMCGoodsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCGoodsCell.m; sourceTree = "<group>"; };
+		44B1A47320F490240031913A /* UMCGoodsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCGoodsCell.h; sourceTree = "<group>"; };
+		44B1A47520F4908C0031913A /* UMCCustomButtonConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCCustomButtonConfig.m; sourceTree = "<group>"; };
+		44B1A47620F4908D0031913A /* UMCCustomButtonConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCCustomButtonConfig.h; sourceTree = "<group>"; };
+		44B1A47C20F492F80031913A /* NSObject+UMC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+UMC.h"; sourceTree = "<group>"; };
+		44B1A47D20F492F80031913A /* NSObject+UMC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+UMC.m"; sourceTree = "<group>"; };
+		44B1A47F20F493690031913A /* UMCCustomToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCCustomToolBar.h; sourceTree = "<group>"; };
+		44B1A48020F493690031913A /* UMCCustomToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCCustomToolBar.m; sourceTree = "<group>"; };
 		44D0EB4A1FF0936600712814 /* UMCButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UMCButton.h; sourceTree = "<group>"; };
 		44D0EB4B1FF0936600712814 /* UMCButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UMCButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -341,8 +349,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44474ECB206B570F00306E7E /* UdeskMChatSDK.framework in Frameworks */,
 				44474ECA206B3EAB00306E7E /* libxml2.tbd in Frameworks */,
-				449982E82069EA57002BAAA9 /* UdeskMChatSDK.framework in Frameworks */,
 				449982E12069DE58002BAAA9 /* libresolv.tbd in Frameworks */,
 				42CAF94B86166B78E5F72823 /* Pods_UdeskMChatSDKDemo.framework in Frameworks */,
 			);
@@ -440,6 +448,8 @@
 		444BB8DD1FB4397D0013F3DF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				44B1A47020F4901A0031913A /* UMCGoodsMessage.h */,
+				44B1A46F20F490190031913A /* UMCGoodsMessage.m */,
 				444BB8DE1FB4397D0013F3DF /* UMCBaseMessage.h */,
 				444BB8DF1FB4397D0013F3DF /* UMCBaseMessage.m */,
 				444BB8E01FB4397D0013F3DF /* UMCEventMessage.h */,
@@ -481,6 +491,8 @@
 				444BB8F51FB4397D0013F3DF /* UMCTextCell.m */,
 				444BB8F61FB4397D0013F3DF /* UMCVoiceCell.h */,
 				444BB8F71FB4397D0013F3DF /* UMCVoiceCell.m */,
+				44B1A47320F490240031913A /* UMCGoodsCell.h */,
+				44B1A47220F490240031913A /* UMCGoodsCell.m */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -497,6 +509,8 @@
 		444BB8FB1FB4397D0013F3DF /* Input */ = {
 			isa = PBXGroup;
 			children = (
+				44B1A47F20F493690031913A /* UMCCustomToolBar.h */,
+				44B1A48020F493690031913A /* UMCCustomToolBar.m */,
 				444BB8FC1FB4397D0013F3DF /* UMCInputBar.h */,
 				444BB8FD1FB4397D0013F3DF /* UMCInputBar.m */,
 			);
@@ -638,6 +652,7 @@
 		444BB9271FB4397D0013F3DF /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				44B1A47820F492CE0031913A /* NSObject */,
 				444BB9281FB4397D0013F3DF /* Message */,
 				444BB92B1FB4397D0013F3DF /* NSDate */,
 				444BB92E1FB4397D0013F3DF /* NSString */,
@@ -717,6 +732,8 @@
 				444BB9441FB4397D0013F3DF /* UMCSDKShow.m */,
 				444BB9451FB4397D0013F3DF /* UMCSDKStyle.h */,
 				444BB9461FB4397D0013F3DF /* UMCSDKStyle.m */,
+				44B1A47620F4908D0031913A /* UMCCustomButtonConfig.h */,
+				44B1A47520F4908C0031913A /* UMCCustomButtonConfig.m */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -921,20 +938,12 @@
 		44A8D4C61FB42A2700CBD7F5 /* UdeskMChatSDKDemo */ = {
 			isa = PBXGroup;
 			children = (
-				44AFA3D21FB43213003A9BA5 /* UdeskMChatSDKDemo.entitlements */,
 				444BB8CD1FB4397D0013F3DF /* MChatSDK */,
 				44A8D4C71FB42A2700CBD7F5 /* AppDelegate.h */,
 				44A8D4C81FB42A2700CBD7F5 /* AppDelegate.m */,
 				44A8D4CA1FB42A2700CBD7F5 /* ViewController.h */,
 				44A8D4CB1FB42A2700CBD7F5 /* ViewController.m */,
-				44A8D8931FB42B0500CBD7F5 /* UMCDemoHomeViewController.h */,
-				44A8D8911FB42B0500CBD7F5 /* UMCDemoHomeViewController.m */,
-				44A8D8941FB42B0500CBD7F5 /* UMCDemoMessageViewController.h */,
-				44A8D8921FB42B0500CBD7F5 /* UMCDemoMessageViewController.m */,
-				44A8D8951FB42B0500CBD7F5 /* UMCDemoProductViewController.h */,
-				44A8D8961FB42B0500CBD7F5 /* UMCDemoProductViewController.m */,
-				4445AD0C1FECAAC400E94438 /* UMCSettingViewController.h */,
-				4445AD0D1FECAAC400E94438 /* UMCSettingViewController.m */,
+				44B1A45920F48FD30031913A /* Class */,
 				44A8D4CD1FB42A2700CBD7F5 /* Main.storyboard */,
 				44A8D4D01FB42A2700CBD7F5 /* Assets.xcassets */,
 				44A8D4D21FB42A2700CBD7F5 /* LaunchScreen.storyboard */,
@@ -953,6 +962,36 @@
 				133D7E26C56DF244B55DF6FC /* Pods_UdeskMChatSDKDemo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		44B1A45920F48FD30031913A /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				44B1A45D20F48FD30031913A /* UMCCustomButtonTableViewController.h */,
+				44B1A46620F48FD30031913A /* UMCCustomButtonTableViewController.m */,
+				44B1A45B20F48FD30031913A /* UMCGoodsMessageTestViewController.h */,
+				44B1A46320F48FD30031913A /* UMCGoodsMessageTestViewController.m */,
+				44B1A46120F48FD30031913A /* UMCHomeViewController.h */,
+				44B1A45A20F48FD30031913A /* UMCHomeViewController.m */,
+				44B1A45E20F48FD30031913A /* UMCOrderTestViewController.h */,
+				44B1A46520F48FD30031913A /* UMCOrderTestViewController.m */,
+				44B1A46220F48FD30031913A /* UMCProductDetailViewController.h */,
+				44B1A45C20F48FD30031913A /* UMCProductDetailViewController.m */,
+				44B1A46420F48FD30031913A /* UMCSessionListViewController.h */,
+				44B1A45F20F48FD30031913A /* UMCSessionListViewController.m */,
+				44B1A46020F48FD30031913A /* UMCSettingViewController.h */,
+				44B1A46720F48FD30031913A /* UMCSettingViewController.m */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
+		44B1A47820F492CE0031913A /* NSObject */ = {
+			isa = PBXGroup;
+			children = (
+				44B1A47C20F492F80031913A /* NSObject+UMC.h */,
+				44B1A47D20F492F80031913A /* NSObject+UMC.m */,
+			);
+			path = NSObject;
 			sourceTree = "<group>";
 		};
 		51E3F7CC40BF07C6AF5CF9DD /* Pods */ = {
@@ -977,7 +1016,6 @@
 				44A8D4C21FB42A2700CBD7F5 /* Resources */,
 				BE95B6323E5F2CBA4FC05050 /* [CP] Embed Pods Frameworks */,
 				67DB1DA30A482BE51422FE2D /* [CP] Copy Pods Resources */,
-				449982EA2069EA57002BAAA9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1102,10 +1140,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44B1A46E20F48FD40031913A /* UMCSettingViewController.m in Sources */,
+				44B1A46A20F48FD40031913A /* UMCSessionListViewController.m in Sources */,
 				444BB9D51FB4397D0013F3DF /* UIImage+UMC.m in Sources */,
-				4445AD0E1FECAAC400E94438 /* UMCSettingViewController.m in Sources */,
 				444BB9F71FB4397D0013F3DF /* SDWebImageManager.m in Sources */,
 				444BB9E11FB4397D0013F3DF /* UMCMenuHelper.m in Sources */,
+				44B1A46C20F48FD40031913A /* UMCOrderTestViewController.m in Sources */,
 				444BB9F81FB4397D0013F3DF /* SDWebImagePrefetcher.m in Sources */,
 				444BBA021FB4397E0013F3DF /* UIView+WebCacheOperation.m in Sources */,
 				444BB9C61FB4397D0013F3DF /* UMCVoiceRecordView.m in Sources */,
@@ -1119,6 +1159,8 @@
 				444BB9D71FB4397D0013F3DF /* UMCLanguageTool.m in Sources */,
 				444BBA041FB4397E0013F3DF /* YYCache.m in Sources */,
 				444BB9DC1FB4397D0013F3DF /* UMCAudioPlayerHelper.m in Sources */,
+				44B1A47E20F492F80031913A /* NSObject+UMC.m in Sources */,
+				44B1A46D20F48FD40031913A /* UMCCustomButtonTableViewController.m in Sources */,
 				444BB9EC1FB4397D0013F3DF /* NSData+ImageContentType.m in Sources */,
 				444BB9B61FB4397D0013F3DF /* UMCImageMessage.m in Sources */,
 				444BB9FC1FB4397E0013F3DF /* UIImage+GIF.m in Sources */,
@@ -1129,6 +1171,7 @@
 				449DB3901FD94C2100A98F81 /* FLAnimatedImage.m in Sources */,
 				444BBA011FB4397E0013F3DF /* UIView+WebCache.m in Sources */,
 				444BBA081FB4397E0013F3DF /* YYKeyboardManager.m in Sources */,
+				44B1A47420F490240031913A /* UMCGoodsCell.m in Sources */,
 				44A8D4CC1FB42A2700CBD7F5 /* ViewController.m in Sources */,
 				444BB9C41FB4397D0013F3DF /* UMCVoiceRecordHelper.m in Sources */,
 				444BB9B91FB4397D0013F3DF /* UMCVoiceMessage.m in Sources */,
@@ -1147,6 +1190,7 @@
 				449DB3921FD94C2100A98F81 /* FLAnimatedImageView.m in Sources */,
 				444BB9B31FB4397D0013F3DF /* UMCIMManager.m in Sources */,
 				444BB9DE1FB4397D0013F3DF /* UMCHelper.m in Sources */,
+				44B1A47720F4908D0031913A /* UMCCustomButtonConfig.m in Sources */,
 				444BB9ED1FB4397D0013F3DF /* NSImage+WebCache.m in Sources */,
 				444BB9FA1FB4397E0013F3DF /* UIButton+WebCache.m in Sources */,
 				444BB9C11FB4397D0013F3DF /* UMCInputBar.m in Sources */,
@@ -1156,15 +1200,14 @@
 				444BB9BA1FB4397D0013F3DF /* UMCBaseCell.m in Sources */,
 				444BB9D91FB4397D0013F3DF /* UMCSDKManager.m in Sources */,
 				440A89B31FC40914006B0EC5 /* UMCProductView.m in Sources */,
+				44B1A47120F4901A0031913A /* UMCGoodsMessage.m in Sources */,
 				444BB9C71FB4397D0013F3DF /* UMCIMTableView.m in Sources */,
 				444BB9EF1FB4397D0013F3DF /* SDImageCacheConfig.m in Sources */,
 				444BB9B21FB4397D0013F3DF /* UMCIMDataSource.m in Sources */,
 				444BB9FD1FB4397E0013F3DF /* UIImage+MultiFormat.m in Sources */,
 				44D0EB4C1FF0936600712814 /* UMCButton.m in Sources */,
-				44A8D8991FB42B0500CBD7F5 /* UMCDemoProductViewController.m in Sources */,
 				444BB9F01FB4397D0013F3DF /* SDWebImageCoder.m in Sources */,
 				444BB9B51FB4397D0013F3DF /* UMCEventMessage.m in Sources */,
-				44A8D8981FB42B0500CBD7F5 /* UMCDemoMessageViewController.m in Sources */,
 				444BB9BC1FB4397D0013F3DF /* UMCImageCell.m in Sources */,
 				444BB9E01FB4397D0013F3DF /* UMCInputBarHelper.m in Sources */,
 				444BB9E71FB4397D0013F3DF /* UdeskPhotoView.m in Sources */,
@@ -1177,23 +1220,26 @@
 				44A8D4C91FB42A2700CBD7F5 /* AppDelegate.m in Sources */,
 				444BB9CC1FB4397D0013F3DF /* UMCMerchantsView.m in Sources */,
 				444BB9D81FB4397D0013F3DF /* UMCSDKConfig.m in Sources */,
+				44B1A46820F48FD40031913A /* UMCHomeViewController.m in Sources */,
 				444BB9E41FB4397D0013F3DF /* JSCustomBadge.m in Sources */,
 				444BB9DF1FB4397D0013F3DF /* UMCImagePicker.m in Sources */,
 				444BB9FE1FB4397E0013F3DF /* UIImage+WebP.m in Sources */,
 				444BB9FF1FB4397E0013F3DF /* UIImageView+HighlightedWebCache.m in Sources */,
 				444BB9CA1FB4397D0013F3DF /* UMCMerchantsManager.m in Sources */,
 				444BB9C01FB4397D0013F3DF /* UMCEmojiView.m in Sources */,
-				44A8D8971FB42B0500CBD7F5 /* UMCDemoHomeViewController.m in Sources */,
+				44B1A46920F48FD40031913A /* UMCProductDetailViewController.m in Sources */,
 				444BBA031FB4397E0013F3DF /* TTTAttributedLabel.m in Sources */,
 				444BB9C81FB4397D0013F3DF /* UMCTitleView.m in Sources */,
 				444BB9BB1FB4397D0013F3DF /* UMCEventCell.m in Sources */,
 				444BB9CF1FB4397D0013F3DF /* UMCTransitioningAnimation.m in Sources */,
 				444BB9F61FB4397D0013F3DF /* SDWebImageImageIOCoder.m in Sources */,
+				44B1A48120F493690031913A /* UMCCustomToolBar.m in Sources */,
 				444BB9C51FB4397D0013F3DF /* UMCVoiceRecordHUD.m in Sources */,
 				444BB9B11FB4397D0013F3DF /* UMCIMViewController.m in Sources */,
 				444BB9E61FB4397D0013F3DF /* UdeskPhotoManeger.m in Sources */,
 				444BB9EE1FB4397D0013F3DF /* SDImageCache.m in Sources */,
 				444BB9CD1FB4397D0013F3DF /* UMCAnimatorPush.m in Sources */,
+				44B1A46B20F48FD40031913A /* UMCGoodsMessageTestViewController.m in Sources */,
 				444BB9C31FB4397D0013F3DF /* UMCTimerLabel.m in Sources */,
 				444BB9C21FB4397D0013F3DF /* UMCSpectrumView.m in Sources */,
 				444BB9C91FB4397D0013F3DF /* UMCMerchantsDataSource.m in Sources */,
@@ -1331,7 +1377,7 @@
 			baseConfigurationReference = 3B79B23507315B84E59A78B9 /* Pods-UdeskMChatSDKDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = UdeskMChatSDKDemo/UdeskMChatSDKDemo.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DVNW3ZM7G9;
 				ENABLE_BITCODE = YES;
@@ -1347,7 +1393,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo/Lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.merchants;
+				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.udeskapp11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1358,7 +1404,7 @@
 			baseConfigurationReference = 2B098BEC27384749D14611A5 /* Pods-UdeskMChatSDKDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = UdeskMChatSDKDemo/UdeskMChatSDKDemo.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DVNW3ZM7G9;
 				ENABLE_BITCODE = YES;
@@ -1374,7 +1420,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo/Lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.merchants;
+				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.udeskapp11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

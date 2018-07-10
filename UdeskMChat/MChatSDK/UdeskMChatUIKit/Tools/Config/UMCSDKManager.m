@@ -26,8 +26,6 @@
     self = [super init];
     if (self) {
         
-        //清除之前的配置
-        [self cleanSDKConfigData];
         _merchantId = merchantId;
     }
     return self;
@@ -79,17 +77,6 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION object:nil userInfo:nil];
         }
     }];
-}
-
-- (void)cleanSDKConfigData {
-    
-    [UMCSDKConfig sharedConfig].customerImage = [UIImage umcDefaultCustomerImage];
-    [UMCSDKConfig sharedConfig].customerImageURL = nil;
-    [UMCSDKConfig sharedConfig].merchantImage = [UIImage umcIMMerchantAvatarImage];
-    [UMCSDKConfig sharedConfig].merchantImageURL = nil;
-    
-    [UMCSDKConfig sharedConfig].imTitle = nil;
-    [UMCSDKConfig sharedConfig].product = nil;
 }
 
 @end

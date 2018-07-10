@@ -1,20 +1,20 @@
 //
-//  UMCDemoProductViewController.m
+//  UMCProductDetailViewController.m
 //  UdeskMChatExample
 //
 //  Created by xuchen on 2017/10/28.
 //  Copyright © 2017年 Udesk. All rights reserved.
 //
 
-#import "UMCDemoProductViewController.h"
+#import "UMCProductDetailViewController.h"
 #import <UdeskMChatSDK/UdeskMChatSDK.h>
 #import "UdeskMChatUIKit.h"
 
-@interface UMCDemoProductViewController ()
+@interface UMCProductDetailViewController ()
 
 @end
 
-@implementation UMCDemoProductViewController
+@implementation UMCProductDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -34,7 +34,6 @@
         
         if (textField.text.length) {
             
-            //直接进入im咨询
             UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantId:textField.text];
             sdkManager.sdkConfig = [self getConfig];
             [sdkManager pushUdeskInViewController:self completion:nil];
@@ -54,13 +53,13 @@
     
 #warning 这里写死了单个商品的咨询对象，实际开发中可根据需求自定义
     UMCProduct *product = [[UMCProduct alloc] init];
-    product.title = @"iPhone X";
+    product.title = @"iPhone XiPhone XiPhone XXiPhone X";
     product.image = @"https://g-search3.alicdn.com/img/bao/uploaded/i4/i3/1917047079/TB1IfFybl_85uJjSZPfXXcp0FXa_!!0-item_pic.jpg_460x460Q90.jpg";
     product.url = @"http://www.apple.com/cn";
     
     UMCProductExtras *extras = [[UMCProductExtras alloc] init];
     extras.title = @"标题";
-    extras.content = @"¥9999";
+    extras.content = @"¥9999¥9999¥9999¥9999¥999999999999";
     
     product.extras = @[extras];
     
