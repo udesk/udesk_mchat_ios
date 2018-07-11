@@ -125,9 +125,67 @@ sdkManager.sdkConfig = [self getConfig];
 }
 ```
 
+### 3.商品消息
 
+```objective-c
+UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantId:@"商户ID"];
+sdkManager.sdkConfig = [self getConfig];
+[sdkManager pushUdeskInViewController:self completion:nil];
+            
+- (UMCSDKConfig *)getConfig {
+    
+    UMCSDKConfig *config = [UMCSDKConfig sharedConfig];
+    
+    UMCCustomButtonConfig *customButton = [[UMCCustomButtonConfig alloc] initWithTitle:@"自定义按钮" clickBlock:^(UMCCustomButtonConfig *customButton, UMCIMViewController *viewController){
+        
+        //点击自定义按钮回调
+        //示例里直接在回调里发送了商品消息，开发者可以根据自己需求进行修改
+        [viewController sendGoodsMessageWithModel:[self getGoodsModel]];
+    }];
+    
+    config.showCustomButtons = YES;
+    config.customButtons = @[customButton];
+    
+    UMCSDKStyle *styly = [UMCSDKStyle defaultStyle];
+    config.sdkStyle = styly;
+    
+    return config;
+}
 
-### 3.离线推送
+- (UMCGoodsModel *)getGoodsModel {
+    
+    UMCGoodsModel *goodsModel = [[UMCGoodsModel alloc] init];
+    goodsModel.goodsId = @"12";
+    goodsModel.name = @"Apple iPhone X (A1903) 64GB 深空灰色 移动联通4G手机";
+    goodsModel.url = @"https://item.jd.com/6748052.html";
+    goodsModel.imgUrl = @"http://img12.360buyimg.com/n1/s450x450_jfs/t10675/253/1344769770/66891/92d54ca4/59df2e7fN86c99a27.jpg";
+    
+    UMCGoodsParamModel *paramModel1 = [UMCGoodsParamModel new];
+    paramModel1.text = @"￥6999.00";
+    paramModel1.color = @"#FF0000";
+    paramModel1.fold = @(1);
+    paramModel1.udBreak = @(1);
+    paramModel1.size = @(14);
+    
+    UMCGoodsParamModel *paramModel2 = [UMCGoodsParamModel new];
+    paramModel2.text = @"满1999元另加30元";
+    paramModel2.color = @"#c2fcc3";
+    paramModel2.fold = @(1);
+    paramModel2.size = @(12);
+    
+    UMCGoodsParamModel *paramModel3 = [UMCGoodsParamModel new];
+    paramModel3.text = @"但是我会先提价100";
+    paramModel3.color = @"#ffffff";
+    paramModel3.fold = @(1);
+    paramModel3.size = @(20);
+    
+    goodsModel.params = @[paramModel1,paramModel2,paramModel3];
+    
+    return goodsModel;
+}
+```
+
+### 4.离线推送
 
 ```objective-c
 //App 进入后台时，关闭Udesk推送
@@ -155,7 +213,7 @@ sdkManager.sdkConfig = [self getConfig];
 }
 ```
 
-### 4.接口说明
+### 5.接口说明
 
 ##### 1.接受消息代理
 
