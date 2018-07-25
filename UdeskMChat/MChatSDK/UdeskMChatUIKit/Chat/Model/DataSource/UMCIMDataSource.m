@@ -19,6 +19,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    if (self.messagesArray.count <= indexPath.row) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"errorCellWithIdentifier"];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"errorCellWithIdentifier"];
+        }
+        return cell;
+    }
+    
     id message = self.messagesArray[indexPath.row];
     
     NSString *messageModelName = NSStringFromClass([message class]);

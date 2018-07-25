@@ -15,6 +15,7 @@
 #import "UMCGoodsMessage.h"
 #import "NSDate+UMC.h"
 #import "UMCHelper.h"
+#import "UMCImageHelper.h"
 
 #import "SDWebImageManager.h"
 #import "YYCache.h"
@@ -86,8 +87,13 @@
 
 - (void)serverMessages:(void (^)(void))completion {
     
+    NSString *messageUUID;
     NSArray *array = [self.messagesArray valueForKey:@"messageId"];
-    [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:array.firstObject completion:^(NSArray<UMCMessage *> *merchantsArray) {
+    if (array && array.count>0) {
+        messageUUID = array.firstObject;
+    }
+    
+    [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:messageUUID completion:^(NSArray<UMCMessage *> *merchantsArray) {
         self.hasMore = merchantsArray.count;
         [self appendServerMessages:merchantsArray];
     }];
@@ -107,7 +113,7 @@
     
     UMCMessage *message = [[UMCMessage alloc] initWithImage:image];
     
-    NSData *data = UIImageJPEGRepresentation(image, 0.5);
+    NSData *data = [UMCImageHelper imageWithOriginalImage:[UMCImageHelper fixOrientation:image] quality:0.5];
     [self createMediaMessage:message mediaData:data completion:completion];
 }
 

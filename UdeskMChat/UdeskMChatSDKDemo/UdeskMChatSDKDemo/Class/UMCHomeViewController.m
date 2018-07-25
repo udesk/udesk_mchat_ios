@@ -12,25 +12,11 @@
 #import "UMCSessionListViewController.h"
 #import <CommonCrypto/CommonDigest.h>
 
-//static NSString *const uuid = @"75a27920-c678-4629-bbc6-2a3f39faac1c";
-//static NSString *const key = @"e39814da1893eae6d10af5e80ecad4c7";
-
 static NSString *const uuid = @"c6042aa7-a1b2-4594-aed8-bf15b547627f";
 static NSString *const key = @"240858ffb00b1c814259a6569393bf4e";
 
-//static NSString *const uuid = @"fa969522-e0ee-4877-8d05-d36e0cfa8b32";
-//static NSString *const key = @"89ea66809edb54ecc9ee0aeea14e2f26";
-
-//static NSString *const uuid = @"a04d138d-98fb-4b9d-b2a7-478b7c0c1ce9";
-//static NSString *const key = @"fb5579f28aae95b083cc9b2da657980d";
-
-//static NSString *const euid = @"lixuegang1231231223";
-//static NSString *const name = @"李雪刚2";
-//static NSString *const euid = @"xuchen1222223321";
-//static NSString *const name = @"许晨3";
-
-static NSString *euid = @"lilinqiantest123456";
-static NSString *name = @"lilinqian";
+static NSString *euid = @"testMchatEuid";
+static NSString *name = @"testMchatName";
 
 
 @interface UMCHomeViewController ()<UMCMessageDelegate>
@@ -52,7 +38,7 @@ static NSString *name = @"lilinqian";
     
     system.UUID = uuid;
     system.timestamp = [NSString stringWithFormat:@"%.f",s];
-    system.sign = [self sha1:sha1];;
+    system.sign = [self sha1:sha1];
     
     UMCCustomer *customer = [UMCCustomer new];
     customer.euid = euid;
@@ -108,7 +94,7 @@ static NSString *name = @"lilinqian";
 
 - (void)didReceiveMessage:(UMCMessage *)message {
     
-    NSLog(@"11111:%@",message.content);
+    NSLog(@"收到：%@",message.content);
 }
 
 - (void)didReceiveMemoryWarning {

@@ -232,7 +232,11 @@ static CGFloat const InputBarHeight = 80.0f;
 #pragma mark - @protocol TableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UMCBaseMessage *message = self.UIManager.messagesArray[indexPath.row];
+    if (self.dataSource.messagesArray.count <= indexPath.row) {
+        return 0;
+    }
+    
+    UMCBaseMessage *message = self.dataSource.messagesArray[indexPath.row];
     return message ? message.cellHeight : 0;
 }
 
@@ -300,7 +304,7 @@ static CGFloat const InputBarHeight = 80.0f;
     //更新消息内容
     dispatch_async(dispatch_get_main_queue(), ^{
         //是否需要下拉刷新
-        self.dataSource.messagesArray = self.UIManager.messagesArray;
+        self.dataSource.messagesArray = [self.UIManager.messagesArray copy];
         [self.imTableView finishLoadingMoreMessages:self.UIManager.hasMore];
         [self.imTableView reloadData];
     });
@@ -545,7 +549,7 @@ static CGFloat const InputBarHeight = 80.0f;
         self.UpdateLastMessageBlock(message);
     }
     
-    NSArray *array = [self.UIManager.messagesArray valueForKey:@"messageId"];
+    NSArray *array = [self.dataSource.messagesArray valueForKey:@"messageId"];
     if ([array containsObject:message.UUID]) {
         [self didUpdateCellModelWithIndexPath:[NSIndexPath indexPathForRow:[array indexOfObject:message.UUID] inSection:0]];
     }

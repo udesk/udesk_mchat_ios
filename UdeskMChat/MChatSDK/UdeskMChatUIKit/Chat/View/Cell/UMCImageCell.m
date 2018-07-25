@@ -66,7 +66,7 @@
             self.chatImageView.image = image;
         }
         else {
-            [self.chatImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+            [self.chatImageView sd_setImageWithURL:[NSURL URLWithString:[imageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
         }
     }];
     

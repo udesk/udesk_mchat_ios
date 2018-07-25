@@ -95,6 +95,7 @@
 		444BBA061FB4397E0013F3DF /* YYKVStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9A81FB4397D0013F3DF /* YYKVStorage.m */; };
 		444BBA071FB4397E0013F3DF /* YYMemoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9AA1FB4397D0013F3DF /* YYMemoryCache.m */; };
 		444BBA081FB4397E0013F3DF /* YYKeyboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 444BB9AD1FB4397D0013F3DF /* YYKeyboardManager.m */; };
+		446F4013210820FA00315F33 /* UMCImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 446F4012210820FA00315F33 /* UMCImageHelper.m */; };
 		449982E12069DE58002BAAA9 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 44A8D8AB1FB42FF400CBD7F5 /* libresolv.tbd */; };
 		449DB3901FD94C2100A98F81 /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB38B1FD94C2000A98F81 /* FLAnimatedImage.m */; };
 		449DB3911FD94C2100A98F81 /* FLAnimatedImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 449DB38D1FD94C2000A98F81 /* FLAnimatedImageView+WebCache.m */; };
@@ -296,6 +297,8 @@
 		444BB9AC1FB4397D0013F3DF /* YYKeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYKeyboardManager.h; sourceTree = "<group>"; };
 		444BB9AD1FB4397D0013F3DF /* YYKeyboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYKeyboardManager.m; sourceTree = "<group>"; };
 		444BB9AE1FB4397D0013F3DF /* UdeskMChatUIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdeskMChatUIKit.h; sourceTree = "<group>"; };
+		446F4011210820FA00315F33 /* UMCImageHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UMCImageHelper.h; sourceTree = "<group>"; };
+		446F4012210820FA00315F33 /* UMCImageHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UMCImageHelper.m; sourceTree = "<group>"; };
 		449982DD2069DC6E002BAAA9 /* UdeskMChatSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UdeskMChatSDK.framework; sourceTree = "<group>"; };
 		449982DF2069DC90002BAAA9 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		449DB38A1FD94C2000A98F81 /* FLAnimatedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLAnimatedImage.h; sourceTree = "<group>"; };
@@ -755,6 +758,8 @@
 				444BB9531FB4397D0013F3DF /* UMCMenuHelper.m */,
 				44D0EB4A1FF0936600712814 /* UMCButton.h */,
 				44D0EB4B1FF0936600712814 /* UMCButton.m */,
+				446F4011210820FA00315F33 /* UMCImageHelper.h */,
+				446F4012210820FA00315F33 /* UMCImageHelper.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1143,6 +1148,7 @@
 				44B1A46E20F48FD40031913A /* UMCSettingViewController.m in Sources */,
 				44B1A46A20F48FD40031913A /* UMCSessionListViewController.m in Sources */,
 				444BB9D51FB4397D0013F3DF /* UIImage+UMC.m in Sources */,
+				446F4013210820FA00315F33 /* UMCImageHelper.m in Sources */,
 				444BB9F71FB4397D0013F3DF /* SDWebImageManager.m in Sources */,
 				444BB9E11FB4397D0013F3DF /* UMCMenuHelper.m in Sources */,
 				44B1A46C20F48FD40031913A /* UMCOrderTestViewController.m in Sources */,

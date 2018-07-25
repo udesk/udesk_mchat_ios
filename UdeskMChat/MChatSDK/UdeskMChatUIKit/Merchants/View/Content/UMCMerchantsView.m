@@ -96,6 +96,9 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
 
 #pragma mark - @protocol UMCMerchantsDataSourceDelegate
 - (void)deleteMerchantForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.dataSource.merchantsArray.count <= indexPath.row) {
+        return;
+    }
     
     UMCMerchant *merchant = self.dataSource.merchantsArray[indexPath.row];
     @udWeakify(self);
@@ -115,6 +118,10 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    if (self.dataSource.merchantsArray.count <= indexPath.row) {
+        return;
+    }
     
     UMCMerchant *merchant = self.dataSource.merchantsArray[indexPath.row];
     

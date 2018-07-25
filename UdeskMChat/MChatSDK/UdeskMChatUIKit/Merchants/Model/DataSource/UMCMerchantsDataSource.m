@@ -20,6 +20,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    if (self.merchantsArray.count <= indexPath.row) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"errorCellWithIdentifier"];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"errorCellWithIdentifier"];
+        }
+        return cell;
+    }
+    
     UMCMerchant *merchant = self.merchantsArray[indexPath.row];
     UMCMerchantsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UMCMerchantsCell"];
     
