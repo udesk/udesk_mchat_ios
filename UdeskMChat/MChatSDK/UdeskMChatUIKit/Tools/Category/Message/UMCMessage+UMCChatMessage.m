@@ -24,6 +24,7 @@
         
         self.UUID = [[NSUUID UUID] UUIDString];
         self.contentType = UMCMessageContentTypeText;
+        self.category = UMCMessageCategoryTypeChat;
         self.direction = UMCMessageDirectionIn;
         self.messageStatus = UMCMessageStatusSending;
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
@@ -41,6 +42,7 @@
         self.UUID = [[NSUUID UUID] UUIDString];
         self.contentType = UMCMessageContentTypeImage;
         self.direction = UMCMessageDirectionIn;
+        self.category = UMCMessageCategoryTypeChat;
         self.messageStatus = UMCMessageStatusSending;
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
         
@@ -60,6 +62,7 @@
         self.contentType = UMCMessageContentTypeImage;
         self.direction = UMCMessageDirectionIn;
         self.messageStatus = UMCMessageStatusSending;
+        self.category = UMCMessageCategoryTypeChat;
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
         
         //缓存
@@ -79,6 +82,7 @@
         self.contentType = UMCMessageContentTypeVoice;
         self.direction = UMCMessageDirectionIn;
         self.messageStatus = UMCMessageStatusSending;
+        self.category = UMCMessageCategoryTypeChat;
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
         
         UMCMessageExtras *extras = [UMCMessageExtras new];
@@ -100,6 +104,7 @@
         
         self.UUID = [[NSUUID UUID] UUIDString];
         self.contentType = UMCMessageContentTypeProduct;
+        self.category = UMCMessageCategoryTypeChat;
         self.direction = UMCMessageDirectionIn;
         self.messageStatus = UMCMessageStatusSending;
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
@@ -115,6 +120,7 @@
         
         self.UUID = [[NSUUID UUID] UUIDString];
         self.contentType = UMCMessageContentTypeGoods;
+        self.category = UMCMessageCategoryTypeChat;
         self.direction = UMCMessageDirectionIn;
         self.messageStatus = UMCMessageStatusSending;
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];

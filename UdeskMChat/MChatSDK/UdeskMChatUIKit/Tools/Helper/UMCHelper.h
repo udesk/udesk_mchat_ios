@@ -29,5 +29,7 @@
 + (CGSize)neededSizeForPhoto:(UIImage *)image;
 //当前控制器
 + (UIViewController *)currentViewController;
+//过滤html
++ (NSString *)filterHTML:(NSString *)html;
 
 @end

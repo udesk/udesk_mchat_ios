@@ -160,7 +160,6 @@ static CGFloat const kUDGoodsParamsVerticalSpacing = 10.0;
 - (void)setupParamsWithArray:(NSArray *)array {
     
     NSMutableAttributedString *mAttributedString = [[NSMutableAttributedString alloc] initWithAttributedString:self.cellText];
-    
     for (NSDictionary *param in array) {
         
         NSMutableDictionary *attributed = [NSMutableDictionary dictionary];

@@ -256,4 +256,28 @@
 //最近联系人多商户头像
 + (UIImage *)umcContactsMerchantAvatarImage;
 
+/** 满意度评价关闭按钮 */
++ (UIImage *)umcDefaultSurveyCloseImage;
+
+/** 满意度评价文本模式未选择 */
++ (UIImage *)umcDefaultSurveyTextNotSelectImage;
+
+/** 满意度评价文本模式选择 */
++ (UIImage *)umcDefaultSurveyTextSelectedImage;
+
+/** 满意度评价表情 满意 */
++ (UIImage *)umcDefaultSurveyExpressionSatisfiedImage;
+
+/** 满意度评价表情 一般 */
++ (UIImage *)umcDefaultSurveyExpressionGeneralImage;
+
+/** 满意度评价表情 不满意 */
++ (UIImage *)umcDefaultSurveyExpressionUnsatisfactoryImage;
+
+/** 满意度评价表情 空星 */
++ (UIImage *)umcDefaultSurveyStarEmptyImage;
+
+/** 满意度评价表情 实星 */
++ (UIImage *)umcDefaultSurveyStarFilledImage;
+
 @end

@@ -114,6 +114,36 @@
         completion:(void(^)(NSString *address, NSError *error))completion;
 
 /**
+ *  获取满意度调查选项
+ *
+ *  @param completion 回调选项内容
+ */
++ (void)getSurveyOptionsWithMerchantId:(NSString *)merchantId
+                            completion:(void (^)(id responseObject, NSError *error))completion
+                          configHandle:(void (^)(BOOL surveyEnabled,BOOL afterSession))configHandle;
+
+
+/**
+ 提交满意度
+ 
+ @param merchantEuid 商户id
+ @param parameters 满意度参数
+ @param completion 回调
+ */
++ (void)submitSurveyWithMerchantEuid:(NSString *)merchantEuid
+                          parameters:(NSDictionary *)parameters
+                          completion:(void(^)(NSError *error))completion;
+
+/**
+ *  检查是否已经提交过满意度
+ *
+ *  @param merchantEuid    满意度调查的客服
+ *  @param completion 回调结果
+ */
++ (void)checkHasSurveyWithMerchantEuid:(NSString *)merchantEuid
+                            completion:(void (^)(NSString *hasSurvey,NSError *error))completion;
+
+/**
  开始推送
  */
 + (void)startUdeskMChatPush;

@@ -12,5 +12,7 @@
 
 /** 提示文字Frame */
 @property (nonatomic, assign, readonly) CGRect eventLabelFrame;
+/** 消息的文字 */
+@property (nonatomic, copy  , readonly) NSAttributedString *cellText;
 
 @end

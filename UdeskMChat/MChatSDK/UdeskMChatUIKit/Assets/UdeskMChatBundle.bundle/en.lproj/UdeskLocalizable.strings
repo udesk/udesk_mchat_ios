@@ -18,6 +18,7 @@
 "udesk_network_interrupt" = "Network interrupt";
 "udesk_chat_end" = "Chat end";
 "udesk_top_view_thanks_evaluation" = "Thanks for comment.";
+"udesk_top_view_failure" = "Failed!";
 "udesk_has_survey" = "Thank you, you have already done! ";
 "udesk_no_send_empty" = "No empty message";
 "udesk_resend_msg" = "Resend message";
@@ -68,3 +69,10 @@
 "udesk_last_image" = "[image]";
 "udesk_last_voice" = "[voice]";
 "udesk_last_goods" = "[product]";
+"udesk_service_survey" = "Satisfaction Rating";
+"udesk_submit_survey" = "Submit Feedback";
+"udesk_survey_satisfied" = "Satisfied";
+"udesk_survey_general" = "Neutral";
+"udesk_survey_unsatisfactory" = "Unsatisfied";
+"udesk_survey_tips" = "Thanks for your feedback！！";
+"udesk_survey_remark_required" = "Remarks are required";

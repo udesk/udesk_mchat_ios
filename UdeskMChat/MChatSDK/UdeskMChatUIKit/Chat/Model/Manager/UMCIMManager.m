@@ -26,6 +26,8 @@
 @property (nonatomic, strong, readwrite) NSArray *messagesArray;
 //是否还有更多
 @property (nonatomic, assign, readwrite) BOOL hasMore;
+//满意度调查的配置
+@property (nonatomic, strong, readwrite) id surveyResponseObject;
 
 /** 商户ID */
 @property (nonatomic, copy  ) NSString             *merchantId;
@@ -63,13 +65,28 @@
     [UMCManager readMerchantsWithEuid:merchantId completion:completion];
 }
 
+/** 获取满意度调查配置 */
+- (void)fetchSurveyConfig:(void(^)(BOOL isShowSurvey,BOOL afterSession))completion {
+    
+    [UMCManager getSurveyOptionsWithMerchantId:self.merchantId completion:^(id responseObject, NSError *error) {
+        
+        self.surveyResponseObject = responseObject;
+        
+    } configHandle:^(BOOL surveyEnabled, BOOL afterSession) {
+        
+        if (completion) {
+            completion(surveyEnabled,afterSession);
+        }
+    }];
+}
+
 /** 获取新消息 */
 - (void)fetchNewMessages:(void (^)(void))completion {
     
     [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:nil completion:^(NSArray<UMCMessage *> *merchantsArray) {
         self.hasMore = merchantsArray.count;
         self.messagesArray = nil;
-        [self appendServerMessages:merchantsArray];
+        [self addMessageToChatMessageArray:merchantsArray];
     }];
 }
 
@@ -95,7 +112,7 @@
     
     [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:messageUUID completion:^(NSArray<UMCMessage *> *merchantsArray) {
         self.hasMore = merchantsArray.count;
-        [self appendServerMessages:merchantsArray];
+        [self addMessageToChatMessageArray:merchantsArray];
     }];
 }
 
@@ -146,7 +163,7 @@
     if (!message || message == (id)kCFNull) return ;
     
     //转换成要展示的model
-    [self appendMessage:message];
+    [self addMessageToChatMessageArray:@[message]];
     
     [UMCManager createMessageWithMerchantsEuid:self.merchantId message:message completion:^(UMCMessage *newMessage) {
     
@@ -162,7 +179,7 @@
     if (!message || message == (id)kCFNull) return ;
     
     //转换成要展示的model
-    [self appendMessage:message];
+    [self addMessageToChatMessageArray:@[message]];
     
     //上传文件
     [UMCManager uploadFile:mediaData fileName:message.UUID completion:^(NSString *address, NSError *error) {
@@ -218,31 +235,31 @@
     oldMessage.UUID = newMessage.UUID;
 }
 
-- (void)appendServerMessages:(NSArray *)messages {
-    
+- (void)addMessageToChatMessageArray:(NSArray *)messages {
+     
     if (messages.count < 1) {
         return;
     }
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-       
-        NSMutableArray *mMessages = [NSMutableArray arrayWithArray:[[self.messagesArray reverseObjectEnumerator] allObjects]];
-        for (UMCMessage *message in messages) {
-            UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
-            if (baseMsg) {
-                [mMessages addObject:baseMsg];
-            }
-        }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-       
-            self.messagesArray = [[[mMessages reverseObjectEnumerator] allObjects] copy];
+        @synchronized(self) {
+            NSMutableArray *mMessages = [NSMutableArray arrayWithArray:self.messagesArray];
+            for (UMCMessage *message in messages) {
+                UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
+                if (baseMsg) {
+                    [mMessages addObject:baseMsg];
+                }
+            }
+            
+            self.messagesArray = [self sortMessages:mMessages];
             [self reloadMessages];
-        });
+        }
     });
 }
 
 - (void)reloadMessages {
+    
     if (self.ReloadMessagesBlock) {
         self.ReloadMessagesBlock();
     }
@@ -264,23 +281,20 @@
 
 #pragma mark - @protocol UMCManagerDelegate
 - (void)didReceiveMessage:(UMCMessage *)message {
+    if (!message || message == (id)kCFNull) return ;
     
     if ([message.merchantEuid isEqualToString:self.merchantId]) {
         //转换成要展示的model
-        [self appendMessage:message];
+        [self addMessageToChatMessageArray:@[message]];
+        
+        if (message.category == UMCMessageCategoryTypeEvent &&
+            message.eventType == UMCEventContentTypeSurvey) {
+            
+            if (self.DidReceiveInviteSurveyBlock) {
+                self.DidReceiveInviteSurveyBlock(message.merchantEuid);
+            }
+        }
     }
-}
-
-- (void)appendMessage:(UMCMessage *)message {
-    
-    NSMutableArray *mMessages = [NSMutableArray arrayWithArray:self.messagesArray];
-    UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
-    if (baseMsg) {
-        [mMessages addObject:baseMsg];
-    }
-    
-    self.messagesArray = [mMessages copy];
-    [self reloadMessages];
 }
 
 - (UMCBaseMessage *)umcChatMessageWithMessage:(UMCMessage *)message {
@@ -288,8 +302,10 @@
     switch (message.category) {
         case UMCMessageCategoryTypeEvent:{
             
-            UMCEventMessage *eventMessage = [[UMCEventMessage alloc] initWithMessage:message];
-            return eventMessage;
+            if (message.eventType == UMCEventContentTypeSystem) {
+                UMCEventMessage *eventMessage = [[UMCEventMessage alloc] initWithMessage:message];
+                return eventMessage;
+            }
             
             break;
         }
@@ -332,6 +348,22 @@
     }
     
     return nil;
+}
+
+//排序
+- (NSArray *)sortMessages:(NSArray *)messages {
+    
+    // 利用block进行排序
+    NSArray *array = [messages sortedArrayUsingComparator:^NSComparisonResult(UMCBaseMessage *obj1, UMCBaseMessage *obj2) {
+        
+        NSDate *lastDate1 = [NSDate dateWithString:obj1.message.createdAt format:@"yyyy-MM-dd'T'HH:mm:ss.SSSXXX" timeZone:[NSTimeZone localTimeZone] locale:[NSLocale systemLocale]];
+        NSDate *lastDate2 = [NSDate dateWithString:obj2.message.createdAt format:@"yyyy-MM-dd'T'HH:mm:ss.SSSXXX"timeZone:[NSTimeZone localTimeZone] locale:[NSLocale systemLocale]];
+        
+        NSComparisonResult result = [lastDate1 compare:lastDate2];
+        return result;
+    }];
+    
+    return array;
 }
 
 @end

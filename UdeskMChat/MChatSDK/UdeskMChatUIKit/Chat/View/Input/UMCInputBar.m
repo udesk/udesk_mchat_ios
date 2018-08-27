@@ -38,6 +38,7 @@ static CGFloat const UDInputBarViewCustomToolBarHeight = 44.0;
 @property (nonatomic, strong) UIButton *voiceButton;
 @property (nonatomic, strong) UIButton *cameraButton;
 @property (nonatomic, strong) UIButton *albumButton;
+@property (nonatomic, strong) UIButton *surveyButton;
 @property (nonatomic, strong) UMCIMTableView *imTableView;
 @property (nonatomic, assign) CGRect originalTableViewFrame;
 @property (nonatomic, assign) NSInteger textViewHeight;
@@ -211,13 +212,50 @@ static CGFloat const UDInputBarViewCustomToolBarHeight = 44.0;
     }
 }
 
+//点击评价
+- (void)surveyClick:(UIButton *)survey {
+    
+    self.selectInputBarType = UMCInputBarTypeNormal;
+    if ([self.delegate respondsToSelector:@selector(inputBar:didSelectSurvey:)]) {
+        [self.delegate inputBar:self didSelectSurvey:survey];
+    }
+}
+
 //点击相机按钮
 - (void)cameraClick:(UIButton *)button {
     
     self.selectInputBarType = UMCInputBarTypeNormal;
-    if ([self.delegate respondsToSelector:@selector(inputBar:didSelectImageWithSourceType:)]) {
-        [self.delegate inputBar:self didSelectImageWithSourceType:UIImagePickerControllerSourceTypeCamera];
+    //模拟器
+    if (TARGET_IPHONE_SIMULATOR) {
+        NSLog(@"UdeskSDK：模拟器无法使用拍摄功能");
+        return;
     }
+    
+    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (granted) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if ([self.delegate respondsToSelector:@selector(inputBar:didSelectImageWithSourceType:)]) {
+                        [self.delegate inputBar:self didSelectImageWithSourceType:UIImagePickerControllerSourceTypeCamera];
+                    }
+                });
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                    [[[UIAlertView alloc] initWithTitle:nil
+                                                message:UMCLocalizedString(@"udesk_camera_denied")
+                                               delegate:nil
+                                      cancelButtonTitle:UMCLocalizedString(@"udesk_close")
+                                      otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
+                });
+                
+            }
+        });
+    }];
 }
 
 //点击相册按钮
@@ -341,6 +379,7 @@ static CGFloat const UDInputBarViewCustomToolBarHeight = 44.0;
     _voiceButton.umcTop = buttonY - customToolBarHeight;
     _cameraButton.umcTop = buttonY - customToolBarHeight;
     _albumButton.umcTop = buttonY - customToolBarHeight;
+    _surveyButton.umcTop = buttonY - customToolBarHeight;
 }
 
 //隐藏相册
@@ -403,6 +442,9 @@ static CGFloat const UDInputBarViewCustomToolBarHeight = 44.0;
     if (self.albumButton) {
         self.albumButton.hidden = YES;
     }
+    if (self.surveyButton) {
+        self.surveyButton.hidden = YES;
+    }
     
     CGFloat inputViewHeight = 50.f;
     self.umcHeight = inputViewHeight;
@@ -437,6 +479,35 @@ static CGFloat const UDInputBarViewCustomToolBarHeight = 44.0;
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectCustomToolBar:atIndex:)]) {
         [self.delegate didSelectCustomToolBar:toolBar atIndex:index];
     }
+}
+
+- (void)setIsShowSurvey:(BOOL)isShowSurvey {
+    _isShowSurvey = isShowSurvey;
+    
+    if (!isShowSurvey) {
+        return;
+    }
+    
+    CGFloat surveyButtonX = _albumButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing;
+    if (self.hiddenAlbumButton) {
+        surveyButtonX = surveyButtonX - _albumButton.umcRight + _cameraButton.umcRight;
+        if (self.hiddenCameraButton) {
+            surveyButtonX = surveyButtonX - _cameraButton.umcRight + _voiceButton.umcRight;
+            if (self.hiddenVoiceButton) {
+                surveyButtonX = surveyButtonX - _voiceButton.umcRight + _emotionButton.umcRight;
+                if (self.hiddenEmotionButton) {
+                    surveyButtonX = UDInputBarViewButtonToHorizontalEdgeSpacing;
+                }
+            }
+        }
+    }
+    
+    //相册
+    _surveyButton = [self createButtonWithImage:[UIImage umcDefaultSurveyImage] HLImage:[UIImage umcDefaultSurveyHighlightedImage]];
+    _surveyButton.frame = CGRectMake(surveyButtonX, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
+    _surveyButton.hidden = self.hiddenAlbumButton;
+    [_surveyButton addTarget:self action:@selector(surveyClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_defaultToolBar addSubview:_surveyButton];
 }
 
 - (void)drawRect:(CGRect)rect

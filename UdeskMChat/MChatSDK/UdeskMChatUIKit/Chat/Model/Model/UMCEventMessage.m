@@ -9,19 +9,17 @@
 #import "UMCEventMessage.h"
 #import "UMCUIMacro.h"
 #import "UMCEventCell.h"
-#import "NSString+UMC.h"
+#import "NSAttributedString+UMC.h"
 
 /** Event垂直距离 */
 static CGFloat const kUDEventToVerticalEdgeSpacing = 10;
-/** Event水平距离 */
-static CGFloat const kUDEventToHorizontalEdgeSpacing = 8;
-/** Event高度 */
-static CGFloat const kUDEventHeight = 20;
 
 @interface UMCEventMessage()
 
 /** 提示文字Frame */
 @property (nonatomic, assign, readwrite) CGRect eventLabelFrame;
+/** 消息的文字 */
+@property (nonatomic, copy  , readwrite) NSAttributedString *cellText;
 
 @end
 
@@ -32,15 +30,22 @@ static CGFloat const kUDEventHeight = 20;
     self = [super initWithMessage:message];
     if (self) {
         
-        [self layoutEventMessage];
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.3) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self layoutEventMessage];
+            });
+        }
+        else {
+            [self layoutEventMessage];
+        }
     }
     return self;
 }
 
 - (void)layoutEventMessage {
     
-    CGFloat eventWidth = [self getEventContentWidth:self.message.content];
-    self.eventLabelFrame = CGRectMake((kUMCScreenWidth-eventWidth)/2, CGRectGetMaxY(self.dateFrame)+kUDEventToVerticalEdgeSpacing, eventWidth, kUDEventHeight);
+    CGSize eventSize = [self setRichAttributedCellText:self.message.content];
+    self.eventLabelFrame = CGRectMake((kUMCScreenWidth-eventSize.width)/2, CGRectGetMaxY(self.dateFrame)+kUDEventToVerticalEdgeSpacing, eventSize.width, eventSize.height);
     
     self.cellHeight = self.eventLabelFrame.size.height + self.eventLabelFrame.origin.y + kUDEventToVerticalEdgeSpacing;
 }
@@ -50,10 +55,50 @@ static CGFloat const kUDEventHeight = 20;
     return [[UMCEventCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifer];
 }
 
-- (CGFloat)getEventContentWidth:(NSString *)eventContent {
+- (CGSize)setRichAttributedCellText:(NSString *)text {
     
-    CGSize size = [eventContent umcSizeForFont:[UIFont systemFontOfSize:13] size:CGSizeMake(kUMCScreenWidth, kUDEventHeight) mode:NSLineBreakByTruncatingTail];
-    return size.width+(kUDEventToHorizontalEdgeSpacing*2);
+    @try {
+        
+        //配置默认颜色
+        text = [NSString stringWithFormat:@"<head><style>img{width:320px !important;}</style></head><span style='color:#999999'>%@</span>",text];
+        
+        NSDictionary *dic = @{
+                              NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType,
+                              NSCharacterEncodingDocumentAttribute:@(NSUTF8StringEncoding)
+                              };
+        
+        self.cellText = [[NSMutableAttributedString alloc] initWithData:[text dataUsingEncoding:NSUTF8StringEncoding] options:dic documentAttributes:nil error:nil];
+        
+        NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithAttributedString:self.cellText];
+        NSRange range = NSMakeRange(0, self.cellText.string.length);
+        // 设置字体大小
+        [att addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:range];
+        
+        NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+        contentParagraphStyle.lineSpacing = 6.0f;
+        contentParagraphStyle.lineHeightMultiple = 1.0f;
+        contentParagraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+        contentParagraphStyle.alignment = NSTextAlignmentLeft;
+        
+        //富文本末尾会有\n，为了不影响正常显示 这里前端过滤掉
+        if (att.length) {
+            NSAttributedString *last = [att attributedSubstringFromRange:NSMakeRange(att.length - 1, 1)];
+            if ([[last string] isEqualToString:@"\n"]) {
+                [att replaceCharactersInRange:NSMakeRange(att.length - 1, 1) withString:@""];
+            }
+        }
+        
+        self.cellText = att;
+        
+        CGSize textSize = [self.cellText getSizeForTextWidth:kUMCScreenWidth-20];
+        textSize.height += 17;
+        textSize.width += 10;
+        
+        return textSize;
+    } @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    } @finally {
+    }
 }
 
 @end

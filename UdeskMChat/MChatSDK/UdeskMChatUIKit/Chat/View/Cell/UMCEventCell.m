@@ -9,11 +9,15 @@
 #import "UMCEventCell.h"
 #import "UMCEventMessage.h"
 #import "UMCHelper.h"
+#import "TTTAttributedLabel.h"
+#import "UMCUIMacro.h"
+#import "UIView+UMC.h"
+#import "UMCBundleHelper.h"
 
-@interface UMCEventCell()
+@interface UMCEventCell()<UITextViewDelegate>
 
 /**  提示信息Label */
-@property (nonatomic, strong) UILabel *eventLabel;
+@property (nonatomic, strong) UITextView *eventTextView;
 
 @end
 
@@ -27,31 +31,66 @@
     if (!eventMessage || ![eventMessage isKindOfClass:[UMCEventMessage class]]) return;
     
     if ([UMCHelper isBlankString:eventMessage.message.content]) {
-        return;
+        self.eventTextView.text = @"";
+    }
+    else {
+        self.eventTextView.attributedText = eventMessage.cellText;
     }
     
-    if (!eventMessage.message.createdAt) {
-        return;
-    }
-    
-    self.eventLabel.text = eventMessage.message.content;
-    self.eventLabel.frame = eventMessage.eventLabelFrame;
+    self.eventTextView.frame = eventMessage.eventLabelFrame;
 }
 
-- (UILabel *)eventLabel {
+- (UITextView *)eventTextView {
     
-    if (!_eventLabel) {
-        _eventLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _eventLabel.textColor = [UIColor colorWithRed:0.6f  green:0.6f  blue:0.6f alpha:1];
-        _eventLabel.textAlignment = NSTextAlignmentCenter;
-        _eventLabel.font = [UIFont systemFontOfSize:13];
-        _eventLabel.layer.masksToBounds = YES;
-        _eventLabel.layer.cornerRadius = 3;
-        _eventLabel.backgroundColor = [UIColor colorWithRed:0.894f  green:0.894f  blue:0.894f alpha:1];
-        [self.contentView addSubview:_eventLabel];
+    if (!_eventTextView) {
+        _eventTextView = [[UITextView alloc] initWithFrame:CGRectZero];
+        _eventTextView.textAlignment = NSTextAlignmentCenter;
+        _eventTextView.layer.masksToBounds = YES;
+        _eventTextView.layer.cornerRadius = 3;
+        _eventTextView.backgroundColor = [UIColor colorWithRed:0.894f  green:0.894f  blue:0.894f alpha:1];
+        _eventTextView.delegate = self;
+        _eventTextView.editable = NO;
+        [self.contentView addSubview:_eventTextView];
     }
     
-    return _eventLabel;
+    return _eventTextView;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+{
+    //可在此做业务需求的跳转
+    return YES;//返回YES，直接跳转Safari
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    
+    if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", url.absoluteString]]];
+    } else {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
+    
+    UIAlertController *sheet = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"%@\n可能是一个电话号码，你可以",phoneNumber] preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    if (kUMCIsPad) {
+        [sheet setModalPresentationStyle:UIModalPresentationPopover];
+        UIPopoverPresentationController *popPresenter = [sheet popoverPresentationController];
+        popPresenter.sourceView = self.contentView;
+        popPresenter.sourceRect = CGRectMake(self.contentView.umcCenterX, 74, 1, 1);
+    }
+    
+    [sheet addAction:[UIAlertAction actionWithTitle:UMCLocalizedString(@"udesk_cancel") style:UIAlertActionStyleCancel handler:nil]];
+    
+    [sheet addAction:[UIAlertAction actionWithTitle:UMCLocalizedString(@"udesk_call") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phoneNumber]]];
+    }]];
+    
+    [sheet addAction:[UIAlertAction actionWithTitle:UMCLocalizedString(@"udesk_copy") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [UIPasteboard generalPasteboard].string = phoneNumber;
+    }]];
 }
 
 - (void)awakeFromNib {

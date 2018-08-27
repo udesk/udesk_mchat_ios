@@ -14,6 +14,7 @@
 #import "UIImage+UMC.h"
 #import "UMCBundleHelper.h"
 #import "UIColor+UMC.h"
+#import "UMCHelper.h"
 
 #import "UIImageView+WebCache.h"
 #import "JSCustomBadge.h"
@@ -105,7 +106,7 @@ static CGFloat const kUDMerchantUnreadY = 5;
     _merchant = merchant;
     
     self.dateLabel.text = [[NSDate dateWithString:merchant.lastMessage.createdAt format:kUMCDateFormat] umcStyleDate];
-    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:merchant.logoURL] placeholderImage:[UIImage umcContactsMerchantAvatarImage]];
+    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[merchant.logoURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:[UIImage umcContactsMerchantAvatarImage]];
     self.nickNameLabel.text = merchant.name;
     self.contentLabel.text = [self getLastMessageContent:merchant.lastMessage];
     
@@ -126,7 +127,7 @@ static CGFloat const kUDMerchantUnreadY = 5;
     
     switch (message.contentType) {
         case UMCMessageContentTypeText:
-            return message.content;
+            return [UMCHelper filterHTML:message.content];
             break;
         case UMCMessageContentTypeImage:
             return UMCLocalizedString(@"udesk_last_image");

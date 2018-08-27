@@ -102,7 +102,7 @@ static CGFloat const kUDProductDetailHeight = 20;
     
     //咨询对象图片
     self.productImageView.frame = CGRectMake(kUDProductImageToHorizontalEdgeSpacing, kUDProductImageToVerticalEdgeSpacing, kUDProductImageDiameter, kUDProductImageDiameter);
-    [self.productImageView sd_setImageWithURL:[NSURL URLWithString:productModel.image] placeholderImage:[UIImage umcDefaultLoadingImage]];
+    [self.productImageView sd_setImageWithURL:[NSURL URLWithString:[productModel.image stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:[UIImage umcDefaultLoadingImage]];
     
     //咨询对象标题
     CGFloat productTitleX = self.productImageView.umcRight+kUDProductTitleToProductImageHorizontalEdgeSpacing;

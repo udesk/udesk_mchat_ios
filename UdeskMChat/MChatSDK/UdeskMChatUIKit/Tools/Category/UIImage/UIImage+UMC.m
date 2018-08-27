@@ -243,5 +243,44 @@
     return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udMerchantContacts.png")];
 }
 
+/** 满意度评价关闭按钮 */
++ (UIImage *)umcDefaultSurveyCloseImage {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udSurveyClose.png")];
+}
+
+/** 满意度评价文本模式未选择 */
++ (UIImage *)umcDefaultSurveyTextNotSelectImage {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udSurveyTextNotSelect.png")];
+}
+
+/** 满意度评价文本模式选择 */
++ (UIImage *)umcDefaultSurveyTextSelectedImage {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udSurveyTextSelected.png")];
+}
+
+/** 满意度评价表情 满意 */
++ (UIImage *)umcDefaultSurveyExpressionSatisfiedImage {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udSurveyExpressionSatisfied.png")];
+}
+
+/** 满意度评价表情 一般 */
++ (UIImage *)umcDefaultSurveyExpressionGeneralImage {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udSurveyExpressionGeneral.png")];
+}
+
+/** 满意度评价表情 不满意 */
++ (UIImage *)umcDefaultSurveyExpressionUnsatisfactoryImage {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udSurveyExpressionUnsatisfactory.png")];
+}
+
+/** 满意度评价表情 空星 */
++ (UIImage *)umcDefaultSurveyStarEmptyImage {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udSurveyStarEmpty.png")];
+}
+
+/** 满意度评价表情 实星 */
++ (UIImage *)umcDefaultSurveyStarFilledImage {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udSurveyStarFilled.png")];
+}
 
 @end

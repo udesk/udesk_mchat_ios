@@ -18,8 +18,11 @@
 @property (nonatomic, strong, readonly) NSArray *messagesArray;
 //是否还有更多
 @property (nonatomic, assign, readonly) BOOL hasMore;
+//满意度调查的配置
+@property (nonatomic, strong, readonly) id surveyResponseObject;
 
 @property (nonatomic, copy  ) void(^ReloadMessagesBlock)(void);
+@property (nonatomic, copy  ) void(^DidReceiveInviteSurveyBlock)(NSString *merchantEuid);
 
 - (instancetype)initWithSDKConfig:(UMCSDKConfig *)config merchantId:(NSString *)merchantId;
 
@@ -30,6 +33,9 @@
 /** 标记商户消息已读 */
 - (void)readMerchantsWithMerchantId:(NSString *)merchantId
                          completion:(void(^)(BOOL result))completion;
+
+/** 获取满意度调查配置 */
+- (void)fetchSurveyConfig:(void(^)(BOOL isShowSurvey,BOOL afterSession))completion;
 
 /** 获取新消息 */
 - (void)fetchNewMessages:(void (^)(void))completion;

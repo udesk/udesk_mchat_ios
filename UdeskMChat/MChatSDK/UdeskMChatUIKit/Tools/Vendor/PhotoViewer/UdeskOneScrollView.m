@@ -115,7 +115,7 @@
         imageH = imageView.image.size.height;
         //放大的图片 显示原图片 不缩小
         self.mainImageView.image = imageView.image;
-        [self.mainImageView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:imageView.image];
+        [self.mainImageView sd_setImageWithURL:[NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:imageView.image];
     }
     
     //设置主图片Frame 与缩小比例

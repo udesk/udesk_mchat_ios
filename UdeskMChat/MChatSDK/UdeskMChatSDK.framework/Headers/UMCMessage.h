@@ -26,6 +26,11 @@ typedef NS_ENUM(NSUInteger, UMCMessageContentType) {
     UMCMessageContentTypeGoods,         //商品消息
 };
 
+typedef NS_ENUM(NSUInteger, UMCEventContentType) {
+    UMCEventContentTypeSurvey,          //满意度调查
+    UMCEventContentTypeSystem,          //系统消息
+};
+
 typedef NS_ENUM(NSUInteger, UMCMessageStatus) {
     UMCMessageStatusFailed,             //发送失败
     UMCMessageStatusSuccess,            //发送成功
@@ -103,6 +108,8 @@ typedef NS_ENUM(NSUInteger, UMCMessageStatus) {
 @property (nonatomic, assign) UMCMessageCategoryType category;
 /** 消息内容类型 */
 @property (nonatomic, assign) UMCMessageContentType contentType;
+/** 事件内容类型 */
+@property (nonatomic, assign) UMCEventContentType eventType;
 /** 消息方向 */
 @property (nonatomic, assign) UMCMessageDirection direction;
 /** 消息状态 */

@@ -36,7 +36,7 @@
     //头像位置
     self.avatarImageView.frame = baseMessage.avatarFrame;
     //头像图片
-    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:baseMessage.avatarURL] placeholderImage:baseMessage.avatarImage];
+    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[baseMessage.avatarURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:baseMessage.avatarImage];
     
     //气泡
     self.bubbleImageView.frame = baseMessage.bubbleFrame;

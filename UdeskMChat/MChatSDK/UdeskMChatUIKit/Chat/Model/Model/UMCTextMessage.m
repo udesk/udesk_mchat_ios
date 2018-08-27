@@ -59,48 +59,60 @@ CGFloat kUDBubbleToTextVerticalBottomSpacing = 10.0;
         if (!self.message.content || [NSNull isEqual:self.message.content]) return;
         if ([UMCHelper isBlankString:self.message.content]) return;
         
-        CGSize textSize = CGSizeMake(100, 50);
-        
         if (self.message.contentType == UMCMessageContentTypeText) {
             
-            textSize = [self setAttributedCellText:self.message.content messageFrom:self.message.direction];
-            switch (self.message.direction) {
-                case UMCMessageDirectionIn:{
-                    
-                    //文本气泡frame
-                    self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x-kUDArrowMarginWidth-kUDBubbleToTextHorizontalSpacing*2-kUDAvatarToBubbleSpacing-textSize.width, self.avatarFrame.origin.y, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+kUDBubbleToTextVerticalTopSpacing+kUDBubbleToTextVerticalBottomSpacing);
-                    //文本frame
-                    self.textFrame = CGRectMake(kUDBubbleToTextHorizontalSpacing, kUDBubbleToTextVerticalTopSpacing, textSize.width, textSize.height);
-                    //加载中frame
-                    self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDBubbleToSendStatusSpacing-kUDSendStatusDiameter, self.bubbleFrame.origin.y+kUDCellBubbleToIndicatorSpacing, kUDSendStatusDiameter, kUDSendStatusDiameter);
-                    
-                    //加载失败frame
-                    self.failureFrame = self.loadingFrame;
-                    
-                    break;
-                }
-                case UMCMessageDirectionOut:{
-                    
-                    //接收文字气泡frame
-                    self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDAvatarDiameter+kUDAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+kUDBubbleToTextVerticalTopSpacing+kUDBubbleToTextVerticalBottomSpacing);
-                    //接收文字frame
-                    self.textFrame = CGRectMake(kUDBubbleToTextHorizontalSpacing+kUDArrowMarginWidth, kUDBubbleToTextVerticalTopSpacing, textSize.width, textSize.height);
-                    
-                    break;
-                }
-                    
-                default:
-                    break;
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.3) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self setTextMessageUI];
+                });
             }
-            
-            //cell高度
-            self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDCellBottomMargin;
+            else {
+                [self setTextMessageUI];
+            }
         }
         
     } @catch (NSException *exception) {
         NSLog(@"%@",exception);
     } @finally {
     }
+}
+
+- (void)setTextMessageUI {
+    
+    CGSize textSize = CGSizeMake(100, 50);
+    textSize = [self setRichAttributedCellText:self.message.content messageFrom:self.message.direction];
+    
+    switch (self.message.direction) {
+        case UMCMessageDirectionIn:{
+            
+            //文本气泡frame
+            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x-kUDArrowMarginWidth-kUDBubbleToTextHorizontalSpacing*2-kUDAvatarToBubbleSpacing-textSize.width, self.avatarFrame.origin.y, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+kUDBubbleToTextVerticalTopSpacing+kUDBubbleToTextVerticalBottomSpacing);
+            //文本frame
+            self.textFrame = CGRectMake(kUDBubbleToTextHorizontalSpacing, kUDBubbleToTextVerticalTopSpacing, textSize.width, textSize.height);
+            //加载中frame
+            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDBubbleToSendStatusSpacing-kUDSendStatusDiameter, self.bubbleFrame.origin.y+kUDCellBubbleToIndicatorSpacing, kUDSendStatusDiameter, kUDSendStatusDiameter);
+            
+            //加载失败frame
+            self.failureFrame = self.loadingFrame;
+            
+            break;
+        }
+        case UMCMessageDirectionOut:{
+            
+            //接收文字气泡frame
+            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDAvatarDiameter+kUDAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+kUDBubbleToTextVerticalTopSpacing+kUDBubbleToTextVerticalBottomSpacing);
+            //接收文字frame
+            self.textFrame = CGRectMake(kUDBubbleToTextHorizontalSpacing+kUDArrowMarginWidth, kUDBubbleToTextVerticalTopSpacing, textSize.width, textSize.height);
+            
+            break;
+        }
+            
+        default:
+            break;
+    }
+    
+    //cell高度
+    self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDCellBottomMargin;
 }
 
 - (void)linkText:(NSString *)content {
@@ -190,6 +202,54 @@ CGFloat kUDBubbleToTextVerticalBottomSpacing = 10.0;
     } @finally {
     }
     
+}
+
+- (CGSize)setRichAttributedCellText:(NSString *)text messageFrom:(UMCMessageDirection)messageFrom {
+    
+    @try {
+        
+        NSDictionary *dic = @{
+                              NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType,
+                              NSCharacterEncodingDocumentAttribute:@(NSUTF8StringEncoding)
+                              };
+        
+        self.cellText = [[NSMutableAttributedString alloc] initWithData:[text dataUsingEncoding:NSUTF8StringEncoding] options:dic documentAttributes:nil error:nil];
+        
+        NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithAttributedString:self.cellText];
+        NSRange range = NSMakeRange(0, self.cellText.string.length);
+        // 设置字体大小
+        [att addAttribute:NSFontAttributeName value:[UMCSDKConfig sharedConfig].sdkStyle.messageContentFont range:range];
+        // 设置颜色
+        if (messageFrom == UMCMessageDirectionIn) {
+            [att addAttribute:NSForegroundColorAttributeName value:[UMCSDKConfig sharedConfig].sdkStyle.customerTextColor range:range];
+        } else {
+            [att addAttribute:NSForegroundColorAttributeName value:[UMCSDKConfig sharedConfig].sdkStyle.agentTextColor range:range];
+        }
+        
+        NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+        contentParagraphStyle.lineSpacing = 6.0f;
+        contentParagraphStyle.lineHeightMultiple = 1.0f;
+        contentParagraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+        contentParagraphStyle.alignment = NSTextAlignmentLeft;
+        
+        //富文本末尾会有\n，为了不影响正常显示 这里前端过滤掉
+        if (att.length) {
+            NSAttributedString *last = [att attributedSubstringFromRange:NSMakeRange(att.length - 1, 1)];
+            if ([[last string] isEqualToString:@"\n"]) {
+                [att replaceCharactersInRange:NSMakeRange(att.length - 1, 1) withString:@""];
+            }
+        }
+        
+        self.cellText = att;
+        
+        CGSize textSize = [self.cellText getSizeForTextWidth:kUMCScreenWidth>320?235:180];
+        textSize.height += 2;
+        
+        return textSize;
+    } @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    } @finally {
+    }
 }
 
 - (UITableViewCell *)getCellWithReuseIdentifier:(NSString *)cellReuseIdentifer {

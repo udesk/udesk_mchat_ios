@@ -17,6 +17,8 @@
 #import "UMCHelper.h"
 #import "UMCBundleHelper.h"
 #import "UMCProductView.h"
+#import "UMCSurveyView.h"
+#import "UMCToast.h"
 
 #import "YYKeyboardManager.h"
 
@@ -48,6 +50,10 @@ static CGFloat const InputBarHeight = 80.0f;
 @property (nonatomic, strong) UMCImagePicker       *imagePicker;
 /** 商户ID */
 @property (nonatomic, copy  ) NSString             *merchantId;
+/** 离开显示满意度调查 */
+@property (nonatomic, assign) BOOL                  afterSession;
+/** 返回展示满意度 */
+@property (nonatomic, assign) BOOL                  backAlreadyDisplayedSurvey;
 
 @end
 
@@ -229,6 +235,34 @@ static CGFloat const InputBarHeight = 80.0f;
     }
 }
 
+//点击满意度
+- (void)inputBar:(UMCInputBar *)inputBar didSelectSurvey:(UIButton *)surveyButton {
+    
+    [self showSurveyWithWithMerchantId:self.merchantId agentInvite:NO];
+}
+
+//显示满意度调查
+- (void)showSurveyWithWithMerchantId:(NSString *)merchantId agentInvite:(BOOL)agentInvite {
+    
+    [self inputBarHide:YES];
+    
+    if (agentInvite) {
+        UMCSurveyView *surveyView = [[UMCSurveyView alloc] initWithMerchantId:self.merchantId surveyResponseObject:self.UIManager.surveyResponseObject];
+        [surveyView show];
+        return;
+    }
+    [UMCManager checkHasSurveyWithMerchantEuid:merchantId completion:^(NSString *hasSurvey, NSError *error) {
+        
+        if ([hasSurvey boolValue]) {
+            [UMCToast showToast:UMCLocalizedString(@"udesk_has_survey") duration:0.35 window:self.view];
+        }
+        else {
+            UMCSurveyView *surveyView = [[UMCSurveyView alloc] initWithMerchantId:self.merchantId surveyResponseObject:self.UIManager.surveyResponseObject];
+            [surveyView show];
+        }
+    }];
+}
+
 #pragma mark - @protocol TableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -290,11 +324,23 @@ static CGFloat const InputBarHeight = 80.0f;
         [self reloadIMTableView];
     };
     
+    //收到满意度调查邀请
+    self.UIManager.DidReceiveInviteSurveyBlock = ^(NSString *merchantEuid) {
+        @udStrongify(self);
+        [self showSurveyWithWithMerchantId:merchantEuid agentInvite:YES];
+    };
+    
     //获取商户信息
     [self.UIManager fetchMerchantWithMerchantId:self.merchantId completion:^(UMCMerchant *merchant) {
         @udStrongify(self);
         self.title = merchant.name;
         if (merchant.euid) { self.merchantId = merchant.euid;}
+    }];
+    
+    //满意度调查信息
+    [self.UIManager fetchSurveyConfig:^(BOOL isShowSurvey, BOOL afterSession) {
+        self.inputBar.isShowSurvey = isShowSurvey;
+        self.afterSession = afterSession;
     }];
 }
 
@@ -596,7 +642,6 @@ static CGFloat const InputBarHeight = 80.0f;
     });
 }
 
-
 #pragma mark - 设置背景颜色
 - (void)setBackgroundColor {
     self.view.backgroundColor = self.sdkConfig.sdkStyle.chatViewControllerBackGroundColor;
@@ -605,6 +650,46 @@ static CGFloat const InputBarHeight = 80.0f;
 
 #pragma mark - dismissChatViewController
 - (void)dismissChatViewController {
+    
+    //已提示过满意度调查
+    if (!self.afterSession) {
+        [self realDismissViewController];
+        return;
+    }
+    
+    //有客服ID才弹出评价
+    if (!self.merchantId) {
+        [self realDismissViewController];
+        return;
+    }
+    
+    //已提示过满意度调查
+    if (self.backAlreadyDisplayedSurvey) {
+        [self realDismissViewController];
+        return;
+    }
+    
+    //检查是否已经评价
+    [UMCManager checkHasSurveyWithMerchantEuid:self.merchantId completion:^(NSString *hasSurvey, NSError *error) {
+       
+        //失败
+        if (error) {
+            [self realDismissViewController];
+            return ;
+        }
+        //还未评价
+        if (![hasSurvey boolValue]) {
+            //标记满意度只显示一次
+            self.backAlreadyDisplayedSurvey = YES;
+            [self showSurveyWithWithMerchantId:self.merchantId agentInvite:NO];
+        }
+        else {
+            [self realDismissViewController];
+        }
+    }];
+}
+
+- (void)realDismissViewController {
     
     //离开页面回调
     if (self.sdkConfig.leaveChatViewController) {

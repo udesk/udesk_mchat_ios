@@ -58,6 +58,11 @@ typedef NS_ENUM(NSUInteger, UMCInputBarType) {
  */
 - (void)inputBar:(UMCInputBar *)inputBar didSelectVoice:(UIButton *)voiceButton;
 
+/**
+ *  点击评价
+ */
+- (void)inputBar:(UMCInputBar *)inputBar didSelectSurvey:(UIButton *)surveyButton;
+
 @end
 
 @interface UMCInputBar : UIView
@@ -75,6 +80,7 @@ typedef NS_ENUM(NSUInteger, UMCInputBarType) {
 @property (nonatomic, assign) BOOL     hiddenCameraButton;
 @property (nonatomic, assign) BOOL     hiddenAlbumButton;
 @property (nonatomic, assign) BOOL     showCustomButtons;
+@property (nonatomic, assign) BOOL     isShowSurvey;
 
 - (instancetype)initWithFrame:(CGRect)frame
                     tableView:(UMCIMTableView *)tabelView;
