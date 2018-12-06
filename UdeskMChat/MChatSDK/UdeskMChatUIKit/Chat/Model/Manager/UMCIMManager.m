@@ -252,10 +252,27 @@
                 }
             }
             
-            self.messagesArray = [self sortMessages:mMessages];
+            //数组去重
+            NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.messagesArray];
+            for (UMCBaseMessage *msg in mMessages) {
+                if (![self checkMessage:msg existInList:tmpArray]) {
+                    [tmpArray addObject:msg];
+                }
+            }
+            
+            self.messagesArray = [self sortMessages:tmpArray];
             [self reloadMessages];
         }
     });
+}
+
+- (BOOL)checkMessage:(UMCBaseMessage *)msg existInList:(NSArray *)array {
+    for (UMCBaseMessage *tmp in array) {
+        if ([tmp.message.UUID isEqualToString:msg.message.UUID]) {
+            return YES;
+        }
+    }
+    return  NO;
 }
 
 - (void)reloadMessages {
