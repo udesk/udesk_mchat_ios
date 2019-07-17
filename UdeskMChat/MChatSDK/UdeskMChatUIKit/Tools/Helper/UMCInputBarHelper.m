@@ -27,7 +27,7 @@
         __block CGRect otherMenuViewFrame = CGRectMake(0, 0, 0, 0);
         
         CGFloat spacing = 0;
-        if (kUMCIsIPhoneX) {
+        if (kUMCIPhoneXSeries) {
             spacing = 34;
         }
         

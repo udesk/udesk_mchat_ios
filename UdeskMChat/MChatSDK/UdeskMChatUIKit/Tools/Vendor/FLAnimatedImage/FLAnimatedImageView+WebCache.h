@@ -17,6 +17,7 @@
 #endif
 
 #import "SDWebImageManager.h"
+#import "SDWebImageDownloader.h"
 
 
 /**

@@ -15,12 +15,15 @@
 static NSString *const uuid = @"c6042aa7-a1b2-4594-aed8-bf15b547627f";
 static NSString *const key = @"240858ffb00b1c814259a6569393bf4e";
 
+//static NSString *const uuid = @"0ad5f61a-3769-4d32-87fc-4ce562d2677a";
+//static NSString *const key = @"8d99703ffa2b06cd2609aa3c20be7128";
+
 //product
 //static NSString *const uuid = @"63922389-ae73-4368-a610-8da6b0c7796b";
 //static NSString *const key = @"2819bef099b158d46c6a71903ad7c963";
 
-static NSString *euid = @"testMchatEuid";
-static NSString *name = @"testMchatName";
+static NSString *euid = @"testMchatEuid1111";
+static NSString *name = @"testMchatName1111";
 
 
 @interface UMCHomeViewController ()<UMCMessageDelegate>

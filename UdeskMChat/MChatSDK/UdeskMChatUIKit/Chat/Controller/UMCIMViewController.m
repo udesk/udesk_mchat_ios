@@ -127,7 +127,7 @@ static CGFloat const InputBarHeight = 80.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcLoginSuccess) name:UMC_LOGIN_SUCCESS_NOTIFICATION object:nil];
     
     //适配X
-    if (kUMCIsIPhoneX) {
+    if (kUMCIPhoneXSeries) {
         _inputBar.umcBottom -= 34;
         _imTableView.umcHeight -= 34;
         [_imTableView setTableViewInsetsWithBottomValue:self.view.umcHeight - _inputBar.umcTop];
@@ -334,6 +334,7 @@ static CGFloat const InputBarHeight = 80.0f;
     [self.UIManager fetchMerchantWithMerchantId:self.merchantId completion:^(UMCMerchant *merchant) {
         @udStrongify(self);
         self.title = merchant.name;
+        self.sdkConfig.merchantImageURL = merchant.logoURL;
         if (merchant.euid) { self.merchantId = merchant.euid;}
     }];
     
@@ -501,7 +502,7 @@ static CGFloat const InputBarHeight = 80.0f;
     CGRect toFrame =  [[YYKeyboardManager defaultManager] convertRect:transition.toFrame toView:self.view];
     [UIView animateWithDuration:0.35 animations:^{
         self.inputBar.umcBottom = CGRectGetMinY(toFrame);
-        if (!transition.toVisible && kUMCIsIPhoneX) {
+        if (!transition.toVisible && kUMCIPhoneXSeries) {
             self.inputBar.umcBottom -= 34;
         }
         self.imTableView.umcTop = self.sdkConfig.product?self.productView.umcBottom:0;

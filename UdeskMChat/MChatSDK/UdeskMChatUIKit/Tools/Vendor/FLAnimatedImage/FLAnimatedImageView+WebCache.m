@@ -47,22 +47,21 @@
                   progress:(nullable SDWebImageDownloaderProgressBlock)progressBlock
                  completed:(nullable SDExternalCompletionBlock)completedBlock {
     __weak typeof(self)weakSelf = self;
-    [self sd_internalSetImageWithURL:url
-                    placeholderImage:placeholder
-                             options:options
-                        operationKey:nil
-                       setImageBlock:^(UIImage *image, NSData *imageData) {
-                           SDImageFormat imageFormat = [NSData sd_imageFormatForImageData:imageData];
-                           if (imageFormat == SDImageFormatGIF) {
-                               weakSelf.animatedImage = [FLAnimatedImage animatedImageWithGIFData:imageData];
-                               weakSelf.image = nil;
-                           } else {
-                               weakSelf.image = image;
-                               weakSelf.animatedImage = nil;
-                           }
-                       }
-                            progress:progressBlock
-                           completed:completedBlock];
+    [self sd_internalSetImageWithURL:url placeholderImage:placeholder options:options context:nil setImageBlock:^(UIImage * _Nullable image, NSData * _Nullable imageData, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        SDImageFormat imageFormat = [NSData sd_imageFormatForImageData:imageData];
+        if (imageFormat == SDImageFormatGIF) {
+            weakSelf.animatedImage = [FLAnimatedImage animatedImageWithGIFData:imageData];
+            weakSelf.image = nil;
+        } else {
+            weakSelf.image = image;
+            weakSelf.animatedImage = nil;
+        }
+    } progress:progressBlock completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+        
+        if (completedBlock) {
+            completedBlock(image, error, cacheType, imageURL);
+        }
+    }];
 }
 
 @end

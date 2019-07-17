@@ -60,7 +60,7 @@
         imageUrl = imageMessage.message.UUID;
     }
     
-    [[SDWebImageManager sharedManager].imageCache queryCacheOperationForKey:imageMessage.message.UUID done:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
+    [[SDWebImageManager sharedManager].imageCache queryImageForKey:imageMessage.message.UUID options:SDWebImageRetryFailed context:nil completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
         
         if (image) {
             self.chatImageView.image = image;

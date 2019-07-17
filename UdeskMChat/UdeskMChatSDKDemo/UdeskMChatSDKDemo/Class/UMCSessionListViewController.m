@@ -21,7 +21,7 @@
     // Do any additional setup after loading the view.
     
     CGFloat spacing = 0;
-    if (kUMCIsIPhoneX) {
+    if (kUMCIPhoneXSeries) {
         spacing = 24;
     }
     UMCMerchantsView *merchats = [[UMCMerchantsView alloc] initWithFrame:CGRectMake(0, 64+spacing, self.view.frame.size.width, self.view.frame.size.height) sdkConfig:[self getConfig]];

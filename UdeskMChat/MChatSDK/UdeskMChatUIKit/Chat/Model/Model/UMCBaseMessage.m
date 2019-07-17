@@ -14,7 +14,7 @@
 #import "UMCGoodsCell.h"
 
 /** 头像距离屏幕水平边沿距离 */
-const CGFloat kUDAvatarToHorizontalEdgeSpacing = 15.0;
+const CGFloat kUDAvatarToHorizontalEdgeSpacing = 8.0;
 /** 头像距离屏幕垂直边沿距离 */
 const CGFloat kUDAvatarToVerticalEdgeSpacing = 15.0;
 /** 头像与聊天气泡之间的距离 */
@@ -102,6 +102,7 @@ const CGFloat kUDCellBottomMargin = 10.0;
             //用户头像frame
             self.avatarFrame = CGRectMake(kUDAvatarToHorizontalEdgeSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, kUDAvatarDiameter, kUDAvatarDiameter);
             self.avatarImage = [UMCSDKConfig sharedConfig].merchantImage;
+            self.avatarURL = [UMCSDKConfig sharedConfig].merchantImageURL;
         }
         else if (self.message.direction == UMCMessageDirectionIn) {
             

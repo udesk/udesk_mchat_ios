@@ -213,10 +213,11 @@
     switch (oldMessage.contentType) {
         case UMCMessageContentTypeImage:{
             
-            UIImage *image = [[SDWebImageManager sharedManager].imageCache imageFromCacheForKey:oldMessage.UUID];
-            [[SDWebImageManager sharedManager].imageCache removeImageForKey:oldMessage.UUID withCompletion:nil];
-            [[SDWebImageManager sharedManager].imageCache storeImage:image forKey:newMessage.UUID completion:nil];
-            
+            [[SDWebImageManager sharedManager].imageCache queryImageForKey:oldMessage.UUID options:SDWebImageRetryFailed context:nil completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
+                
+                [[SDWebImageManager sharedManager].imageCache removeImageForKey:oldMessage.UUID cacheType:SDImageCacheTypeAll completion:nil];
+                [[SDWebImageManager sharedManager].imageCache storeImage:image imageData:nil forKey:newMessage.UUID cacheType:SDImageCacheTypeAll completion:nil];
+            }];
             break;
         }
         case UMCMessageContentTypeVoice:{

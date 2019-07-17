@@ -169,7 +169,7 @@
         }
     }
     
-    contentHeight = kUMCIsIPhoneX ? contentHeight+34 : contentHeight;
+    contentHeight = kUMCIPhoneXSeries ? contentHeight+34 : contentHeight;
     
     CGFloat contentY = kUMCScreenHeight > contentHeight ? kUMCScreenHeight-contentHeight : 0;
     self.contentView.frame = CGRectMake(0, contentY, self.umcWidth, contentHeight);

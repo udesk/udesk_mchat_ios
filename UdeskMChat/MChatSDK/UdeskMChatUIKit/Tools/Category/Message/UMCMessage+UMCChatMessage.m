@@ -47,7 +47,7 @@
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
         
         //缓存
-        [[SDWebImageManager sharedManager].imageCache storeImage:image forKey:self.UUID completion:nil];
+        [[SDWebImageManager sharedManager].imageCache storeImage:image imageData:nil forKey:self.UUID cacheType:SDImageCacheTypeAll completion:nil];
     }
     
     return self;
