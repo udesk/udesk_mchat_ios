@@ -29,6 +29,7 @@ typedef NS_ENUM(NSUInteger, UMCMessageContentType) {
 typedef NS_ENUM(NSUInteger, UMCEventContentType) {
     UMCEventContentTypeSurvey,          //满意度调查
     UMCEventContentTypeSystem,          //系统消息
+    UMCEventContentTypeRollback,          //撤回消息
 };
 
 typedef NS_ENUM(NSUInteger, UMCMessageStatus) {

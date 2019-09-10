@@ -24,9 +24,13 @@
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
     self.tableView.tableFooterView = [UIView new];
+    
+    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneConfigCustomButton:)];
+    UIBarButtonItem *add = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(appendCustomButton:)];
+    self.navigationItem.rightBarButtonItems = @[done,add];
 }
 
-- (IBAction)appendCustomButton:(id)sender {
+- (void)appendCustomButton:(id)sender {
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"请输入自定义按钮标题" preferredStyle:1];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
@@ -52,7 +56,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (IBAction)doneConfigCustomButton:(id)sender {
+- (void)doneConfigCustomButton:(id)sender {
     
     UMCSessionListViewController *message = [[UMCSessionListViewController alloc] init];
     message.customButtons = self.customButtons;
@@ -134,36 +138,36 @@
         }
         case UMCSendTypeGoods:{
 
-            UMCGoodsModel *goodsModel1 = [[UMCGoodsModel alloc] init];
-            goodsModel1.goodsId = @"12";
-            goodsModel1.name = @"Apple iPhone X (A1903) 64GB 深空灰色 移动联通4G手机";
-            goodsModel1.url = @"https://item.jd.com/6748052.html";
-            goodsModel1.imgUrl = @"http://img12.360buyimg.com/n1/s450x450_jfs/t10675/253/1344769770/66891/92d54ca4/59df2e7fN86c99a27.jpg";
-
-            UMCGoodsParamModel *paramModel1 = [UMCGoodsParamModel new];
-            paramModel1.text = @"￥6999.00";
-            paramModel1.color = @"#FF0000";
-            paramModel1.fold = @(1);
-            paramModel1.udBreak = @(1);
-            paramModel1.size = @(14);
-
-            UMCGoodsParamModel *paramModel2 = [UMCGoodsParamModel new];
-            paramModel2.text = @"满1999元另加30元";
-            paramModel2.color = @"#c2fcc3";
-            paramModel2.fold = @(1);
-            paramModel2.size = @(12);
-
-            UMCGoodsParamModel *paramModel3 = [UMCGoodsParamModel new];
-            paramModel3.text = @"但是我会先提价100";
-            paramModel3.color = @"#ffffff";
-            paramModel3.fold = @(1);
-            paramModel3.size = @(20);
-
-            goodsModel1.params = @[paramModel1,paramModel2,paramModel3];
-
-            [viewController sendGoodsMessageWithModel:goodsModel1];
+//            UMCGoodsModel *goodsModel1 = [[UMCGoodsModel alloc] init];
+//            goodsModel1.goodsId = @"12";
+//            goodsModel1.name = @"Apple iPhone X (A1903) 64GB 深空灰色 移动联通4G手机";
+//            goodsModel1.url = @"https://item.jd.com/6748052.html";
+//            goodsModel1.imgUrl = @"http://img12.360buyimg.com/n1/s450x450_jfs/t10675/253/1344769770/66891/92d54ca4/59df2e7fN86c99a27.jpg";
+//
+//            UMCGoodsParamModel *paramModel1 = [UMCGoodsParamModel new];
+//            paramModel1.text = @"￥6999.00";
+//            paramModel1.color = @"#FF0000";
+//            paramModel1.fold = @(1);
+//            paramModel1.udBreak = @(1);
+//            paramModel1.size = @(14);
+//
+//            UMCGoodsParamModel *paramModel2 = [UMCGoodsParamModel new];
+//            paramModel2.text = @"满1999元另加30元";
+//            paramModel2.color = @"#c2fcc3";
+//            paramModel2.fold = @(1);
+//            paramModel2.size = @(12);
+//
+//            UMCGoodsParamModel *paramModel3 = [UMCGoodsParamModel new];
+//            paramModel3.text = @"但是我会先提价100";
+//            paramModel3.color = @"#ffffff";
+//            paramModel3.fold = @(1);
+//            paramModel3.size = @(20);
+//
+//            goodsModel1.params = @[paramModel1,paramModel2,paramModel3];
+//
+//            [viewController sendGoodsMessageWithModel:goodsModel1];
             
-//            [viewController sendGoodsMessageWithModel:goodsModel];
+            [viewController sendGoodsMessageWithModel:goodsModel];
             break;
         }
         default:

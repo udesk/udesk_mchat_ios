@@ -125,6 +125,11 @@ static CGFloat const kUDMerchantUnreadY = 5;
 
 - (NSString *)getLastMessageContent:(UMCMessage *)message {
     
+    //撤回消息
+    if (message.category == UMCMessageCategoryTypeEvent && message.eventType == UMCEventContentTypeRollback) {
+        return UMCLocalizedString(@"udesk_rollback");
+    }
+    
     switch (message.contentType) {
         case UMCMessageContentTypeText:
             return [UMCHelper filterHTML:message.content];

@@ -67,7 +67,7 @@
 "udesk_video_send_tips" = "当前在非Wi-Fi环境，发送文件将消耗一定流量，是否继续？";
 "udesk_video_big_tips" = "文件过大无法发送";
 "udesk_customer_leave_msg" = "客户留言";
-"udesk_rollback" = "撤回了一条消息";
+"udesk_rollback" = "撤回一条消息";
 "udesk_last_image" = "[图片]";
 "udesk_last_voice" = "[语音]";
 "udesk_last_goods" = "[商品消息]";

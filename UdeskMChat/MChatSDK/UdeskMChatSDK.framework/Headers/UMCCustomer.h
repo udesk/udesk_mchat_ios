@@ -14,9 +14,7 @@
 @property (nonatomic, copy  ) NSString *euid;
 /** 用户昵称 */
 @property (nonatomic, copy  ) NSString *name;
-/** 用户头像URL */
-@property (nonatomic, copy  ) NSString *avatarURL;
 
-- (instancetype)initWithEuid:(NSString *)euid name:(NSString *)name avatarURL:(NSString *)avatarURL;
+- (instancetype)initWithEuid:(NSString *)euid name:(NSString *)name;
 
 @end

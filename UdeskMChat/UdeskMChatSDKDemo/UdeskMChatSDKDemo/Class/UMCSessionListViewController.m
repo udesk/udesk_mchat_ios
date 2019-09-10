@@ -20,6 +20,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     CGFloat spacing = 0;
     if (kUMCIPhoneXSeries) {
         spacing = 24;

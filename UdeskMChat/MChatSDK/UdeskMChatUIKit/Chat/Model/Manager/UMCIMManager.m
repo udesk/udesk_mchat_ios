@@ -16,6 +16,7 @@
 #import "NSDate+UMC.h"
 #import "UMCHelper.h"
 #import "UMCImageHelper.h"
+#import "UMCBundleHelper.h"
 
 #import "SDWebImageManager.h"
 #import "YYCache.h"
@@ -60,7 +61,7 @@
 
 /** 标记商户消息为已读 */
 - (void)readMerchantsWithMerchantId:(NSString *)merchantId
-                   completion:(void(^)(BOOL result))completion {
+                         completion:(void(^)(BOOL result))completion {
     
     [UMCManager readMerchantsWithEuid:merchantId completion:completion];
 }
@@ -237,10 +238,7 @@
 }
 
 - (void)addMessageToChatMessageArray:(NSArray *)messages {
-     
-    if (messages.count < 1) {
-        return;
-    }
+    if (messages.count < 1) return;
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         
@@ -302,11 +300,26 @@
     if (!message || message == (id)kCFNull) return ;
     
     if ([message.merchantEuid isEqualToString:self.merchantId]) {
+        
+        //撤回消息
+        if (message.category == UMCMessageCategoryTypeEvent && message.eventType == UMCEventContentTypeRollback) {
+            for (UMCBaseMessage *baseMessage in self.messagesArray) {
+                if ([baseMessage.message.UUID isEqualToString:message.UUID]) {
+                    
+                    NSMutableArray *array = [NSMutableArray arrayWithArray:self.messagesArray];
+                    if ([array containsObject:baseMessage]) {
+                        [array removeObject:baseMessage];
+                        self.messagesArray = array;
+                    }
+                    message.content = UMCLocalizedString(@"udesk_rollback");
+                }
+            }
+        }
+        
         //转换成要展示的model
         [self addMessageToChatMessageArray:@[message]];
         
-        if (message.category == UMCMessageCategoryTypeEvent &&
-            message.eventType == UMCEventContentTypeSurvey) {
+        if (message.category == UMCMessageCategoryTypeEvent && message.eventType == UMCEventContentTypeSurvey) {
             
             if (self.DidReceiveInviteSurveyBlock) {
                 self.DidReceiveInviteSurveyBlock(message.merchantEuid);
@@ -320,7 +333,12 @@
     switch (message.category) {
         case UMCMessageCategoryTypeEvent:{
             
-            if (message.eventType == UMCEventContentTypeSystem) {
+            //撤回消息
+            if (message.eventType == UMCEventContentTypeRollback) {
+                message.content = UMCLocalizedString(@"udesk_rollback");
+            }
+            
+            if (message.eventType != UMCEventContentTypeSurvey) {
                 UMCEventMessage *eventMessage = [[UMCEventMessage alloc] initWithMessage:message];
                 return eventMessage;
             }

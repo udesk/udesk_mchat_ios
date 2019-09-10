@@ -7,7 +7,7 @@
 //
 
 #import "UMCGoodsMessageTestViewController.h"
-#import <UdeskMChatSDK/UMCMessage.h>
+#import <UdeskMChatSDK/UdeskMChatSDK.h>
 
 @interface UMCGoodsMessageTestViewController ()
 

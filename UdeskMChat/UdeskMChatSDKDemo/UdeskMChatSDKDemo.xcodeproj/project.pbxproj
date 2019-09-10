@@ -156,13 +156,14 @@
 		44A8D4D11FB42A2700CBD7F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 44A8D4D01FB42A2700CBD7F5 /* Assets.xcassets */; };
 		44A8D4D41FB42A2700CBD7F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44A8D4D21FB42A2700CBD7F5 /* LaunchScreen.storyboard */; };
 		44A8D4D71FB42A2700CBD7F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A8D4D61FB42A2700CBD7F5 /* main.m */; };
-		44B1A46820F48FD40031913A /* UMCHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A45A20F48FD30031913A /* UMCHomeViewController.m */; };
-		44B1A46920F48FD40031913A /* UMCProductDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A45C20F48FD30031913A /* UMCProductDetailViewController.m */; };
-		44B1A46A20F48FD40031913A /* UMCSessionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A45F20F48FD30031913A /* UMCSessionListViewController.m */; };
-		44B1A46B20F48FD40031913A /* UMCGoodsMessageTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A46320F48FD30031913A /* UMCGoodsMessageTestViewController.m */; };
-		44B1A46C20F48FD40031913A /* UMCOrderTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A46520F48FD30031913A /* UMCOrderTestViewController.m */; };
-		44B1A46D20F48FD40031913A /* UMCCustomButtonTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A46620F48FD30031913A /* UMCCustomButtonTableViewController.m */; };
-		44B1A46E20F48FD40031913A /* UMCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B1A46720F48FD30031913A /* UMCSettingViewController.m */; };
+		44D3AC8C2327B100003B6029 /* UMCOrderTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC7C2327B0FE003B6029 /* UMCOrderTestViewController.m */; };
+		44D3AC8D2327B100003B6029 /* UMCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC7D2327B0FE003B6029 /* UMCViewController.m */; };
+		44D3AC8E2327B100003B6029 /* UMCDeveloperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC7F2327B0FE003B6029 /* UMCDeveloperViewController.m */; };
+		44D3AC8F2327B100003B6029 /* UMCGoodsMessageTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC822327B0FF003B6029 /* UMCGoodsMessageTestViewController.m */; };
+		44D3AC902327B100003B6029 /* UMCCustomButtonTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC842327B0FF003B6029 /* UMCCustomButtonTableViewController.m */; };
+		44D3AC912327B100003B6029 /* UMCSessionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC872327B0FF003B6029 /* UMCSessionListViewController.m */; };
+		44D3AC922327B100003B6029 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC882327B100003B6029 /* MBProgressHUD.m */; };
+		44D3AC932327B100003B6029 /* UMCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC8A2327B100003B6029 /* UMCSettingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -467,20 +468,22 @@
 		44A8D4D61FB42A2700CBD7F5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		44A8D8AB1FB42FF400CBD7F5 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		44A8D8AD1FB4302800CBD7F5 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		44B1A45A20F48FD30031913A /* UMCHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCHomeViewController.m; sourceTree = "<group>"; };
-		44B1A45B20F48FD30031913A /* UMCGoodsMessageTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCGoodsMessageTestViewController.h; sourceTree = "<group>"; };
-		44B1A45C20F48FD30031913A /* UMCProductDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCProductDetailViewController.m; sourceTree = "<group>"; };
-		44B1A45D20F48FD30031913A /* UMCCustomButtonTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCCustomButtonTableViewController.h; sourceTree = "<group>"; };
-		44B1A45E20F48FD30031913A /* UMCOrderTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCOrderTestViewController.h; sourceTree = "<group>"; };
-		44B1A45F20F48FD30031913A /* UMCSessionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCSessionListViewController.m; sourceTree = "<group>"; };
-		44B1A46020F48FD30031913A /* UMCSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCSettingViewController.h; sourceTree = "<group>"; };
-		44B1A46120F48FD30031913A /* UMCHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCHomeViewController.h; sourceTree = "<group>"; };
-		44B1A46220F48FD30031913A /* UMCProductDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCProductDetailViewController.h; sourceTree = "<group>"; };
-		44B1A46320F48FD30031913A /* UMCGoodsMessageTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCGoodsMessageTestViewController.m; sourceTree = "<group>"; };
-		44B1A46420F48FD30031913A /* UMCSessionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCSessionListViewController.h; sourceTree = "<group>"; };
-		44B1A46520F48FD30031913A /* UMCOrderTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCOrderTestViewController.m; sourceTree = "<group>"; };
-		44B1A46620F48FD30031913A /* UMCCustomButtonTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCCustomButtonTableViewController.m; sourceTree = "<group>"; };
-		44B1A46720F48FD30031913A /* UMCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCSettingViewController.m; sourceTree = "<group>"; };
+		44D3AC7C2327B0FE003B6029 /* UMCOrderTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCOrderTestViewController.m; sourceTree = "<group>"; };
+		44D3AC7D2327B0FE003B6029 /* UMCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCViewController.m; sourceTree = "<group>"; };
+		44D3AC7E2327B0FE003B6029 /* UMCDeveloperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCDeveloperViewController.h; sourceTree = "<group>"; };
+		44D3AC7F2327B0FE003B6029 /* UMCDeveloperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCDeveloperViewController.m; sourceTree = "<group>"; };
+		44D3AC802327B0FF003B6029 /* UMCSessionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCSessionListViewController.h; sourceTree = "<group>"; };
+		44D3AC812327B0FF003B6029 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		44D3AC822327B0FF003B6029 /* UMCGoodsMessageTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCGoodsMessageTestViewController.m; sourceTree = "<group>"; };
+		44D3AC832327B0FF003B6029 /* UMCGoodsMessageTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCGoodsMessageTestViewController.h; sourceTree = "<group>"; };
+		44D3AC842327B0FF003B6029 /* UMCCustomButtonTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCCustomButtonTableViewController.m; sourceTree = "<group>"; };
+		44D3AC852327B0FF003B6029 /* UMCCustomButtonTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCCustomButtonTableViewController.h; sourceTree = "<group>"; };
+		44D3AC862327B0FF003B6029 /* UMCSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCSettingViewController.h; sourceTree = "<group>"; };
+		44D3AC872327B0FF003B6029 /* UMCSessionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCSessionListViewController.m; sourceTree = "<group>"; };
+		44D3AC882327B100003B6029 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		44D3AC892327B100003B6029 /* UMCOrderTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCOrderTestViewController.h; sourceTree = "<group>"; };
+		44D3AC8A2327B100003B6029 /* UMCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCSettingViewController.m; sourceTree = "<group>"; };
+		44D3AC8B2327B100003B6029 /* UMCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1273,20 +1276,22 @@
 		44B1A45920F48FD30031913A /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				44B1A45D20F48FD30031913A /* UMCCustomButtonTableViewController.h */,
-				44B1A46620F48FD30031913A /* UMCCustomButtonTableViewController.m */,
-				44B1A45B20F48FD30031913A /* UMCGoodsMessageTestViewController.h */,
-				44B1A46320F48FD30031913A /* UMCGoodsMessageTestViewController.m */,
-				44B1A46120F48FD30031913A /* UMCHomeViewController.h */,
-				44B1A45A20F48FD30031913A /* UMCHomeViewController.m */,
-				44B1A45E20F48FD30031913A /* UMCOrderTestViewController.h */,
-				44B1A46520F48FD30031913A /* UMCOrderTestViewController.m */,
-				44B1A46220F48FD30031913A /* UMCProductDetailViewController.h */,
-				44B1A45C20F48FD30031913A /* UMCProductDetailViewController.m */,
-				44B1A46420F48FD30031913A /* UMCSessionListViewController.h */,
-				44B1A45F20F48FD30031913A /* UMCSessionListViewController.m */,
-				44B1A46020F48FD30031913A /* UMCSettingViewController.h */,
-				44B1A46720F48FD30031913A /* UMCSettingViewController.m */,
+				44D3AC812327B0FF003B6029 /* MBProgressHUD.h */,
+				44D3AC882327B100003B6029 /* MBProgressHUD.m */,
+				44D3AC8B2327B100003B6029 /* UMCViewController.h */,
+				44D3AC7D2327B0FE003B6029 /* UMCViewController.m */,
+				44D3AC852327B0FF003B6029 /* UMCCustomButtonTableViewController.h */,
+				44D3AC842327B0FF003B6029 /* UMCCustomButtonTableViewController.m */,
+				44D3AC7E2327B0FE003B6029 /* UMCDeveloperViewController.h */,
+				44D3AC7F2327B0FE003B6029 /* UMCDeveloperViewController.m */,
+				44D3AC832327B0FF003B6029 /* UMCGoodsMessageTestViewController.h */,
+				44D3AC822327B0FF003B6029 /* UMCGoodsMessageTestViewController.m */,
+				44D3AC892327B100003B6029 /* UMCOrderTestViewController.h */,
+				44D3AC7C2327B0FE003B6029 /* UMCOrderTestViewController.m */,
+				44D3AC802327B0FF003B6029 /* UMCSessionListViewController.h */,
+				44D3AC872327B0FF003B6029 /* UMCSessionListViewController.m */,
+				44D3AC862327B0FF003B6029 /* UMCSettingViewController.h */,
+				44D3AC8A2327B100003B6029 /* UMCSettingViewController.m */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -1443,6 +1448,7 @@
 				444A193B229FB4F300A8ACE3 /* UIImage+ForceDecode.m in Sources */,
 				443C2E2A212AA0F10077563A /* UMCVoiceRecordHUD.m in Sources */,
 				443C2E29212AA0F10077563A /* UMCImageMessage.m in Sources */,
+				44D3AC8F2327B100003B6029 /* UMCGoodsMessageTestViewController.m in Sources */,
 				444A1956229FB4F300A8ACE3 /* SDWebImageDownloaderConfig.m in Sources */,
 				444A1939229FB4F300A8ACE3 /* SDAnimatedImage.m in Sources */,
 				444A1966229FB4F300A8ACE3 /* SDWebImageDefine.m in Sources */,
@@ -1452,11 +1458,11 @@
 				444A195E229FB4F300A8ACE3 /* SDImageTransformer.m in Sources */,
 				443C2DEF212AA0F00077563A /* UMCTransitioningAnimation.m in Sources */,
 				443C2DFE212AA0F10077563A /* FLAnimatedImageView+WebCache.m in Sources */,
+				44D3AC912327B100003B6029 /* UMCSessionListViewController.m in Sources */,
 				443C2E3F212AA0F10077563A /* UMCStarSurveyView.m in Sources */,
 				443C2DFB212AA0F10077563A /* YYCache.m in Sources */,
 				443C2E39212AA0F10077563A /* UMCGoodsCell.m in Sources */,
 				443C2E30212AA0F10077563A /* UMCInputBar.m in Sources */,
-				44B1A46E20F48FD40031913A /* UMCSettingViewController.m in Sources */,
 				443C2DE3212AA0F00077563A /* NSString+UMC.m in Sources */,
 				443C2DE4212AA0F00077563A /* NSAttributedString+UMC.m in Sources */,
 				443C2E32212AA0F10077563A /* UMCEmojiView.m in Sources */,
@@ -1471,6 +1477,7 @@
 				443C2E31212AA0F10077563A /* UMCCustomToolBar.m in Sources */,
 				443C2E2E212AA0F10077563A /* UMCSpectrumView.m in Sources */,
 				443C2DEB212AA0F00077563A /* UMCLanguageTool.m in Sources */,
+				44D3AC8E2327B100003B6029 /* UMCDeveloperViewController.m in Sources */,
 				444A1948229FB4F300A8ACE3 /* SDWebImagePrefetcher.m in Sources */,
 				443C2DF4212AA0F10077563A /* UMCBundleHelper.m in Sources */,
 				444A1944229FB4F300A8ACE3 /* SDMemoryCache.m in Sources */,
@@ -1494,19 +1501,18 @@
 				443C2E25212AA0F10077563A /* UMCBaseMessage.m in Sources */,
 				443C2E00212AA0F10077563A /* FLAnimatedImageView.m in Sources */,
 				443C2DE0212AA0F00077563A /* UIColor+UMC.m in Sources */,
+				44D3AC922327B100003B6029 /* MBProgressHUD.m in Sources */,
 				443C2DF5212AA0F10077563A /* UMCHelper.m in Sources */,
 				444A194E229FB4F300A8ACE3 /* SDAnimatedImageRep.m in Sources */,
 				444A193D229FB4F300A8ACE3 /* SDWebImageDownloader.m in Sources */,
 				443C2E04212AA0F10077563A /* UdeskOneScrollView.m in Sources */,
 				444A1935229FB4F300A8ACE3 /* SDAnimatedImageView+WebCache.m in Sources */,
 				444A195B229FB4F300A8ACE3 /* SDImageLoadersManager.m in Sources */,
-				44B1A46A20F48FD40031913A /* UMCSessionListViewController.m in Sources */,
 				443C2E21212AA0F10077563A /* UMCIMViewController.m in Sources */,
 				443C2E03212AA0F10077563A /* YYKeyboardManager.m in Sources */,
 				443C2E44212AA0F10077563A /* UMCMerchantsDataSource.m in Sources */,
 				444A194C229FB4F300A8ACE3 /* SDImageIOCoder.m in Sources */,
 				444A1949229FB4F300A8ACE3 /* SDImageCoderHelper.m in Sources */,
-				44B1A46C20F48FD40031913A /* UMCOrderTestViewController.m in Sources */,
 				444A1940229FB4F300A8ACE3 /* SDWebImageIndicator.m in Sources */,
 				444A1958229FB4F300A8ACE3 /* SDImageGIFCoder.m in Sources */,
 				444A1942229FB4F300A8ACE3 /* SDImageCodersManager.m in Sources */,
@@ -1515,7 +1521,6 @@
 				443C2E45212AA0F10077563A /* UMCMerchantsManager.m in Sources */,
 				443C2E3B212AA0F10077563A /* UMCSurveyViewController.m in Sources */,
 				444A1947229FB4F300A8ACE3 /* SDWebImageError.m in Sources */,
-				44B1A46D20F48FD40031913A /* UMCCustomButtonTableViewController.m in Sources */,
 				443C2DFC212AA0F10077563A /* YYKVStorage.m in Sources */,
 				443C2DF1212AA0F00077563A /* UMCToast.m in Sources */,
 				443C2DE8212AA0F00077563A /* UMCSDKConfig.m in Sources */,
@@ -1535,6 +1540,7 @@
 				443C2DF6212AA0F10077563A /* UMCInputBarHelper.m in Sources */,
 				444A1951229FB4F300A8ACE3 /* SDWeakProxy.m in Sources */,
 				44A8D4CC1FB42A2700CBD7F5 /* ViewController.m in Sources */,
+				44D3AC932327B100003B6029 /* UMCSettingViewController.m in Sources */,
 				444A1945229FB4F300A8ACE3 /* SDWebImageCompat.m in Sources */,
 				443C2E3A212AA0F10077563A /* UMCIMTableView.m in Sources */,
 				444A1963229FB4F300A8ACE3 /* UIImage+MemoryCacheCost.m in Sources */,
@@ -1561,16 +1567,17 @@
 				444A1946229FB4F300A8ACE3 /* SDImageAPNGCoder.m in Sources */,
 				443C2DEA212AA0F00077563A /* UMCSDKManager.m in Sources */,
 				443C2E24212AA0F10077563A /* UMCGoodsMessage.m in Sources */,
+				44D3AC902327B100003B6029 /* UMCCustomButtonTableViewController.m in Sources */,
 				443C2E23212AA0F10077563A /* UMCIMManager.m in Sources */,
 				443C2DF0212AA0F00077563A /* UMCShareTransitioningDelegateImpl.m in Sources */,
 				444A1967229FB4F300A8ACE3 /* UIView+WebCacheOperation.m in Sources */,
 				443C2E2D212AA0F10077563A /* UMCVoiceRecordView.m in Sources */,
-				44B1A46820F48FD40031913A /* UMCHomeViewController.m in Sources */,
 				444A195C229FB4F300A8ACE3 /* SDImageCachesManager.m in Sources */,
+				44D3AC8D2327B100003B6029 /* UMCViewController.m in Sources */,
+				44D3AC8C2327B100003B6029 /* UMCOrderTestViewController.m in Sources */,
 				443C2E47212AA0F10077563A /* UMCMerchantsCell.m in Sources */,
 				444A1953229FB4F300A8ACE3 /* SDAsyncBlockOperation.m in Sources */,
 				444A193A229FB4F300A8ACE3 /* SDAnimatedImageView.m in Sources */,
-				44B1A46920F48FD40031913A /* UMCProductDetailViewController.m in Sources */,
 				443C2E46212AA0F10077563A /* UMCMerchantsView.m in Sources */,
 				444A194F229FB4F300A8ACE3 /* SDImageCachesManagerOperation.m in Sources */,
 				444A1957229FB4F300A8ACE3 /* SDImageCache.m in Sources */,
@@ -1578,7 +1585,6 @@
 				444A1968229FB4F300A8ACE3 /* UIView+WebCache.m in Sources */,
 				444A1965229FB4F300A8ACE3 /* SDWebImageCacheKeyFilter.m in Sources */,
 				444A1938229FB4F300A8ACE3 /* UIImageView+HighlightedWebCache.m in Sources */,
-				44B1A46B20F48FD40031913A /* UMCGoodsMessageTestViewController.m in Sources */,
 				444A1969229FB4F300A8ACE3 /* UIImage+Metadata.m in Sources */,
 				443C2E40212AA0F10077563A /* UMCTextSurveyView.m in Sources */,
 				444A193F229FB4F300A8ACE3 /* SDWebImageCacheSerializer.m in Sources */,

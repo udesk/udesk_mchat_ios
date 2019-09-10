@@ -174,7 +174,15 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
         if (![message.merchantEuid isEqualToString:self.currentMerchantId]) {
             merchant.unreadCount = [NSString stringWithFormat:@"%ld",merchant.unreadCount.integerValue + 1];
         }
-        merchant.lastMessage = message;
+        
+        //撤回消息
+        if (message.category == UMCMessageCategoryTypeEvent && message.eventType == UMCEventContentTypeRollback) {
+            [self fetchMerchants];
+        }
+        else {
+            merchant.lastMessage = message;
+        }
+        
         [self.merchantsTableView reloadData];
     }
     else {
