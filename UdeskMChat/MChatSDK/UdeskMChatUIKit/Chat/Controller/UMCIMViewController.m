@@ -336,6 +336,7 @@ static CGFloat const InputBarHeight = 80.0f;
         self.title = merchant.name;
         self.sdkConfig.merchantImageURL = merchant.logoURL;
         if (merchant.euid) { self.merchantId = merchant.euid;}
+        [self checkIsBlocked:merchant.isBlocked];
     }];
     
     //满意度调查信息
@@ -364,6 +365,20 @@ static CGFloat const InputBarHeight = 80.0f;
         _dataSource.delegate = self;
     }
     return _dataSource;
+}
+
+//检查黑名单
+- (void)checkIsBlocked:(BOOL)isBlocked {
+    
+    if (isBlocked) {
+    
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:UMCLocalizedString(@"udesk_alert_view_blocked_list") preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:UMCLocalizedString(@"udesk_sure") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+            [self realDismissViewController];
+        }]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 #pragma mark - UMCBaseCellDelegate

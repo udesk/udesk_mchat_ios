@@ -23,6 +23,8 @@
 @property (nonatomic, copy  ) NSString *logoURL;
 /** 商户是否在工作时间 */
 @property (nonatomic, assign) BOOL     onDuty;
+/** 用户是否被拉黑 */
+@property (nonatomic, assign) BOOL     isBlocked;
 /** 商户非工作时间提示语 */
 @property (nonatomic, copy  ) NSString *offDutyTips;
 /** 最后一条消息 */
