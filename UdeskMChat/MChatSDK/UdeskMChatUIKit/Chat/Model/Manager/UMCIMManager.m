@@ -255,11 +255,11 @@
             NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.messagesArray];
             for (UMCBaseMessage *msg in mMessages) {
                 if (![self checkMessage:msg existInList:tmpArray]) {
-                    [tmpArray addObject:msg];
+                    [tmpArray insertObject:msg atIndex:0];
                 }
             }
             
-            self.messagesArray = [self sortMessages:tmpArray];
+            self.messagesArray = [tmpArray copy];
             [self reloadMessages];
         }
     });
@@ -384,22 +384,6 @@
     }
     
     return nil;
-}
-
-//排序
-- (NSArray *)sortMessages:(NSArray *)messages {
-    
-    // 利用block进行排序
-    NSArray *array = [messages sortedArrayUsingComparator:^NSComparisonResult(UMCBaseMessage *obj1, UMCBaseMessage *obj2) {
-        
-        NSDate *lastDate1 = [NSDate dateWithString:obj1.message.createdAt format:@"yyyy-MM-dd'T'HH:mm:ss.SSSXXX" timeZone:[NSTimeZone localTimeZone] locale:[NSLocale systemLocale]];
-        NSDate *lastDate2 = [NSDate dateWithString:obj2.message.createdAt format:@"yyyy-MM-dd'T'HH:mm:ss.SSSXXX"timeZone:[NSTimeZone localTimeZone] locale:[NSLocale systemLocale]];
-        
-        NSComparisonResult result = [lastDate1 compare:lastDate2];
-        return result;
-    }];
-    
-    return array;
 }
 
 @end
