@@ -87,7 +87,7 @@
     [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:nil completion:^(NSArray<UMCMessage *> *merchantsArray) {
         self.hasMore = merchantsArray.count;
         self.messagesArray = nil;
-        [self addMessageToChatMessageArray:merchantsArray];
+        [self updateMerchantMessagesArray:merchantsArray];
     }];
 }
 
@@ -113,8 +113,24 @@
     
     [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:messageUUID completion:^(NSArray<UMCMessage *> *merchantsArray) {
         self.hasMore = merchantsArray.count;
-        [self addMessageToChatMessageArray:merchantsArray];
+        [self updateMerchantMessagesArray:merchantsArray];
     }];
+}
+
+- (void)updateMerchantMessagesArray:(NSArray *)messagesArrat {
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSMutableArray *array = [NSMutableArray arrayWithArray:self.messagesArray];
+        for (UMCMessage *message in messagesArrat) {
+            UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
+            if (baseMsg) {
+                [array insertObject:baseMsg atIndex:0];
+            }
+        }
+        
+        self.messagesArray = [array copy];
+        [self reloadMessages];
+    });
 }
 
 /** 发送文本消息 */
@@ -132,7 +148,7 @@
     UMCMessage *message = [[UMCMessage alloc] initWithImage:image];
     
     NSData *data = [UMCImageHelper imageWithOriginalImage:[UMCImageHelper fixOrientation:image] quality:0.5];
-    [self createMediaMessage:message mediaData:data completion:completion];
+    [self createMediaMessage:message mediaData:data fileName:[message.UUID stringByAppendingString:@".jpg"] completion:completion];
 }
 
 /** 发送gif图片消息 */
@@ -140,7 +156,7 @@
                  completion:(void(^)(UMCMessage *message))completion {
     
     UMCMessage *message = [[UMCMessage alloc] initWithGIFImage:gifData];
-    [self createMediaMessage:message mediaData:gifData completion:completion];
+    [self createMediaMessage:message mediaData:gifData fileName:[message.UUID stringByAppendingString:@".gif"] completion:completion];
 }
 
 /** 发送语音消息 */
@@ -149,7 +165,7 @@
               completion:(void(^)(UMCMessage *message))completion {
     
     UMCMessage *message = [[UMCMessage alloc] initWithVoice:[NSData dataWithContentsOfFile:voicePath] duration:voiceDuration];
-    [self createMediaMessage:message mediaData:[NSData dataWithContentsOfFile:voicePath] completion:completion];
+    [self createMediaMessage:message mediaData:[NSData dataWithContentsOfFile:voicePath] fileName:[message.UUID stringByAppendingString:@".aac"] completion:completion];
 }
 
 /** 发送商品消息 */
@@ -175,7 +191,7 @@
     }];
 }
 
-- (void)createMediaMessage:(UMCMessage *)message mediaData:(NSData *)mediaData completion:(void(^)(UMCMessage *message))completion {
+- (void)createMediaMessage:(UMCMessage *)message mediaData:(NSData *)mediaData fileName:(NSString *)fileName completion:(void(^)(UMCMessage *message))completion {
     
     if (!message || message == (id)kCFNull) return ;
     
@@ -183,7 +199,7 @@
     [self addMessageToChatMessageArray:@[message]];
     
     //上传文件
-    [UMCManager uploadFile:mediaData fileName:message.UUID completion:^(NSString *address, NSError *error) {
+    [UMCManager uploadFile:mediaData fileName:fileName completion:^(NSString *address, NSError *error) {
         
         if (!error) {
             
@@ -255,7 +271,7 @@
             NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.messagesArray];
             for (UMCBaseMessage *msg in mMessages) {
                 if (![self checkMessage:msg existInList:tmpArray]) {
-                    [tmpArray insertObject:msg atIndex:0];
+                    [tmpArray addObject:msg];
                 }
             }
             

@@ -358,6 +358,9 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
     else {
         if (!_remarkTextView.text.length) {
             CGFloat remarkPlaceholderHeight = [self.remarkTextView.placeholder umcSizeForFont:self.remarkTextView.font size:CGSizeMake(self.umcWidth-(kUDSurveyContentSpacing*3), MAXFLOAT) mode:NSLineBreakByTruncatingTail].height + 15;
+            if ([UMCHelper isBlankString:self.remarkTextView.placeholder]) {
+                remarkPlaceholderHeight = 0;
+            }
             _remarkTextView.minHeight = MAX(kUDSurveyRemarkTextViewHeight, remarkPlaceholderHeight);
             _remarkTextView.umcHeight = MAX(kUDSurveyRemarkTextViewHeight, remarkPlaceholderHeight);
         }

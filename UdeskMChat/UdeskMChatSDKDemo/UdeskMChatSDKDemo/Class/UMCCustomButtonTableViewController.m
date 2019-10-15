@@ -124,7 +124,7 @@
             break;
         case UMCSendTypeImage:
             
-            [viewController sendImageMessageWithImage:[UIImage imageNamed:@"avatar"]];
+            [viewController sendImageMessageWithImage:[UIImage imageNamed:@"product"]];
             break;
         case UMCSendTypeVoice:
             
@@ -138,36 +138,36 @@
         }
         case UMCSendTypeGoods:{
 
-//            UMCGoodsModel *goodsModel1 = [[UMCGoodsModel alloc] init];
-//            goodsModel1.goodsId = @"12";
-//            goodsModel1.name = @"Apple iPhone X (A1903) 64GB 深空灰色 移动联通4G手机";
-//            goodsModel1.url = @"https://item.jd.com/6748052.html";
-//            goodsModel1.imgUrl = @"http://img12.360buyimg.com/n1/s450x450_jfs/t10675/253/1344769770/66891/92d54ca4/59df2e7fN86c99a27.jpg";
-//
-//            UMCGoodsParamModel *paramModel1 = [UMCGoodsParamModel new];
-//            paramModel1.text = @"￥6999.00";
-//            paramModel1.color = @"#FF0000";
-//            paramModel1.fold = @(1);
-//            paramModel1.udBreak = @(1);
-//            paramModel1.size = @(14);
-//
-//            UMCGoodsParamModel *paramModel2 = [UMCGoodsParamModel new];
-//            paramModel2.text = @"满1999元另加30元";
-//            paramModel2.color = @"#c2fcc3";
-//            paramModel2.fold = @(1);
-//            paramModel2.size = @(12);
-//
-//            UMCGoodsParamModel *paramModel3 = [UMCGoodsParamModel new];
-//            paramModel3.text = @"但是我会先提价100";
-//            paramModel3.color = @"#ffffff";
-//            paramModel3.fold = @(1);
-//            paramModel3.size = @(20);
-//
-//            goodsModel1.params = @[paramModel1,paramModel2,paramModel3];
-//
-//            [viewController sendGoodsMessageWithModel:goodsModel1];
+            UMCGoodsModel *goodsModel1 = [[UMCGoodsModel alloc] init];
+            goodsModel1.goodsId = @"12";
+            goodsModel1.name = @"Apple iPhone X (A1903) 64GB 深空灰色 移动联通4G手机";
+            goodsModel1.url = @"https://item.jd.com/6748052.html";
+            goodsModel1.imgUrl = @"http://img12.360buyimg.com/n1/s450x450_jfs/t10675/253/1344769770/66891/92d54ca4/59df2e7fN86c99a27.jpg";
+
+            UMCGoodsParamModel *paramModel1 = [UMCGoodsParamModel new];
+            paramModel1.text = @"￥6999.00";
+            paramModel1.color = @"#FF0000";
+            paramModel1.fold = @(1);
+            paramModel1.udBreak = @(1);
+            paramModel1.size = @(14);
+
+            UMCGoodsParamModel *paramModel2 = [UMCGoodsParamModel new];
+            paramModel2.text = @"满1999元另加30元";
+            paramModel2.color = @"#c2fcc3";
+            paramModel2.fold = @(1);
+            paramModel2.size = @(12);
+
+            UMCGoodsParamModel *paramModel3 = [UMCGoodsParamModel new];
+            paramModel3.text = @"但是我会先提价100";
+            paramModel3.color = @"#ffffff";
+            paramModel3.fold = @(1);
+            paramModel3.size = @(20);
+
+            goodsModel1.params = @[paramModel1,paramModel2,paramModel3];
+
+            [viewController sendGoodsMessageWithModel:goodsModel1];
             
-            [viewController sendGoodsMessageWithModel:goodsModel];
+//            [viewController sendGoodsMessageWithModel:goodsModel];
             break;
         }
         default:
