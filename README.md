@@ -1,3 +1,7 @@
+### 公告
+
+**接入sdk编译报错误请升级Xcode到最新版本或者选择“sdk_xcode10”分支下载导入！！！**
+
 ### 1.导入SDK
 
 - 把Udesk SDK 文件夹中的 `UdeskMChatSDK.framework` 、 `UdeskMChatUIKit`文件夹 拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者将这两个个文件拖入 Xcode 工程目录结构中。

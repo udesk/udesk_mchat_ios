@@ -37,8 +37,8 @@ static CGFloat const kUMCHUDDuration = 1.2f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msgChange:) name:UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION object:nil];
     [[UMCDelegate shareInstance] addDelegate:self];
     
-//    self.uuidTextField.text = @"b1ce357b-8ce8-4ea1-9a87-7d15519dd7e6";
-//    self.keyTextField.text = @"27aa6696cba45cc091ee66fbc25aedab";
+    self.uuidTextField.text = @"b1ce357b-8ce8-4ea1-9a87-7d15519dd7e6";
+    self.keyTextField.text = @"27aa6696cba45cc091ee66fbc25aedab";
 }
 
 - (IBAction)startUMCAction:(id)sender {
@@ -61,8 +61,9 @@ static CGFloat const kUMCHUDDuration = 1.2f;
         [self showWaitingMessage:nil];
         NSString *url = [NSString stringWithFormat:@"http://mchat.udeskmonkey.com/sdk/v1/%@/demo_sign",self.uuidTextField.text];
         [self serversSignWithURL:url completion:^(NSString *sign,NSString *timestamp) {
-            
-            [self pushSetingVCWithSign:sign timestamp:timestamp];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self pushSetingVCWithSign:sign timestamp:timestamp];
+            });
         }];
     }
     else {
