@@ -44,6 +44,13 @@
         }
     }
     
+//    //指定浅色模式
+//    if (@available(iOS 13.0, *)) {
+//        viewController.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+//    } else {
+//        // Fallback on earlier versions
+//    }
+    
     if(![rootViewController.navigationController.topViewController isKindOfClass:[viewController class]]) {
         [rootViewController presentViewController:viewController animated:shouldUseUIKitAnimation completion:completion];
     }
