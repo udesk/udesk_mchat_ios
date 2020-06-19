@@ -101,15 +101,10 @@ const CGFloat kUDCellBottomMargin = 10.0;
         if (self.message.direction == UMCMessageDirectionOut) {
             //用户头像frame
             self.avatarFrame = CGRectMake(kUDAvatarToHorizontalEdgeSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, kUDAvatarDiameter, kUDAvatarDiameter);
-            self.avatarImage = [UMCSDKConfig sharedConfig].merchantImage;
-            self.avatarURL = [UMCSDKConfig sharedConfig].merchantImageURL;
         }
         else if (self.message.direction == UMCMessageDirectionIn) {
             
             self.avatarFrame = CGRectMake(kUMCScreenWidth-kUDAvatarToHorizontalEdgeSpacing-kUDAvatarDiameter, self.dateFrame.origin.y+self.dateFrame.size.height+ kUDAvatarToVerticalEdgeSpacing, kUDAvatarDiameter, kUDAvatarDiameter);
-            //数据
-            self.avatarImage = [UMCSDKConfig sharedConfig].customerImage;
-            self.avatarURL = [UMCSDKConfig sharedConfig].customerImageURL;
         }
     }    
 }

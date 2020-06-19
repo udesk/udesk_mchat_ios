@@ -139,14 +139,9 @@ static CGFloat const kUDGoodsParamsVerticalSpacing = 10.0;
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.paragraphSpacing = 5;
-    //名称
-    UIColor *color = [UMCSDKConfig sharedConfig].sdkStyle.goodsNameTextColor;
-    if (![UMCHelper isBlankString:self.url]) {
-        color = [UMCSDKConfig sharedConfig].sdkStyle.linkColor;
-    }
     
     NSDictionary *dic = @{
-                          NSForegroundColorAttributeName:color,
+                          NSForegroundColorAttributeName:[UMCSDKConfig sharedConfig].sdkStyle.goodsNameTextColor,
                           NSFontAttributeName:[UMCSDKConfig sharedConfig].sdkStyle.goodsNameFont,
                           NSParagraphStyleAttributeName:paragraphStyle
                           };

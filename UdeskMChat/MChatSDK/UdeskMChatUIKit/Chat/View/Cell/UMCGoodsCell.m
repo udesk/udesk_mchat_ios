@@ -41,8 +41,6 @@
     _goodsMessageLabel.textAlignment = NSTextAlignmentLeft;
     _goodsMessageLabel.userInteractionEnabled = true;
     _goodsMessageLabel.backgroundColor = [UIColor clearColor];
-    _goodsMessageLabel.activeLinkAttributes = @{(id)kCTForegroundColorAttributeName:[UMCSDKConfig sharedConfig].sdkStyle.activeLinkColor};
-    _goodsMessageLabel.linkAttributes = @{(id)kCTForegroundColorAttributeName:[UMCSDKConfig sharedConfig].sdkStyle.linkColor};
     [self.bubbleImageView addSubview:_goodsMessageLabel];
     
     _goodsMessageImageView = [[UIImageView alloc] init];

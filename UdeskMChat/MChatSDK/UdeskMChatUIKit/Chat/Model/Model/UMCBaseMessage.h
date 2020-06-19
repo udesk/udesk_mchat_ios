@@ -47,10 +47,6 @@ extern const CGFloat kUDCellBottomMargin;
 @property (nonatomic, assign) CGRect     dateFrame;
 /** 消息ID */
 @property (nonatomic, copy  ) NSString   *messageId;
-/** 消息发送人头像 */
-@property (nonatomic, copy  , readonly) NSString   *avatarURL;
-/** 消息发送人头像 */
-@property (nonatomic, strong, readonly) UIImage  *avatarImage;
 /** cell高度 */
 @property (nonatomic, assign) CGFloat  cellHeight;
 /** 消息model */

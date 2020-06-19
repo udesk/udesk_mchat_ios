@@ -10,7 +10,7 @@
 
 @interface NSObject (UMC)
 
-- (NSDictionary *)dictionaryFromModel;
-- (id)idFromObject:(nonnull id)object;
+- (NSDictionary *_Nullable)dictionaryFromModel;
+- (id _Nullable )idFromObject:(nonnull id)object;
 
 @end

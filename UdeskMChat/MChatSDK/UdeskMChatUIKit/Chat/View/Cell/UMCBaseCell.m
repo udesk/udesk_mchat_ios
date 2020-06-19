@@ -36,7 +36,15 @@
     //头像位置
     self.avatarImageView.frame = baseMessage.avatarFrame;
     //头像图片
-    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[baseMessage.avatarURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:baseMessage.avatarImage];
+    NSString *avatarUrl = [UMCSDKConfig sharedConfig].merchantImageURL;
+    UIImage *avatarImage = [UMCSDKConfig sharedConfig].merchantImage;
+    
+    if (baseMessage.message.direction == UMCMessageDirectionIn) {
+        avatarUrl = [UMCSDKConfig sharedConfig].customerImageURL;
+        avatarImage = [UMCSDKConfig sharedConfig].customerImage;
+    }
+    
+    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[avatarUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:avatarImage];
     
     //气泡
     self.bubbleImageView.frame = baseMessage.bubbleFrame;
