@@ -89,18 +89,6 @@
  */
 + (UIImage *)umcDefaultSurveyHighlightedImage;
 /**
- *  地理位置
- *
- *  @return 地理位置
- */
-+ (UIImage *)umcDefaultLocationImage;
-/**
- *  地理位置高亮
- *
- *  @return 地理位置高亮
- */
-+ (UIImage *)umcDefaultLocationHighlightedImage;
-/**
  *  用户头像图片
  *
  *  @return 用户头像图片
@@ -191,30 +179,6 @@
  *  @return 相机高亮图片
  */
 + (UIImage *)umcDefaultAlbumHighlightedImage;
-/**
- *  录制语音显示图片
- *
- *  @return 录制语音显示图片
- */
-+ (UIImage *)umcDefaultRecordVoiceImage;
-/**
- *  录制语音高亮显示图片
- *
- *  @return 录制语音高亮显示图片
- */
-+ (UIImage *)umcDefaultRecordVoiceHighImage;
-/**
- *  删除录制语音显示图片
- *
- *  @return 录制语音高亮显示图片
- */
-+ (UIImage *)umcDefaultDeleteRecordVoiceImage;
-/**
- *  删除录制语音高亮显示图片
- *
- *  @return 录制语音高亮显示图片
- */
-+ (UIImage *)umcDefaultDeleteRecordVoiceHighImage;
 
 /**
  *  转人工
@@ -243,9 +207,6 @@
  *  @return 图片
  */
 - (UIImage *)umcConvertImageColor:(UIColor *)toColor;
-
-//地图大头针
-+ (UIImage *)umcDefaultLocationPinImage;
 
 //打勾
 + (UIImage *)umcDefaultMarkImage;
@@ -279,5 +240,48 @@
 
 /** 满意度评价表情 实星 */
 + (UIImage *)umcDefaultSurveyStarFilledImage;
+
++ (UIImage *)umcDefaultMoreImage;
+
++ (UIImage *)umcDefaultKeyboardImage;
+
+//更多-相册
++ (UIImage *)umcDefaultChatBarMorePhotoImage;
+
+//更多-相机
++ (UIImage *)umcDefaultChatBarMoreCameraImage;
+
+//更多-评价
++ (UIImage *)umcDefaultChatBarMoreSurveyImage;
+
+//更多-小视频
++ (UIImage *)umcDefaultChatBarMoreSmallVideoImage;
+
+/** 发送语音时话筒图片 */
++ (UIImage *)umcDefaultVoiceSpeakImage;
+
+//取消发送
++ (UIImage *)umcDefaultVoiceRevokeImage;
+
+/** 语音太短 */
++ (UIImage *)umcDefaultVoiceTooShortImage;
+
+//小视频返回按钮
++ (UIImage *)umcDefaultSmallVideoBack;
+
+//小视频切换摄像头按钮
++ (UIImage *)umcDefaultSmallVideoCameraSwitch;
+
+//小视频重拍
++ (UIImage *)umcDefaultSmallVideoRetake;
+
+//小视频完成
++ (UIImage *)umcDefaultSmallVideoDone;
+
+//小视频下载
++ (UIImage *)umcDefaultVideoDownload;
+
+//小视频下载
++ (UIImage *)umcDefaultVideoPlay;
 
 @end

@@ -50,7 +50,6 @@ static CGFloat const kUDCellBubbleVoiceMaxContentWidth = 150.0;
 
 - (void)layoutVoiceMessage {
     
-    
     CGSize voiceSize = CGSizeMake(kUDCellBubbleVoiceMinContentWidth, kUDAvatarDiameter);
     if (self.message.extras.duration) {
         if ([UMCHelper isPureInt:self.message.extras.duration]) {
@@ -71,7 +70,7 @@ static CGFloat const kUDCellBubbleVoiceMaxContentWidth = 150.0;
             //发送的语音播放动画图片
             self.voiceAnimationFrame = CGRectMake(self.bubbleFrame.size.width-kUDAnimationVoiceImageViewWidth-kUDArrowMarginWidth-kUDBubbleToAnimationVoiceImageVerticalSpacing, kUDBubbleToAnimationVoiceImageVerticalSpacing, kUDAnimationVoiceImageViewWidth, kUDAnimationVoiceImageViewHeight);
             //发送中
-            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDBubbleToSendStatusSpacing-kUDSendStatusDiameter, self.bubbleFrame.origin.y+kUDCellBubbleToIndicatorSpacing, kUDSendStatusDiameter, kUDSendStatusDiameter);
+            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDBubbleToSendStatusSpacing-(kUDSendStatusDiameter*2), self.bubbleFrame.origin.y+kUDCellBubbleToIndicatorSpacing, kUDSendStatusDiameter, kUDSendStatusDiameter);
             //发送失败
             self.failureFrame = self.loadingFrame;
             

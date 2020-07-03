@@ -10,4 +10,9 @@
 
 @interface UMCImageCell : UMCBaseCell
 
+@property (nonatomic, strong) UILabel *progressLabel;
+
+- (void)uploadImageSuccess;
+- (void)imageUploading;
+
 @end

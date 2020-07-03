@@ -13,10 +13,12 @@
 #import "UMCVoiceMessage.h"
 #import "UMCEventMessage.h"
 #import "UMCGoodsMessage.h"
+#import "UMCVideoMessage.h"
 #import "NSDate+UMC.h"
 #import "UMCHelper.h"
 #import "UMCImageHelper.h"
 #import "UMCBundleHelper.h"
+#import "UMCVideoCache.h"
 
 #import "SDWebImageManager.h"
 #import "YYCache.h"
@@ -117,22 +119,6 @@
     }];
 }
 
-- (void)updateMerchantMessagesArray:(NSArray *)messagesArrat {
-    
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSMutableArray *array = [NSMutableArray arrayWithArray:self.messagesArray];
-        for (UMCMessage *message in messagesArrat) {
-            UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
-            if (baseMsg) {
-                [array insertObject:baseMsg atIndex:0];
-            }
-        }
-        
-        self.messagesArray = [array copy];
-        [self reloadMessages];
-    });
-}
-
 /** 发送文本消息 */
 - (void)sendTextMessage:(NSString *)text
              completion:(void(^)(UMCMessage *message))completion {
@@ -143,20 +129,21 @@
 
 /** 发送图片消息 */
 - (void)sendImageMessage:(UIImage *)image
+                progress:(void(^)(UMCMessage *message,float percent))progress
               completion:(void(^)(UMCMessage *message))completion {
     
     UMCMessage *message = [[UMCMessage alloc] initWithImage:image];
     
-    NSData *data = [UMCImageHelper imageWithOriginalImage:[UMCImageHelper fixOrientation:image] quality:0.5];
-    [self createMediaMessage:message mediaData:data fileName:[message.UUID stringByAppendingString:@".jpg"] completion:completion];
+    [self createMediaMessage:message mediaData:message.sourceData fileName:message.fileName progress:progress completion:completion];
 }
 
 /** 发送gif图片消息 */
 - (void)sendGIFImageMessage:(NSData *)gifData
+                   progress:(void(^)(UMCMessage *message,float percent))progress
                  completion:(void(^)(UMCMessage *message))completion {
     
     UMCMessage *message = [[UMCMessage alloc] initWithGIFImage:gifData];
-    [self createMediaMessage:message mediaData:gifData fileName:[message.UUID stringByAppendingString:@".gif"] completion:completion];
+    [self createMediaMessage:message mediaData:message.sourceData fileName:message.fileName progress:progress completion:completion];
 }
 
 /** 发送语音消息 */
@@ -165,7 +152,26 @@
               completion:(void(^)(UMCMessage *message))completion {
     
     UMCMessage *message = [[UMCMessage alloc] initWithVoice:[NSData dataWithContentsOfFile:voicePath] duration:voiceDuration];
-    [self createMediaMessage:message mediaData:[NSData dataWithContentsOfFile:voicePath] fileName:[message.UUID stringByAppendingString:@".aac"] completion:completion];
+    [self createMediaMessage:message mediaData:message.sourceData fileName:message.fileName progress:nil completion:completion];
+}
+
+/** 发送视频消息 */
+- (void)sendVideoMessage:(NSData *)videoData progress:(void(^)(UMCMessage *message,float percent))progress completion:(void(^)(UMCMessage *message))completion {
+    
+    //超过发送限制
+    CGFloat size = videoData.length/1024.f/1024.f;
+    if (size > 31.f) {
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0/*延迟执行时间*/ * NSEC_PER_SEC));
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:UMCLocalizedString(@"udesk_video_big_tips") preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:UMCLocalizedString(@"udesk_sure") style:UIAlertActionStyleCancel handler:nil]];
+            [[UMCHelper currentViewController] presentViewController:alert animated:YES completion:nil];
+        });
+        return;
+    }
+    
+    UMCMessage *message = [[UMCMessage alloc] initWithVideo:videoData];
+    [self createMediaMessage:message mediaData:message.sourceData fileName:message.fileName progress:progress completion:completion];
 }
 
 /** 发送商品消息 */
@@ -191,7 +197,7 @@
     }];
 }
 
-- (void)createMediaMessage:(UMCMessage *)message mediaData:(NSData *)mediaData fileName:(NSString *)fileName completion:(void(^)(UMCMessage *message))completion {
+- (void)createMediaMessage:(UMCMessage *)message mediaData:(NSData *)mediaData fileName:(NSString *)fileName progress:(void(^)(UMCMessage *message,float percent))progress completion:(void(^)(UMCMessage *message))completion {
     
     if (!message || message == (id)kCFNull) return ;
     
@@ -199,10 +205,15 @@
     [self addMessageToChatMessageArray:@[message]];
     
     //上传文件
-    [UMCManager uploadFile:mediaData fileName:fileName completion:^(NSString *address, NSError *error) {
+    [UMCManager uploadFile:mediaData fileName:fileName progress:^(float percent) {
+      
+        if (progress) {
+            progress(message,percent);
+        }
+        
+    } completion:^(NSString *address, NSError *error) {
         
         if (!error) {
-            
             message.content = address;
             [UMCManager createMessageWithMerchantsEuid:self.merchantId message:message completion:^(UMCMessage *newMessage) {
                 
@@ -211,6 +222,11 @@
                     completion(message);
                 }
             }];
+        } else {
+            message.messageStatus = UMCMessageStatusFailed;
+            if (completion) {
+                completion(message);
+            }
         }
     }];
 }
@@ -246,11 +262,38 @@
             
             break;
         }
+        case UMCMessageContentTypeVideo:{
+            
+            if ([[UMCVideoCache sharedManager] containsObjectForKey:oldMessage.UUID]) {
+                NSString *path = [[UMCVideoCache sharedManager] filePathForkey:oldMessage.UUID];
+                NSData *data = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:path]];
+                [[UMCVideoCache sharedManager] storeVideo:data videoId:newMessage.UUID];
+                [[UMCVideoCache sharedManager] udRemoveObjectForKey:oldMessage.UUID];
+            }
+            
+            break;
+        }
         default:
             break;
     }
     
     oldMessage.UUID = newMessage.UUID;
+}
+
+- (void)updateMerchantMessagesArray:(NSArray *)messagesArrat {
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSMutableArray *array = [NSMutableArray arrayWithArray:self.messagesArray];
+        for (UMCMessage *message in messagesArrat) {
+            UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
+            if (baseMsg) {
+                [array insertObject:baseMsg atIndex:0];
+            }
+        }
+        
+        self.messagesArray = [array copy];
+        [self reloadMessages];
+    });
 }
 
 - (void)addMessageToChatMessageArray:(NSArray *)messages {
@@ -354,6 +397,10 @@
                 message.content = UMCLocalizedString(@"udesk_rollback");
             }
             
+            if ([UMCHelper isBlankString:message.content]) {
+                return nil;
+            }
+            
             if (message.eventType != UMCEventContentTypeSurvey) {
                 UMCEventMessage *eventMessage = [[UMCEventMessage alloc] initWithMessage:message];
                 return eventMessage;
@@ -366,6 +413,9 @@
             switch (message.contentType) {
                 case UMCMessageContentTypeText:{
                     
+                    if ([UMCHelper isBlankString:message.content]) {
+                        return nil;
+                    }
                     UMCTextMessage *textMessage = [[UMCTextMessage alloc] initWithMessage:message];
                     return textMessage;
                     break;
@@ -386,6 +436,12 @@
                     
                     UMCGoodsMessage *goodsMessage = [[UMCGoodsMessage alloc] initWithMessage:message];
                     return goodsMessage;
+                    break;
+                }
+                case UMCMessageContentTypeVideo: {
+                    
+                    UMCVideoMessage *videoMessage = [[UMCVideoMessage alloc] initWithMessage:message];
+                    return videoMessage;
                     break;
                 }
                     

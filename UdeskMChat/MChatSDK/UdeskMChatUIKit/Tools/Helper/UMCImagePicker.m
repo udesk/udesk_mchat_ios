@@ -25,8 +25,12 @@
         UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
         imagePickerController.navigationBar.tintColor = [UIColor blueColor];
         
+        NSString *movieType = (NSString *)kUTTypeMovie;
         NSString *imageType = (NSString *)kUTTypeImage;
-        NSArray *arrMediaTypes = [NSArray arrayWithObjects:imageType,nil];
+        NSArray *arrMediaTypes = [NSArray arrayWithObjects:imageType,movieType,nil];
+        if (sourceType == UIImagePickerControllerSourceTypeCamera) {
+            arrMediaTypes = [NSArray arrayWithObjects:imageType,nil];
+        }
         [imagePickerController setMediaTypes: arrMediaTypes];
         
         imagePickerController.editing = YES;
@@ -60,23 +64,34 @@
             if (asset != nil) {
                 
                 ALAssetRepresentation *rep = [asset defaultRepresentation];
-                
-                Byte *imageBuffer = (Byte*)malloc(rep.size);
-                NSUInteger bufferSize = [rep getBytes:imageBuffer fromOffset:0.0 length:rep.size error:nil];
-                NSData *imageData = [NSData dataWithBytesNoCopy:imageBuffer length:bufferSize freeWhenDone:YES];
-                
-                NSString *type = [self contentTypeForImageData:imageData];
-                
-                if ([type isEqualToString:@"gif"]) {
+                NSString *type = info[UIImagePickerControllerMediaType];
+                if ([type isEqualToString:(NSString *)kUTTypeMovie]) {
                     
-                    if (self.FinishGIFImageBlock) {
-                        self.FinishGIFImageBlock(imageData);
+                    NSString *videoPath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
+                    
+                    if (self.FinishVideoBlock) {
+                        self.FinishVideoBlock(videoPath,[rep filename]);
                     }
                 }
                 else {
                     
-                    if (self.FinishNormalImageBlock) {
-                        self.FinishNormalImageBlock(info[UIImagePickerControllerOriginalImage]);
+                    Byte *imageBuffer = (Byte*)malloc(rep.size);
+                    NSUInteger bufferSize = [rep getBytes:imageBuffer fromOffset:0.0 length:rep.size error:nil];
+                    NSData *imageData = [NSData dataWithBytesNoCopy:imageBuffer length:bufferSize freeWhenDone:YES];
+                    
+                    NSString *type = [self contentTypeForImageData:imageData];
+                    
+                    if ([type isEqualToString:@"gif"]) {
+                        
+                        if (self.FinishGIFImageBlock) {
+                            self.FinishGIFImageBlock(imageData);
+                        }
+                    }
+                    else {
+                        
+                        if (self.FinishNormalImageBlock) {
+                            self.FinishNormalImageBlock(info[UIImagePickerControllerOriginalImage]);
+                        }
                     }
                 }
             }
@@ -89,9 +104,21 @@
         
     }
     else {
+        
+        NSString *type = info[UIImagePickerControllerMediaType];
+        if ([type isEqualToString:(NSString *)kUTTypeMovie]) {
             
-        if (self.FinishNormalImageBlock) {
-            self.FinishNormalImageBlock(info[UIImagePickerControllerOriginalImage]);
+            NSString *videoPath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
+            
+            if (self.FinishVideoBlock) {
+                self.FinishVideoBlock(videoPath,[NSString stringWithFormat:@"%@.mp4",[[NSUUID UUID] UUIDString]]);
+            }
+        }
+        else {
+            
+            if (self.FinishNormalImageBlock) {
+                self.FinishNormalImageBlock(info[UIImagePickerControllerOriginalImage]);
+            }
         }
     }
     

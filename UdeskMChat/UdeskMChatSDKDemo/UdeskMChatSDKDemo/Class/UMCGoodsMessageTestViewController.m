@@ -64,7 +64,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return 4;
+        return 3;
     }
     return 5;
 }
@@ -79,15 +79,12 @@
     if (indexPath.section == 0) {
         cell.textLabel.text = self.goodsKeys[indexPath.row];
         if (indexPath.row == 0) {
-            cell.detailTextLabel.text = self.model.goodsId;
-        }
-        else if (indexPath.row == 1) {
             cell.detailTextLabel.text = self.model.name;
         }
-        else if (indexPath.row == 2) {
+        else if (indexPath.row == 1) {
             cell.detailTextLabel.text = self.model.url;
         }
-        else if (indexPath.row == 3) {
+        else if (indexPath.row == 2) {
             cell.detailTextLabel.text = self.model.imgUrl;
         }
     }
@@ -127,15 +124,12 @@
         if (indexPath.section == 0) {
             cell.detailTextLabel.text = textField.text;
             if (indexPath.row == 0) {
-                self.model.goodsId = textField.text;
-            }
-            else if (indexPath.row == 1) {
                 self.model.name = textField.text;
             }
-            else if (indexPath.row == 2) {
+            else if (indexPath.row == 1) {
                 self.model.url = textField.text;
             }
-            else if (indexPath.row == 3) {
+            else if (indexPath.row == 2) {
                 self.model.imgUrl = textField.text;
             }
         }

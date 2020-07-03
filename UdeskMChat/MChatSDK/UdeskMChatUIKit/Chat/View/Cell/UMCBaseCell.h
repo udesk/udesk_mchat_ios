@@ -14,7 +14,7 @@
 //重发消息
 - (void)resendMessageInCell:(UITableViewCell *)cell resendMessage:(UMCMessage *)resendMessage;
 //点击商品消息
-- (void)didTapGoodsMessageCell:(UITableViewCell *)cell goodsURL:(NSString *)goodsURL goodsId:(NSString *)goodsId;
+- (void)didTapGoodsMessageCell:(UITableViewCell *)cell goodsURL:(NSString *)goodsURL;
 
 @end
 

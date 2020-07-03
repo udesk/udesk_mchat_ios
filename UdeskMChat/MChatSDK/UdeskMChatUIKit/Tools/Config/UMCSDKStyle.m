@@ -29,19 +29,17 @@
         
         //customer
         self.customerTextColor = [UIColor whiteColor];
-        self.customerBubbleColor = [UIColor umcColorWithHexString:@"#0B84FE"];
         self.customerBubbleImage = [UIImage umcBubbleSendImage];
         self.customerVoiceDurationColor = [UIColor umcColorWithHexString:@"#8E8E93"];;
         
         //agent
         self.agentTextColor = [UIColor blackColor];
-        self.agentBubbleColor = [UIColor umcColorWithHexString:@"#F1F0F0"];
         self.agentBubbleImage = [UIImage umcBubbleReceiveImage];
         self.agentVoiceDurationColor = [UIColor umcColorWithHexString:@"#8E8E93"];
         
         //im
-        self.tableViewBackGroundColor = [UIColor whiteColor];
-        self.chatViewControllerBackGroundColor = [UIColor whiteColor];
+        self.tableViewBackGroundColor = [UIColor umcColorWithHexString:@"#F0F2F2"];
+        self.chatViewControllerBackGroundColor = [UIColor umcColorWithHexString:@"#F0F2F2"];
         self.chatTimeColor = [UIColor umcColorWithHexString:@"#8E8E93"];
         self.inputViewColor = [UIColor whiteColor];
         self.textViewColor = [UIColor whiteColor];
@@ -66,7 +64,7 @@
         self.recordViewColor = [UIColor umcColorWithHexString:@"#FAFAFA"];
         
         //product
-        self.productBackGroundColor = [UIColor umcColorWithHexString:@"#F1F0F0"];
+        self.productBackGroundColor = [UIColor whiteColor];
         self.productTitleColor = [UIColor umcColorWithHexString:@"#000000"];
         self.productDetailColor = [UIColor umcColorWithHexString:@"#FF3B30"];
         self.productSendBackGroundColor = [UIColor umcColorWithHexString:@"#FF3B30"];

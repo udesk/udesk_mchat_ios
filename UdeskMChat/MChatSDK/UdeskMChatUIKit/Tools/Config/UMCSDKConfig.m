@@ -64,6 +64,10 @@
     
     self.imTitle = nil;
     self.product = nil;
+    
+    self.smallVideoEnabled = YES;
+    self.smallVideoResolution = UMCSmallVideoResolutionType1280x720;
+    self.smallVideoDuration = 15;
 }
 
 @end

@@ -1,5 +1,5 @@
 //
-//  UdeskVoiceRecodView.m
+//  UMCVoiceRecordView.m
 //  UdeskSDK
 //
 //  Created by Udesk on 16/8/23.
@@ -7,26 +7,16 @@
 //
 
 #import "UMCVoiceRecordView.h"
-#import "UMCSpectrumView.h"
-#import <AVFoundation/AVFoundation.h>
 #import "UIImage+UMC.h"
-#import "UMCUIMacro.h"
-#import "UMCSDKConfig.h"
 #import "UMCBundleHelper.h"
-#import "UMCVoiceRecordHelper.h"
 
-@interface UMCVoiceRecordView()<AVAudioRecorderDelegate,MZTimerLabelDelegate> {
-    
-    UILabel  *tipLabel;
-    UIButton *deleteButton;
-    UIButton *recordButton;
-    UMCSpectrumView *spectrumView;
-    BOOL        isInDeleteButton;
-    float  recordTime;
-}
+@interface UMCVoiceRecordView()
 
-@property (nonatomic, strong) UMCVoiceRecordHelper    *voiceRecordHelper;//管理录音工具对象
-@property (nonatomic, assign) BOOL isMaxTime;
+@property (nonatomic, strong) UILabel *tipLabel;
+@property (nonatomic, strong) UIImageView *microPhoneImageView;
+@property (nonatomic, strong) UIImageView *cancelRecordImageView;
+@property (nonatomic, strong) UIImageView *volumeImageView;
+@property (nonatomic, strong) UIImageView *tooShortView;
 
 @end
 
@@ -37,263 +27,146 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.backgroundColor = [UMCSDKConfig sharedConfig].sdkStyle.recordViewColor;
-        
-        recordTime = 0.0f;
-        
-        spectrumView = [[UMCSpectrumView alloc] initWithFrame:CGRectMake((kUMCScreenWidth-170)/2,32,150, 20)];
-        spectrumView.stopwatch.delegate = self;
-        __weak UMCSpectrumView * weakSpectrum = spectrumView;
-        
-        @udWeakify(self);
-        spectrumView.itemLevelCallback = ^() {
-            @udStrongify(self);
-            self.voiceRecordHelper.peakPowerForChannel = ^(float peakPowerForChannel) {
-                
-                weakSpectrum.level = peakPowerForChannel;
-            };
-            
-        };
-        
-        spectrumView.hidden = YES;
-        
-        [self addSubview:spectrumView];
-        
-        tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 25, CGRectGetMaxX(self.frame),30)];
-        tipLabel.textColor = [UIColor grayColor];
-        tipLabel.font = [UIFont systemFontOfSize:18];
-        tipLabel.text = UMCLocalizedString(@"udesk_hold_to_talk");
-        [tipLabel setTextAlignment:NSTextAlignmentCenter];
-        [self addSubview:tipLabel];
-        
-        recordButton = [[UIButton alloc]initWithFrame:CGRectMake((kUMCScreenWidth-100)/2, 77, 100, 100)];
-        
-        [recordButton setBackgroundImage:[UIImage umcDefaultRecordVoiceImage] forState:UIControlStateNormal];
-        [recordButton setBackgroundImage:[UIImage umcDefaultRecordVoiceHighImage] forState:UIControlStateHighlighted];
-        
-        //开始
-        [recordButton addTarget:self action:@selector(recordStart:) forControlEvents:UIControlEventTouchDown];
-        //完成
-        [recordButton addTarget:self action:@selector(recordFinish:) forControlEvents:UIControlEventTouchUpInside];
-        //取消
-        [recordButton addTarget:self action:@selector(recordCancel:) forControlEvents: UIControlEventTouchUpOutside];
-        //移出
-        [recordButton addTarget:self action:@selector(btnTouchUp:withEvent:) forControlEvents:UIControlEventTouchDragInside];
-        [recordButton addTarget:self action:@selector(btnTouchUp:withEvent:) forControlEvents:UIControlEventTouchDragOutside];
-        
-        [self addSubview:recordButton];
-        
-        
-        deleteButton = [[UIButton alloc]initWithFrame:CGRectMake(kUMCScreenWidth-40-25, 25, 40, 40)];
-        deleteButton.hidden = YES;
-        [deleteButton setImage:[UIImage umcDefaultDeleteRecordVoiceImage] forState:UIControlStateNormal];
-        
-        [self addSubview:deleteButton];
+        [self setup];
     }
     return self;
 }
 
--(void)timerLabel:(UMCTimerLabel *)timerLabel countingTo:(NSTimeInterval)time timertype:(UDTimerLabelType)timerType {
+- (void)setup {
     
-    if (!isnan(time)) {
-        recordTime = time;
-    }
+    self.backgroundColor = [UIColor colorWithRed:0.459f  green:0.459f  blue:0.459f alpha:.9];
+    self.layer.masksToBounds = YES;
+    self.layer.cornerRadius = 5;
+    
+    //提示信息
+    _tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(14.0, 117.0, 125.0, 21.0)];
+    _tipLabel.textColor = [UIColor whiteColor];
+    _tipLabel.font = [UIFont systemFontOfSize:13];
+    _tipLabel.layer.masksToBounds = YES;
+    _tipLabel.layer.cornerRadius = 4;
+    _tipLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    _tipLabel.backgroundColor = [UIColor clearColor];
+    _tipLabel.text = UMCLocalizedString(@"udesk_slide_up_to_cancel");
+    _tipLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:_tipLabel];
+    
+    _microPhoneImageView = [[UIImageView alloc] initWithFrame:CGRectMake(38.0, 37.5, 38, 61)];
+    _microPhoneImageView.image = [UIImage umcDefaultVoiceSpeakImage];
+    _microPhoneImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    _microPhoneImageView.contentMode = UIViewContentModeScaleToFill;
+    [self addSubview:_microPhoneImageView];
+    
+    _volumeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(90.0, 14.0, 38, 100)];
+    _volumeImageView.image = [UIImage imageWithContentsOfFile:UMCBundlePath(@"udRecordingVolume001.png")];
+    _volumeImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    _volumeImageView.contentMode = UIViewContentModeScaleToFill;
+    [self addSubview:_volumeImageView];
+    
+    _cancelRecordImageView = [[UIImageView alloc] initWithFrame:CGRectMake((CGRectGetWidth(self.frame)-38)/2, 37.5, 38, 52)];
+    _cancelRecordImageView.image = [UIImage umcDefaultVoiceRevokeImage];
+    _cancelRecordImageView.hidden = YES;
+    _cancelRecordImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    _cancelRecordImageView.contentMode = UIViewContentModeScaleToFill;
+    [self addSubview:_cancelRecordImageView];
+    
+    _tooShortView = [[UIImageView alloc] initWithFrame:CGRectMake((CGRectGetWidth(self.frame)-8)/2, 37.5, 8, 62)];
+    _tooShortView.image = [UIImage umcDefaultVoiceTooShortImage];
+    _tooShortView.hidden = YES;
+    _tooShortView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    _tooShortView.contentMode = UIViewContentModeScaleToFill;
+    [self addSubview:_tooShortView];
 }
 
-- (void)btnTouchUp:(UIButton *)sender withEvent:(UIEvent *)event {
-    
-    [recordButton setBackgroundImage:[UIImage umcDefaultRecordVoiceHighImage] forState:UIControlStateNormal];
-    
-    UITouch *touch = [[event allTouches] anyObject];
-    
-    CGPoint location = [touch locationInView:sender];
-    
-    CGRect newButton = CGRectMake(location.x+sender.frame.origin.x, location.y+sender.frame.origin.y,100, 100);
-    
-    BOOL deletePoint = CGRectIntersectsRect(deleteButton.frame,newButton);
-    
-    if (deletePoint) {
-        
-        spectrumView.hidden = YES;
-        tipLabel.hidden = NO;
-        deleteButton.hidden = NO;
-        tipLabel.text = UMCLocalizedString(@"udesk_release_to_cancel");
-        [deleteButton setImage:[UIImage umcDefaultDeleteRecordVoiceHighImage] forState:UIControlStateNormal];
-        
-        isInDeleteButton = YES;
-    }
-    else {
-        
-        [self showSpectrum];
-        tipLabel.text = UMCLocalizedString(@"udesk_hold_to_talk");
-        [deleteButton setImage:[UIImage umcDefaultDeleteRecordVoiceImage] forState:UIControlStateNormal];
-        
-        isInDeleteButton = NO;
-    }
+- (void)startRecordingAtView:(UIView *)view {
+    CGPoint center = CGPointMake(CGRectGetWidth(view.frame) / 2.0, CGRectGetHeight(view.frame) / 2.0-44);
+    self.center = center;
+    [view addSubview:self];
+    [self configRecoding:YES];
 }
 
-- (void)recordCancel:(UIButton *)button
-{
-    [self hideSpectrum];
-    if (isInDeleteButton) {
-        
-        [self cancelRecord];
-    }
-    else {
-        [self finishRecord];
-    }
+- (void)pauseRecord {
+    [self configRecoding:YES];
+    self.tipLabel.backgroundColor = [UIColor clearColor];
+    self.tipLabel.text = UMCLocalizedString(@"udesk_slide_up_to_cancel");
 }
 
-- (void)recordStart:(UIButton *)button
-{
-    if ([self canRecord]) {
-        
-        @udWeakify(self);
-        [self.voiceRecordHelper prepareRecordingCompletion:^BOOL{
-            
-            @udStrongify(self);
-            [self.voiceRecordHelper startRecordingWithStartRecorderCompletion:nil];
-            
-            return YES;
-        }];
-        
-        self.isMaxTime = NO;
-        [self showSpectrum];
-        [spectrumView.stopwatch start];
-    }
+- (void)resaueRecord {
+    [self configRecoding:NO];
+    self.tipLabel.backgroundColor = [UIColor colorWithRed:0.62f  green:0.22f  blue:0.212f alpha:1];
+    self.tipLabel.text = UMCLocalizedString(@"udesk_release_up_to_cancel");
 }
 
-- (void)recordFinish:(UIButton *)button
-{
-    [self hideSpectrum];
-    if (isInDeleteButton) {
-        
-        [self cancelRecord];
-    }
-    else {
-        [self finishRecord];
-    }
+- (void)stopRecordCompled:(void(^)(BOOL fnished))compled {
+    [self dismissCompled:compled];
 }
 
-- (void)cancelRecord {
-    
-    [spectrumView.stopwatch reset];
-    [spectrumView.stopwatch pause];
-    
-    [self.voiceRecordHelper cancelledDeleteWithCompletion:nil];
+- (void)cancelRecordCompled:(void(^)(BOOL fnished))compled {
+    [self dismissCompled:compled];
 }
 
-- (void)hideSpectrum {
-    
-    spectrumView.hidden = YES;
-    tipLabel.text = UMCLocalizedString(@"udesk_hold_to_talk");
-    tipLabel.hidden = NO;
-    deleteButton.hidden = YES;
-    [deleteButton setImage:[UIImage umcDefaultDeleteRecordVoiceImage] forState:UIControlStateNormal];
+- (void)dismissCompled:(void(^)(BOOL fnished))compled {
+    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [super removeFromSuperview];
+        compled(finished);
+    }];
 }
 
-- (void)showSpectrum {
+/** 录音时间太短 */
+- (void)speakDurationTooShort {
     
-    spectrumView.hidden = NO;
-    tipLabel.hidden = YES;
-    deleteButton.hidden = NO;
+    self.microPhoneImageView.hidden = YES;
+    self.volumeImageView.hidden = YES;
+    self.cancelRecordImageView.hidden = YES;
+    self.tooShortView.hidden = NO;
+    self.tipLabel.backgroundColor = [UIColor clearColor];
+    self.tipLabel.text = UMCLocalizedString(@"udesk_message_too_short");
 }
 
-- (void)finishRecord {
-    
-    //最大时间了，为了解决重复发送
-    if (self.isMaxTime) {
-        
-        [spectrumView.stopwatch reset];
-        [spectrumView.stopwatch pause];
-        
-        return;
-    }
-    
-    [spectrumView.stopwatch pause];
-    if (recordTime >1.5f) {
-        
-        @try {
-            @udWeakify(self);
-            [self.voiceRecordHelper stopRecordingWithStopRecorderCompletion:^{
-                @udStrongify(self);
-                @try {
-                    [self.delegate finishRecordedWithVoicePath:self.voiceRecordHelper.recordPath withAudioDuration:[NSString stringWithFormat:@"%.f", recordTime]];
-                } @catch (NSException *exception) {
-                } @finally {
-                }
-            }];
-            
-        } @catch (NSException *exception) {
-            NSLog(@"%@",exception);
-        } @finally {
-        }
-    }
-    
-    if (recordTime <= 1.5f) {
-        @try {
-            
-            [self.voiceRecordHelper cancelledDeleteWithCompletion:nil];
-            [self.delegate speakDurationTooShort];
-            
-        } @catch (NSException *exception) {
-            NSLog(@"%@",exception);
-        } @finally {
-        }
-    }
-    
-    [spectrumView.stopwatch reset];
+- (void)configRecoding:(BOOL)recording {
+    self.microPhoneImageView.hidden = !recording;
+    self.volumeImageView.hidden = !recording;
+    self.cancelRecordImageView.hidden = recording;
 }
 
-//判断是否允许使用麦克风7.0新增的方法requestRecordPermission
-- (BOOL)canRecord
-{
-    __block BOOL bCanRecord = YES;
-    if (kUMCSystemVersion >= 7.0)
-    {
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        if ([audioSession respondsToSelector:@selector(requestRecordPermission:)]) {
-            [audioSession performSelector:@selector(requestRecordPermission:) withObject:^(BOOL granted) {
-                if (granted) {
-                    bCanRecord = YES;
-                }
-                else {
-                    bCanRecord = NO;
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                        [[[UIAlertView alloc] initWithTitle:nil
-                                                    message:UMCLocalizedString(@"udesk_microphone_denied")
-                                                   delegate:nil
-                                          cancelButtonTitle:UMCLocalizedString(@"udesk_close")
-                                          otherButtonTitles:nil] show];
-#pragma clang diagnostic pop
-                    });
-                }
-            }];
-        }
+- (void)configRecordingHUDImageWithPeakPower:(CGFloat)peakPower {
+    NSString *imageName = @"udRecordingVolume002.png";
+    
+    if (peakPower>0&&peakPower<=10) {
+        
+        imageName = @"udRecordingVolume001.png";
+    } else if (peakPower>10&&peakPower<=35){
+        
+        imageName = @"udRecordingVolume002.png";
+    } else if (peakPower>35&&peakPower<=50){
+        
+        imageName = @"udRecordingVolume003.png";
+    } else if (peakPower>50&&peakPower<=60){
+        
+        imageName = @"udRecordingVolume004.png";
+    } else if (peakPower>60&&peakPower<=70){
+        
+        imageName = @"udRecordingVolume005.png";
+    } else if (peakPower>70&&peakPower<=75){
+        
+        imageName = @"udRecordingVolume006.png";
+    } else if (peakPower>75&&peakPower<=80){
+        
+        imageName = @"udRecordingVolume007.png";
+    } else if (peakPower>80&&peakPower<=90){
+        
+        imageName = @"udRecordingVolume008.png";
+    } else{
+        imageName = @"udRecordingVolume008.png";
     }
     
-    return bCanRecord;
+    self.volumeImageView.image = [UIImage imageWithContentsOfFile:UMCBundlePath(imageName)];
 }
 
-#pragma mark - 录制语音
-- (UMCVoiceRecordHelper *)voiceRecordHelper {
-    if (!_voiceRecordHelper) {
-        
-        @udWeakify(self);
-        _voiceRecordHelper = [[UMCVoiceRecordHelper alloc] init];
-        _voiceRecordHelper.maxTimeStopRecorderCompletion = ^{
-            @udStrongify(self);
-            [self hideSpectrum];
-            [self finishRecord];
-            self.isMaxTime = YES;
-        };
-        
-        _voiceRecordHelper.maxRecordTime = kUMCVoiceRecorderTotalTime;
-    }
-    return _voiceRecordHelper;
+- (void)setPeakPower:(CGFloat)peakPower {
+    _peakPower = peakPower;
+    [self configRecordingHUDImageWithPeakPower:peakPower];
 }
 
 @end

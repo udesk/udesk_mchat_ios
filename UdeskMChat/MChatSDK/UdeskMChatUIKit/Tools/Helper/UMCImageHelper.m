@@ -168,4 +168,140 @@
     
 }
 
++ (UIImage *)imageResize:(UIImage *)image toSize:(CGSize)toSize {
+    
+    if (!image || image == (id)kCFNull) return image;
+    if (![image isKindOfClass:[UIImage class]]) return nil;
+    
+    UIImage *sourceImage = image;
+    UIImage *newImage = nil;
+    CGSize imageSize = sourceImage.size;
+    CGFloat width = imageSize.width;
+    CGFloat height = imageSize.height;
+    CGFloat targetWidth = toSize.width;
+    CGFloat targetHeight = toSize.height;
+    CGFloat scaleFactor = 0.0;
+    CGFloat scaledWidth = targetWidth;
+    CGFloat scaledHeight = targetHeight;
+    CGPoint thumbnailPoint = CGPointMake(0.0,0.0);
+    
+    if (CGSizeEqualToSize(imageSize, toSize) == NO) {
+        
+        CGFloat widthFactor = targetWidth / width;
+        CGFloat heightFactor = targetHeight / height;
+        
+        if (widthFactor > heightFactor)
+            scaleFactor = widthFactor; // scale to fit height
+        else
+            scaleFactor = heightFactor; // scale to fit width
+        scaledWidth= width * scaleFactor;
+        scaledHeight = height * scaleFactor;
+        
+        // center the image
+        if (widthFactor > heightFactor) {
+            thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
+        }
+        else if (widthFactor < heightFactor) {
+            thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
+        }
+    }
+    
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    UIGraphicsBeginImageContextWithOptions(toSize, NO, scale);
+    
+    CGRect thumbnailRect = CGRectZero;
+    thumbnailRect.origin = thumbnailPoint;
+    thumbnailRect.size.width= scaledWidth;
+    thumbnailRect.size.height = scaledHeight;
+    
+    [sourceImage drawInRect:thumbnailRect];
+    
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    if(newImage == nil) {
+        NSLog(@"UdeskSDK：图片压缩失败");
+        return image;
+    }
+    
+    //pop the context to get back to the default
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+// 计算图片实际大小
++ (CGSize)udImageSize:(UIImage *)image {
+    
+    @try {
+        
+        CGFloat fixedSize;
+        if ([[UIScreen mainScreen] bounds].size.width>320) {
+            fixedSize = 140;
+        }
+        else {
+            fixedSize = 115;
+        }
+        
+        CGSize imageSize = CGSizeMake(fixedSize, fixedSize);
+        
+        if (image.size.height > image.size.width) {
+            
+            CGFloat scale = image.size.height/fixedSize;
+            if (scale!=0) {
+                
+                CGFloat newWidth = (image.size.width)/scale;
+                
+                imageSize = CGSizeMake(newWidth<60.0f?60:newWidth, fixedSize);
+            }
+            
+        }
+        else if (image.size.height < image.size.width) {
+            
+            CGFloat scale = image.size.width/fixedSize;
+            
+            if (scale!=0) {
+                
+                CGFloat newHeight = (image.size.height)/scale;
+                imageSize = CGSizeMake(fixedSize, newHeight);
+            }
+            
+        }
+        else if (image.size.height == image.size.width) {
+            
+            imageSize = CGSizeMake(fixedSize, fixedSize);
+        }
+        
+        // 这里需要缩放后的size
+        return imageSize;
+    } @catch (NSException *exception) {
+        NSLog(@"%@",exception);
+    } @finally {
+    }
+}
+
+//通过图片Data数据第一个字节 来获取图片扩展名
++ (NSString *)contentTypeForImageData:(NSData *)data {
+    uint8_t c;
+    [data getBytes:&c length:1];
+    switch (c) {
+        case 0xFF:
+            return @"jpeg";
+        case 0x89:
+            return @"png";
+        case 0x47:
+            return @"gif";
+        case 0x49:
+        case 0x4D:
+            return @"tiff";
+        case 0x52:
+            if ([data length] < 12) {
+                return nil;
+            }
+            NSString *testString = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(0, 12)] encoding:NSASCIIStringEncoding];
+            if ([testString hasPrefix:@"RIFF"] && [testString hasSuffix:@"WEBP"]) {
+                return @"webp";
+            }
+            return nil;
+    }
+    return nil;
+}
+
 @end

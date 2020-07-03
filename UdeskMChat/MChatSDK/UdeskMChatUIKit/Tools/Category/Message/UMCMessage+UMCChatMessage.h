@@ -16,6 +16,7 @@
 - (instancetype)initWithImage:(UIImage *)image;
 - (instancetype)initWithGIFImage:(NSData *)gifData;
 - (instancetype)initWithVoice:(NSData *)voiceData duration:(NSString *)duration;
+- (instancetype)initWithVideo:(NSData *)videoData;
 - (instancetype)initWithGoodsModel:(UMCGoodsModel *)model;
 
 @end

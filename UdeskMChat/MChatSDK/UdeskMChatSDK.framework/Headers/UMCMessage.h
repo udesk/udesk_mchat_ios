@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, UMCMessageContentType) {
     UMCMessageContentTypeText,          //文字
     UMCMessageContentTypeImage,         //图片
     UMCMessageContentTypeVoice,         //语音
+    UMCMessageContentTypeVideo,         //视频
     UMCMessageContentTypeProduct,       //咨询对象
     UMCMessageContentTypeGoods,         //商品消息
 };
@@ -55,8 +56,6 @@ typedef NS_ENUM(NSUInteger, UMCMessageStatus) {
 
 @interface UMCGoodsModel : NSObject
 
-/** 商品消息ID（可传可不传，主要用于在点击商品消息时回调给开发者） */
-@property (nonatomic, copy) NSString *goodsId;
 /** 名称（必传） */
 @property (nonatomic, copy) NSString *name;
 /** 链接（必传） */
@@ -123,5 +122,9 @@ typedef NS_ENUM(NSUInteger, UMCMessageStatus) {
 @property (nonatomic, copy  ) NSString *createdAt;
 /** 消息所属的商户 */
 @property (nonatomic, copy  ) NSString *merchantEuid;
+/** 文件名称 */
+@property (nonatomic, copy  ) NSString *fileName;
+/** 资源数据（image/voice/video） */
+@property (nonatomic, strong) NSData   *sourceData;
 
 @end

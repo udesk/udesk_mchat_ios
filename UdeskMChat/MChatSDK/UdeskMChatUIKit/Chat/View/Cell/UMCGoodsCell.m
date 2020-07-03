@@ -57,8 +57,8 @@
     UMCGoodsMessage *goodsMessage = (UMCGoodsMessage *)self.baseMessage;
     if (!goodsMessage || ![goodsMessage isKindOfClass:[UMCGoodsMessage class]]) return;
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(didTapGoodsMessageCell:goodsURL:goodsId:)]) {
-        [self.delegate didTapGoodsMessageCell:self goodsURL:goodsMessage.url goodsId:goodsMessage.goodsId];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didTapGoodsMessageCell:goodsURL:)]) {
+        [self.delegate didTapGoodsMessageCell:self goodsURL:goodsMessage.url];
     }
 }
 

@@ -111,6 +111,7 @@
  */
 + (void)uploadFile:(NSData *)fieldData
           fileName:(NSString *)fileName
+          progress:(void(^)(float percent))progress
         completion:(void(^)(NSString *address, NSError *error))completion;
 
 /**

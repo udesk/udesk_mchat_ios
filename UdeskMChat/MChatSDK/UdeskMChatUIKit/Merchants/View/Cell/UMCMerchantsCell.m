@@ -25,7 +25,7 @@ static CGFloat const kUDMerchantPadding = 10.0;
 /** 商户头像大小 */
 static CGFloat const kUDMerchantAvatarDiameter = 45.0;
 /** 商户时间长度 */
-static CGFloat const kUDMerchantTimeWidth = 150.0;
+static CGFloat const kUDMerchantTimeWidth = 170.0;
 /** 商户时间高度 */
 static CGFloat const kUDMerchantTimeHeight = 17;
 /** 商户昵称高度 */
@@ -143,6 +143,10 @@ static CGFloat const kUDMerchantUnreadY = 5;
         case UMCMessageContentTypeGoods:
             return UMCLocalizedString(@"udesk_last_goods");
             break;
+        case UMCMessageContentTypeVideo:
+            return UMCLocalizedString(@"udesk_last_video");
+            break;
+            
             
         default:
             break;

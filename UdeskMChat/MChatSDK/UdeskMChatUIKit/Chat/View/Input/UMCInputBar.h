@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "UdeskHPGrowingTextView.h"
 #import "UMCCustomToolBar.h"
+#import "UMCButton.h"
+
 @class UMCIMTableView;
 @class UMCInputBar;
 @class UMCCustomButtonConfig;
@@ -17,51 +19,37 @@ typedef NS_ENUM(NSUInteger, UMCInputBarType) {
     UMCInputBarTypeNormal = 0,
     UMCInputBarTypeText,
     UMCInputBarTypeEmotion,
-    UMCInputBarTypeImage,
     UMCInputBarTypeVoice,
+    UMCInputBarTypeMore,
 };
 
 @protocol UMCInputBarDelegate <NSObject>
 
-@optional
-/**
- *  输入框将要开始编辑
- *
- *  @param textView 输入框对象
- */
-- (void)inputBar:(UMCInputBar *)inputBar willBeginEditing:(UdeskHPGrowingTextView *)textView;
+/** 输入框将要开始编辑 */
+//- (void)chatTextViewShouldBeginEditing:(UdeskHPGrowingTextView *)chatTextView;
+/** 发送文本消息，包括系统的表情 */
+- (void)didSendText:(NSString *)text;
+/** 点击语音 */
+- (void)didSelectVoice:(UMCButton *)voiceButton;
+/** 点击表情 */
+- (void)didSelectEmotion:(UMCButton *)emotionButton;
+/** 点击更多 */
+- (void)didSelectMore:(UMCButton *)moreButton;
 /** 点击自定义按钮 */
 - (void)didSelectCustomToolBar:(UMCCustomToolBar *)toolBar atIndex:(NSInteger)index;
 
-@required
-/**
- *  选择图片
- *
- *  @param sourceType 相册or相机
- */
-- (void)inputBar:(UMCInputBar *)inputBar didSelectImageWithSourceType:(UIImagePickerControllerSourceType)sourceType;
-
-/**
- *  发送文本消息，包括系统的表情
- *
- *  @param text 目标文本消息
- */
-- (void)inputBar:(UMCInputBar *)inputBar didSendText:(NSString *)text;
-
-/**
- *  显示表情
- */
-- (void)inputBar:(UMCInputBar *)inputBar didSelectEmotion:(UIButton *)emotionButton;
-
-/**
- *  点击语音
- */
-- (void)inputBar:(UMCInputBar *)inputBar didSelectVoice:(UIButton *)voiceButton;
-
-/**
- *  点击评价
- */
-- (void)inputBar:(UMCInputBar *)inputBar didSelectSurvey:(UIButton *)surveyButton;
+/** 准备录音 */
+- (void)prepareRecordingVoiceActionWithCompletion:(BOOL (^)(void))completion;
+/** 开始录音 */
+- (void)didStartRecordingVoiceAction;
+/** 手指向上滑动取消录音 */
+- (void)didCancelRecordingVoiceAction;
+/** 松开手指完成录音 */
+- (void)didFinishRecoingVoiceAction;
+/** 当手指离开按钮的范围内时 */
+- (void)didDragOutsideAction;
+/** 当手指再次进入按钮的范围内时 */
+- (void)didDragInsideAction;
 
 @end
 
@@ -75,16 +63,10 @@ typedef NS_ENUM(NSUInteger, UMCInputBarType) {
 
 @property (nonatomic, strong) NSArray<UMCCustomButtonConfig *> *customButtonConfigs;
 
-@property (nonatomic, assign) BOOL     hiddenVoiceButton;
-@property (nonatomic, assign) BOOL     hiddenEmotionButton;
-@property (nonatomic, assign) BOOL     hiddenCameraButton;
-@property (nonatomic, assign) BOOL     hiddenAlbumButton;
-@property (nonatomic, assign) BOOL     showCustomButtons;
-@property (nonatomic, assign) BOOL     isShowSurvey;
+- (instancetype)initWithFrame:(CGRect)frame tableView:(UMCIMTableView *)tabelView;
 
-- (instancetype)initWithFrame:(CGRect)frame
-                    tableView:(UMCIMTableView *)tabelView;
-
+//重置录音按钮
+- (void)resetRecordButton;
 //离线留言不显示任何功能按钮
 - (void)updateInputBarForLeaveMessage;
 

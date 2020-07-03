@@ -13,6 +13,7 @@
 
 @property (nonatomic, copy) void(^FinishNormalImageBlock)(UIImage *image);
 @property (nonatomic, copy) void(^FinishGIFImageBlock)(NSData *GIFData);
+@property (nonatomic, copy) void(^FinishVideoBlock)(NSString *filePath,NSString *fileName);
 
 - (void)showWithSourceType:(UIImagePickerControllerSourceType)sourceType viewController:(UIViewController *)viewController;
 

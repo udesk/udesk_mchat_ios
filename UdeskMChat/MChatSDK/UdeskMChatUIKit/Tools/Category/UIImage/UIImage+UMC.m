@@ -33,12 +33,12 @@
 
 + (UIImage *)umcDefaultRefreshImage {
 
-    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udrefreshButton.png")];
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udRefreshButton.png")];
 }
 
 + (UIImage *)umcDefaultVoiceImage {
 
-    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udVoice.png")];
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udChatVoice.png")];
 }
 
 + (UIImage *)umcDefaultVoiceHighlightedImage {
@@ -180,30 +180,6 @@
     return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udAlbumHigh.png")];
 }
 
-+ (UIImage *)umcDefaultLocationImage {
-    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udLocation.png")];
-}
-
-+ (UIImage *)umcDefaultLocationHighlightedImage {
-    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udLocationHigh.png")];
-}
-
-+ (UIImage *)umcDefaultRecordVoiceImage {
-	return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udRecordVoice.png")];
-}
-
-+ (UIImage *)umcDefaultRecordVoiceHighImage {
-	return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udRecordVoiceHigh.png")];
-}
-
-+ (UIImage *)umcDefaultDeleteRecordVoiceImage {
-    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udDeleteRecordVoice.png")];
-}
-
-+ (UIImage *)umcDefaultDeleteRecordVoiceHighImage {
-    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udDeleteRecordVoiceHigh.png")];
-}
-
 + (UIImage *)umcDefaultTransferImage {
     return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udTransfer.png")];
 }
@@ -214,16 +190,11 @@
 
 + (UIImage *)umcDefaultResetButtonImage {
 
-    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udrefreshButton.png")];
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udRefreshButton.png")];
 }
 
 + (UIImage *)umcDefaultVoiceTooShortImageEN {
 	return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udVoiceTooshortEn.png")];
-}
-
-+ (UIImage *)umcDefaultLocationPinImage {
-    
-    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udMapLocation.png")];
 }
 
 + (UIImage *)umcDefaultMarkImage {
@@ -281,6 +252,94 @@
 /** 满意度评价表情 实星 */
 + (UIImage *)umcDefaultSurveyStarFilledImage {
     return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udSurveyStarFilled.png")];
+}
+
++ (UIImage *)umcDefaultMoreImage {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udChatMore.png")];
+}
+
++ (UIImage *)umcDefaultKeyboardImage {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udChatKeyboard.png")];
+}
+
+//更多-相册
++ (UIImage *)umcDefaultChatBarMorePhotoImage {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udChatBarMorePhoto.png")];
+}
+
+//更多-相机
++ (UIImage *)umcDefaultChatBarMoreCameraImage {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udChatBarMoreCamera.png")];
+}
+
+//更多-评价
++ (UIImage *)umcDefaultChatBarMoreSurveyImage {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udChatBarMoreSurvey.png")];
+}
+
+//更多-小视频
++ (UIImage *)umcDefaultChatBarMoreSmallVideoImage {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udChatBarMoreSmallVideo.png")];
+}
+
+/** 发送语音时话筒图片 */
++ (UIImage *)umcDefaultVoiceSpeakImage {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udVoiceSpeak.png")];
+}
+
+//取消发送
++ (UIImage *)umcDefaultVoiceRevokeImage {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udVoiceRevoke.png")];
+}
+
+/** 语音太短 */
++ (UIImage *)umcDefaultVoiceTooShortImage {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udVoiceTooshort.png")];
+}
+
+//小视频返回按钮
++ (UIImage *)umcDefaultSmallVideoBack {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udClose.png")];
+}
+
+//小视频切换摄像头按钮
++ (UIImage *)umcDefaultSmallVideoCameraSwitch {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udCameraSwitch.png")];
+}
+
+//小视频重拍
++ (UIImage *)umcDefaultSmallVideoRetake {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udSmallVideoRetake.png")];
+}
+
+//小视频完成
++ (UIImage *)umcDefaultSmallVideoDone {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udSmallVideoRight.png")];
+}
+
+//小视频下载
++ (UIImage *)umcDefaultVideoDownload {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udVideoDownload.png")];
+}
+
+//小视频下载
++ (UIImage *)umcDefaultVideoPlay {
+    
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udVideoPlay.png")];
 }
 
 @end

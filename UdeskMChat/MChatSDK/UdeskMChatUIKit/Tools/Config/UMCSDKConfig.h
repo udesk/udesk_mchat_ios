@@ -14,6 +14,12 @@
 
 @class UMCIMViewController;
 
+//小视频分辨率
+typedef NS_ENUM(NSUInteger, UMCSmallVideoResolutionType) {
+    UMCSmallVideoResolutionType640x480,
+    UMCSmallVideoResolutionType1280x720,
+};
+
 @interface UMCSDKConfig : NSObject
 
 @property (nonatomic, strong) UMCSDKStyle *sdkStyle;
@@ -56,10 +62,19 @@
 /** 是否隐藏商户搜索功能 */
 @property (nonatomic, assign) BOOL     hiddenMerchantsSearch;
 
+/*  ----------- 小视频 ------------  */
+
+/** 是否开启小视频（默认开启） */
+@property (nonatomic, assign, getter=isSmallVideoEnabled) BOOL smallVideoEnabled;
+/** 小视频分辨率（默认最高分辨率） */
+@property (nonatomic, assign) UMCSmallVideoResolutionType smallVideoResolution;
+/** 小视频录制时长（默认15s） */
+@property (nonatomic, assign) CGFloat   smallVideoDuration;
+
 /** 离开聊天页面回调 */
 @property (nonatomic, copy) void (^leaveChatViewController)(void);
 /** 点击了商品消息 */
-@property (nonatomic, copy) void (^clickGoodsBlock)(UMCIMViewController *viewController, NSString *url, NSString *goodsId);
+@property (nonatomic, copy) void (^clickGoodsBlock)(UMCIMViewController *viewController, NSString *url);
 
 + (instancetype)sharedConfig;
 

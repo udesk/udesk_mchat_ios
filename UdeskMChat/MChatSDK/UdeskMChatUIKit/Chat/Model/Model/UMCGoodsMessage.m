@@ -31,8 +31,6 @@ static CGFloat const kUDGoodsParamsVerticalSpacing = 10.0;
 
 @interface UMCGoodsMessage()
 
-/** id */
-@property (nonatomic, copy, readwrite) NSString *goodsId;
 /** 名称 */
 @property (nonatomic, copy, readwrite) NSString *name;
 /** 链接 */
@@ -116,10 +114,6 @@ static CGFloat const kUDGoodsParamsVerticalSpacing = 10.0;
         
         if ([dictionary.allKeys containsObject:@"imgUrl"]) {
             self.imgUrl = dictionary[@"imgUrl"];
-        }
-        
-        if ([dictionary.allKeys containsObject:@"id"]) {
-            self.goodsId = dictionary[@"id"];
         }
         
         if ([dictionary.allKeys containsObject:@"params"]) {

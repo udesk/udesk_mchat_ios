@@ -99,7 +99,7 @@ const CGFloat kUDCellBottomMargin = 10.0;
         
         //布局
         if (self.message.direction == UMCMessageDirectionOut) {
-            //用户头像frame
+            //客服头像frame
             self.avatarFrame = CGRectMake(kUDAvatarToHorizontalEdgeSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, kUDAvatarDiameter, kUDAvatarDiameter);
         }
         else if (self.message.direction == UMCMessageDirectionIn) {

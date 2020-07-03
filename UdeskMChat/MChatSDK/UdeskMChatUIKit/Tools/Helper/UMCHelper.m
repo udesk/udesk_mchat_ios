@@ -7,6 +7,7 @@
 //
 
 #import "UMCHelper.h"
+#import "Reachability.h"
 
 @implementation UMCHelper
 
@@ -256,6 +257,32 @@
     //    NSString * regEx = @"<([^>]*)>";
     //    html = [html stringByReplacingOccurrencesOfString:regEx withString:@""];
     return html;
+}
+
+//同步获取网络状态
++ (NSString *)internetStatus {
+    
+    Reachability *reachability   = [Reachability reachabilityWithHostName:@"www.apple.com"];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
+    
+    NSString *net = nil;
+    switch (internetStatus) {
+        case ReachableViaWiFi:
+            net = @"wifi";
+            break;
+            
+        case ReachableViaWWAN:
+            net = @"WWAN";
+            break;
+            
+        case NotReachable:
+            net = @"notReachable";
+            
+        default:
+            break;
+    }
+    
+    return net;
 }
 
 @end

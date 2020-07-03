@@ -14,318 +14,313 @@
 #import "UMCCustomButtonConfig.h"
 #import "UIImage+UMC.h"
 #import "UIView+UMC.h"
+#import "UMCPrivacyUtil.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/ALAssetsLibrary.h>
 
 /** 按钮大小 */
-static CGFloat const UDInputBarViewButtonDiameter = 30.0;
-/** 输入框高度 */
-static CGFloat const UDInputBarViewHeight = 37.0;
-/** 输入框距离顶部的垂直距离 */
-static CGFloat const UDInputBarViewToVerticalEdgeSpacing = 5.0;
-/** 输入框距离顶部的横行距离 */
-static CGFloat const UDInputBarViewToHorizontalEdgeSpacing = 10.0;
+static CGFloat const kInputToolBarIconDiameter = 28.0;
+/** 输入框距垂直距离 */
+static CGFloat const kChatTextViewToVerticalEdgeSpacing = 8.0;
+/** 输入框距的横行距离 */
+static CGFloat const kChatTextViewToHorizontalEdgeSpacing = 8.0;
 /** 输入框功能按钮横行的间距 */
-static CGFloat const UDInputBarViewButtonToHorizontalEdgeSpacing = 20.0;
+static CGFloat const kInputToolBarIconToHorizontalEdgeSpacing = 10.0;
 /** 输入框按钮距离顶部的垂直距离 */
-static CGFloat const UDInputBarViewButtonToVerticalEdgeSpacing = 45.0;
-/** 自定义按钮高度 */
-static CGFloat const UDInputBarViewCustomToolBarHeight = 44.0;
+static CGFloat const kInputToolBarIconToVerticalEdgeSpacing = 12.0;
 
 @interface UMCInputBar()<UITextViewDelegate,UMCCustomToolBarDelegate>
 
-@property (nonatomic, strong) UIButton *emotionButton;
-@property (nonatomic, strong) UIButton *voiceButton;
-@property (nonatomic, strong) UIButton *cameraButton;
-@property (nonatomic, strong) UIButton *albumButton;
-@property (nonatomic, strong) UIButton *surveyButton;
-@property (nonatomic, strong) UMCIMTableView *imTableView;
-@property (nonatomic, assign) CGRect originalTableViewFrame;
-@property (nonatomic, assign) NSInteger textViewHeight;
+@property (nonatomic, strong) UMCButton *voiceButton;
+@property (nonatomic, strong) UMCButton *emotionButton;
+@property (nonatomic, strong) UMCButton *moreButton;
+@property (nonatomic, strong) UMCButton *recordButton;
+
+@property (nonatomic, strong) UIView             *defaultToolBar;
 @property (nonatomic, strong) UMCCustomToolBar *customToolBar;
-@property (nonatomic, strong) UIView *defaultToolBar;
+
+@property (nonatomic, strong) UMCIMTableView *messageTableView;
+@property (nonatomic, assign) CGRect  originalChatViewFrame;
+@property (nonatomic, assign) CGFloat textViewHeight;
+
+@property (nonatomic, assign) BOOL isCancelled;
+@property (nonatomic, assign) BOOL isRecording;
 
 @end
 
 @implementation UMCInputBar
 
-- (instancetype)initWithFrame:(CGRect)frame
-                    tableView:(UMCIMTableView *)tabelView {
+- (instancetype)initWithFrame:(CGRect)frame tableView:(UMCIMTableView *)tabelView {
     self = [super initWithFrame:frame];
     if (self) {
         
-        _imTableView = tabelView;
-        _originalTableViewFrame = tabelView.frame;
-        [self setup];
+        _messageTableView = tabelView;
+        _originalChatViewFrame = tabelView.frame;
+        [self setupUI];
     }
     return self;
 }
 
-- (void)setup {
+- (void)setupUI {
+    
+    UMCSDKConfig *sdkConfig = [UMCSDKConfig sharedConfig];
+    
     // 配置自适应
     self.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin);
     self.opaque = YES;
-    [self loadFuncationView];
-}
-
-- (void)loadFuncationView {
+    self.backgroundColor = sdkConfig.sdkStyle.inputViewColor;
     
     //默认toolbar
-    _defaultToolBar = [[UIView alloc] initWithFrame:CGRectMake(0, 1, self.frame.size.width, self.frame.size.height-1)];
+    _defaultToolBar = [[UIView alloc] init];
     _defaultToolBar.backgroundColor = [UIColor whiteColor];
     [self addSubview:_defaultToolBar];
     
+    //语音
+    _voiceButton = [[UMCButton alloc] init];
+    _voiceButton.hidden = sdkConfig.hiddenVoiceButton;
+    [_voiceButton setImage:[UIImage umcDefaultVoiceImage] forState:UIControlStateNormal];
+    [_voiceButton setImage:[UIImage umcDefaultKeyboardImage] forState:UIControlStateSelected];
+    [_voiceButton addTarget:self action:@selector(voiceClick:) forControlEvents:UIControlEventTouchUpInside];
+    if (!sdkConfig.hiddenVoiceButton) {
+        [_defaultToolBar addSubview:_voiceButton];
+    }
+    
     //初始化输入框
-    _inputTextView = [[UdeskHPGrowingTextView  alloc] initWithFrame:CGRectMake(UDInputBarViewToHorizontalEdgeSpacing, UDInputBarViewToVerticalEdgeSpacing, kUMCScreenWidth-UDInputBarViewToHorizontalEdgeSpacing*2, UDInputBarViewHeight)];
+    _inputTextView = [[UdeskHPGrowingTextView alloc] initWithFrame:CGRectZero];
     _inputTextView.placeholder = UMCLocalizedString(@"udesk_typing");
     _inputTextView.delegate = (id)self;
     _inputTextView.returnKeyType = UIReturnKeySend;
     _inputTextView.font = [UIFont systemFontOfSize:16];
-    _inputTextView.backgroundColor = [UMCSDKConfig sharedConfig].sdkStyle.textViewColor;
-    self.backgroundColor = [UMCSDKConfig sharedConfig].sdkStyle.inputViewColor;
+    _inputTextView.backgroundColor = sdkConfig.sdkStyle.textViewColor;
     [_defaultToolBar addSubview:_inputTextView];
+    kUMCViewBorderRadius(_inputTextView, 5, 0.5, [UIColor colorWithRed:0.831f  green:0.835f  blue:0.843f alpha:1]);
+    
+    _recordButton = [[UMCButton alloc] init];
+    _recordButton.alpha = _voiceButton.selected;
+    _recordButton.titleLabel.font = [UIFont boldSystemFontOfSize:15];
+    [_recordButton setTitleColor:[UIColor colorWithRed:0.392f  green:0.392f  blue:0.396f alpha:1] forState:UIControlStateNormal];
+    [_recordButton setTitle:UMCLocalizedString(@"udesk_hold_to_talk") forState:UIControlStateNormal];
+    [_recordButton addTarget:self action:@selector(holdDownButtonTouchDown:) forControlEvents:UIControlEventTouchDown];
+    [_recordButton addTarget:self action:@selector(holdDownButtonTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
+    [_recordButton addTarget:self action:@selector(holdDownButtonTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    [_recordButton addTarget:self action:@selector(holdDownDragOutside:) forControlEvents:UIControlEventTouchDragExit];
+    [_recordButton addTarget:self action:@selector(holdDownDragInside:) forControlEvents:UIControlEventTouchDragEnter];
+    [_defaultToolBar addSubview:_recordButton];
+    kUMCViewBorderRadius(_recordButton, 5, 0.5, [UIColor colorWithRed:0.831f  green:0.835f  blue:0.843f alpha:1]);
     
     //表情
-    _emotionButton = [self createButtonWithImage:[UIImage umcDefaultSmileImage] HLImage:[UIImage umcDefaultSmileHighlightedImage]];
-    _emotionButton.frame = CGRectMake(UDInputBarViewButtonToHorizontalEdgeSpacing, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-    _emotionButton.hidden = self.hiddenEmotionButton;
+    _emotionButton = [[UMCButton alloc] init];
+    _emotionButton.hidden = sdkConfig.hiddenEmotionButton;
+    [_emotionButton setImage:[UIImage umcDefaultSmileImage] forState:UIControlStateNormal];
+    [_emotionButton setImage:[UIImage umcDefaultKeyboardImage] forState:UIControlStateSelected];
     [_emotionButton addTarget:self action:@selector(emotionClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_defaultToolBar addSubview:_emotionButton];
-    
-    //语音
-    _voiceButton = [self createButtonWithImage:[UIImage umcDefaultVoiceImage] HLImage:[UIImage umcDefaultVoiceHighlightedImage]];
-    CGFloat voiceButtonX = _emotionButton.umcRight + UDInputBarViewButtonToHorizontalEdgeSpacing;
-    if (self.hiddenEmotionButton) {
-        voiceButtonX = UDInputBarViewButtonToHorizontalEdgeSpacing;
+    if (!sdkConfig.hiddenEmotionButton) {
+        [_defaultToolBar addSubview:_emotionButton];
     }
-    _voiceButton.frame = CGRectMake(voiceButtonX, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-    _voiceButton.hidden = self.hiddenVoiceButton;
-    [_voiceButton addTarget:self action:@selector(voiceClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_defaultToolBar addSubview:_voiceButton];
     
-    //相机
-    _cameraButton = [self createButtonWithImage:[UIImage umcDefaultCameraImage] HLImage:[UIImage umcDefaultCameraHighlightedImage]];
+    //更多
+    _moreButton = [[UMCButton alloc] init];
+    [_moreButton setImage:[UIImage umcDefaultMoreImage] forState:UIControlStateNormal];
+    [_moreButton addTarget:self action:@selector(moreClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_defaultToolBar addSubview:_moreButton];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
     
-    CGFloat cameraButtonX = UDInputBarViewButtonToHorizontalEdgeSpacing + _voiceButton.umcRight;
-    if (self.hiddenVoiceButton) {
-        cameraButtonX = cameraButtonX - _voiceButton.umcRight + _cameraButton.umcRight;
-        if (self.hiddenEmotionButton) {
-            cameraButtonX = UDInputBarViewButtonToHorizontalEdgeSpacing;
+    UMCSDKConfig *sdkConfig = [UMCSDKConfig sharedConfig];
+    
+    //用户自定义按钮
+    CGFloat customToolBarHeight = 0;
+    if (_customToolBar) {
+        if (!_customToolBar.hidden) {
+            _customToolBar.frame = CGRectMake(0, 0, self.umcWidth, 44);
+            customToolBarHeight = 44;
         }
     }
     
-    _cameraButton.frame = CGRectMake(cameraButtonX, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-    _cameraButton.hidden = self.hiddenCameraButton;
-    [_cameraButton addTarget:self action:@selector(cameraClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_defaultToolBar addSubview:_cameraButton];
+    _defaultToolBar.frame = CGRectMake(0, customToolBarHeight, self.umcWidth, self.umcHeight - customToolBarHeight - (kUMCIPhoneXSeries?34:0));
     
-    CGFloat albumButtonX = _cameraButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing;
-    if (self.hiddenCameraButton) {
-        albumButtonX = albumButtonX - _cameraButton.umcRight + _voiceButton.umcRight;
-        if (self.hiddenVoiceButton) {
-            albumButtonX = albumButtonX - _voiceButton.umcRight + _emotionButton.umcRight;
-            if (self.hiddenEmotionButton) {
-                albumButtonX = UDInputBarViewButtonToHorizontalEdgeSpacing;
-            }
+    //计算textview的width
+    CGFloat textViewWidth = self.umcWidth - (kInputToolBarIconToHorizontalEdgeSpacing*2);
+    
+    if (!sdkConfig.hiddenVoiceButton && !_voiceButton.hidden) {
+        textViewWidth -= kInputToolBarIconDiameter;
+        textViewWidth -= kInputToolBarIconToHorizontalEdgeSpacing;
+    }
+    
+    if (!sdkConfig.hiddenEmotionButton && !_emotionButton.hidden) {
+        textViewWidth -= kInputToolBarIconDiameter;
+        textViewWidth -= kInputToolBarIconToHorizontalEdgeSpacing;
+    }
+    
+    if (!_moreButton.hidden) {
+        textViewWidth -= kInputToolBarIconDiameter;
+        textViewWidth -= kInputToolBarIconToHorizontalEdgeSpacing;
+    }
+    
+    //当textview height发生改变时button位置不改变
+    if (_defaultToolBar.umcHeight <= 52) {
+        
+        if (!sdkConfig.hiddenVoiceButton && !_voiceButton.hidden) {
+            _voiceButton.frame = CGRectMake(kInputToolBarIconToHorizontalEdgeSpacing, kInputToolBarIconToVerticalEdgeSpacing, kInputToolBarIconDiameter, kInputToolBarIconDiameter);
+        }
+        
+        if (!_moreButton.hidden) {
+            _moreButton.frame = CGRectMake(_defaultToolBar.umcRight-kInputToolBarIconToHorizontalEdgeSpacing-kInputToolBarIconDiameter, kInputToolBarIconToVerticalEdgeSpacing, kInputToolBarIconDiameter, kInputToolBarIconDiameter);
+        }
+        
+        if (!sdkConfig.hiddenEmotionButton && !_emotionButton.hidden) {
+            _emotionButton.frame = CGRectMake(_moreButton.umcLeft - kInputToolBarIconToHorizontalEdgeSpacing - kInputToolBarIconDiameter, kInputToolBarIconToVerticalEdgeSpacing, kInputToolBarIconDiameter, kInputToolBarIconDiameter);
         }
     }
     
-    //相册
-    _albumButton = [self createButtonWithImage:[UIImage umcDefaultPhotoImage] HLImage:[UIImage umcDefaultPhotoHighlightedImage]];
-    _albumButton.frame = CGRectMake(albumButtonX, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-    _albumButton.hidden = self.hiddenAlbumButton;
-    [_albumButton addTarget:self action:@selector(albumClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_defaultToolBar addSubview:_albumButton];
-}
-
-#pragma mark - layout subViews UI
-- (UIButton *)createButtonWithImage:(UIImage *)image HLImage:(UIImage *)hlImage {
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter)];
-    if (image)
-        [button setImage:image forState:UIControlStateNormal];
-    if (hlImage)
-        [button setImage:image forState:UIControlStateHighlighted];
-    
-    return button;
-}
-
-//点击表情按钮
-- (void)emotionClick:(UIButton *)button {
-    
-    self.selectInputBarType = UMCInputBarTypeEmotion;
-    button.selected = !button.selected;
-    if (!button.selected) {
-        [self.inputTextView becomeFirstResponder];
-    }
-    
-    if ([self.delegate respondsToSelector:@selector(inputBar:didSelectEmotion:)]) {
-        [self.delegate inputBar:self didSelectEmotion:button];
-    }
+    _inputTextView.frame = CGRectMake((_voiceButton.hidden?0:_voiceButton.umcRight) + kChatTextViewToHorizontalEdgeSpacing, kChatTextViewToVerticalEdgeSpacing, textViewWidth, _defaultToolBar.umcHeight - kChatTextViewToVerticalEdgeSpacing - kChatTextViewToHorizontalEdgeSpacing);
+    _recordButton.frame = _inputTextView.frame;
 }
 
 //点击语音
-- (void)voiceClick:(UIButton *)button {
+- (void)voiceClick:(UMCButton *)button {
     
-    self.selectInputBarType = UMCInputBarTypeVoice;
-    if (kUMCSystemVersion >= 7.0)
-    {
+    [UMCPrivacyUtil checkPermissionsOfMicrophone:^{
         
-        [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
-            if (granted) {
-                // 用户同意获取数据
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    button.selected = !button.selected;
-                    if (!button.selected) {
-                        [self.inputTextView becomeFirstResponder];
-                    }
-                    
-                    if ([self.delegate respondsToSelector:@selector(inputBar:didSelectVoice:)]) {
-                        [self.delegate inputBar:self didSelectVoice:button];
-                    }
-                });
-                
-            } else {
-                // 可以显示一个提示框告诉用户这个app没有得到允许？
-                dispatch_async(dispatch_get_main_queue(), ^{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                    [[[UIAlertView alloc] initWithTitle:nil
-                                                message:UMCLocalizedString(@"udesk_microphone_denied")
-                                               delegate:nil
-                                      cancelButtonTitle:UMCLocalizedString(@"udesk_close")
-                                      otherButtonTitles:nil] show];
-#pragma clang diagnostic pop
-                });
-                
-            }
-        }];
-    }
-    else {
         button.selected = !button.selected;
-        if (!button.selected) {
-            [self.inputTextView becomeFirstResponder];
+        self.selectInputBarType = UMCInputBarTypeVoice;
+        self.emotionButton.selected = NO;
+        self.moreButton.selected = NO;
+        self.recordButton.alpha = button.selected;
+        self.inputTextView.alpha = !button.selected;
+        if ([self.delegate respondsToSelector:@selector(didSelectVoice:)]) {
+            [self.delegate didSelectVoice:button];
         }
-        
-        if ([self.delegate respondsToSelector:@selector(inputBar:didSelectVoice:)]) {
-            [self.delegate inputBar:self didSelectVoice:button];
-        }
-    }
-}
-
-//点击评价
-- (void)surveyClick:(UIButton *)survey {
-    
-    self.selectInputBarType = UMCInputBarTypeNormal;
-    if ([self.delegate respondsToSelector:@selector(inputBar:didSelectSurvey:)]) {
-        [self.delegate inputBar:self didSelectSurvey:survey];
-    }
-}
-
-//点击相机按钮
-- (void)cameraClick:(UIButton *)button {
-    
-    self.selectInputBarType = UMCInputBarTypeNormal;
-    //模拟器
-    if (TARGET_IPHONE_SIMULATOR) {
-        NSLog(@"UdeskSDK：模拟器无法使用拍摄功能");
-        return;
-    }
-    
-    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (granted) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if ([self.delegate respondsToSelector:@selector(inputBar:didSelectImageWithSourceType:)]) {
-                        [self.delegate inputBar:self didSelectImageWithSourceType:UIImagePickerControllerSourceTypeCamera];
-                    }
-                });
-            }
-            else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                    [[[UIAlertView alloc] initWithTitle:nil
-                                                message:UMCLocalizedString(@"udesk_camera_denied")
-                                               delegate:nil
-                                      cancelButtonTitle:UMCLocalizedString(@"udesk_close")
-                                      otherButtonTitles:nil] show];
-#pragma clang diagnostic pop
-                });
-                
-            }
-        });
     }];
 }
 
-//点击相册按钮
-- (void)albumClick:(UIButton *)button {
+//点击表情按钮
+- (void)emotionClick:(UMCButton *)button {
     
-    self.selectInputBarType = UMCInputBarTypeNormal;
-    if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusNotDetermined) {
-        
-        ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
-        
-        [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-            
-            if (*stop) {
-                //点击“好”回调方法
-                //检查客服状态
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if ([self.delegate respondsToSelector:@selector(inputBar:didSelectImageWithSourceType:)]) {
-                        [self.delegate inputBar:self didSelectImageWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-                    }
-                });
-                return;
+    button.selected = !button.selected;
+    self.selectInputBarType = UMCInputBarTypeEmotion;
+    self.voiceButton.selected = NO;
+    self.moreButton.selected = NO;
+    if (button.selected) {
+        self.recordButton.alpha = 0;
+        self.inputTextView.alpha = 1;
+    }
+    if ([self.delegate respondsToSelector:@selector(didSelectEmotion:)]) {
+        [self.delegate didSelectEmotion:button];
+    }
+}
+
+//点击更多
+- (void)moreClick:(UMCButton *)button {
+    
+    button.selected = !button.selected;
+    self.selectInputBarType = UMCInputBarTypeMore;
+    self.voiceButton.selected = NO;
+    self.emotionButton.selected = NO;
+    if (button.selected) {
+        self.recordButton.alpha = 0;
+        self.inputTextView.alpha = 1;
+    }
+    if ([self.delegate respondsToSelector:@selector(didSelectMore:)]) {
+        [self.delegate didSelectMore:button];
+    }
+}
+
+//按下
+- (void)holdDownButtonTouchDown:(UMCButton *)button {
+    
+    [button setTitle:UMCLocalizedString(@"udesk_release_to_send") forState:UIControlStateNormal];
+    button.backgroundColor = [UIColor colorWithRed:0.776f  green:0.78f  blue:0.792f alpha:1];
+    
+    self.isCancelled = NO;
+    self.isRecording = NO;
+    if ([self.delegate respondsToSelector:@selector(prepareRecordingVoiceActionWithCompletion:)]) {
+        @udWeakify(self);
+        [self.delegate prepareRecordingVoiceActionWithCompletion:^BOOL{
+            @udStrongify(self);
+            if (self && !self.isCancelled) {
+                self.isRecording = YES;
+                [self.delegate didStartRecordingVoiceAction];
+                return YES;
+            } else {
+                return NO;
             }
-            *stop = TRUE;
-            
-        } failureBlock:^(NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                [[[UIAlertView alloc] initWithTitle:nil
-                                            message:UMCLocalizedString(@"udesk_album_denied")
-                                           delegate:nil
-                                  cancelButtonTitle:UMCLocalizedString(@"udesk_close")
-                                  otherButtonTitles:nil] show];
-#pragma clang diagnostic pop
-            });
         }];
     }
-    else if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized) {
-        
-        if ([self.delegate respondsToSelector:@selector(inputBar:didSelectImageWithSourceType:)]) {
-            [self.delegate inputBar:self didSelectImageWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-        }
-    }
-    else if([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied){
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            [[[UIAlertView alloc] initWithTitle:nil
-                                        message:UMCLocalizedString(@"udesk_album_denied")
-                                       delegate:nil
-                              cancelButtonTitle:UMCLocalizedString(@"udesk_close")
-                              otherButtonTitles:nil] show];
-#pragma clang diagnostic pop
-        });
-    }
+}
+
+//在按钮边界外松开
+- (void)holdDownButtonTouchUpOutside:(UMCButton *)button {
     
+    [button setTitle:UMCLocalizedString(@"udesk_hold_to_talk") forState:UIControlStateNormal];
+    button.backgroundColor = [UIColor whiteColor];
+    
+    if (self.isRecording) {
+        if ([self.delegate respondsToSelector:@selector(didCancelRecordingVoiceAction)]) {
+            [self.delegate didCancelRecordingVoiceAction];
+        }
+    } else {
+        self.isCancelled = YES;
+    }
+}
+
+//松开
+- (void)holdDownButtonTouchUpInside:(UMCButton *)button {
+    
+    [button setTitle:UMCLocalizedString(@"udesk_hold_to_talk") forState:UIControlStateNormal];
+    button.backgroundColor = [UIColor whiteColor];
+    
+    if (self.isRecording) {
+        if ([self.delegate respondsToSelector:@selector(didFinishRecoingVoiceAction)]) {
+            [self.delegate didFinishRecoingVoiceAction];
+        }
+    } else {
+        self.isCancelled = YES;
+    }
+}
+
+//离开按钮边界
+- (void)holdDownDragOutside:(UMCButton *)button {
+    
+    [button setTitle:UMCLocalizedString(@"udesk_release_to_cancel") forState:UIControlStateNormal];
+    
+    if (self.isRecording) {
+        if ([self.delegate respondsToSelector:@selector(didDragOutsideAction)]) {
+            [self.delegate didDragOutsideAction];
+        }
+    } else {
+        self.isCancelled = YES;
+    }
+}
+
+//进入按钮区域
+- (void)holdDownDragInside:(UMCButton *)button {
+    
+    [button setTitle:UMCLocalizedString(@"udesk_release_to_send") forState:UIControlStateNormal];
+    if (self.isRecording) {
+        if ([self.delegate respondsToSelector:@selector(didDragInsideAction)]) {
+            [self.delegate didDragInsideAction];
+        }
+    } else {
+        self.isCancelled = YES;
+    }
 }
 
 #pragma mark - Text view delegate
 - (BOOL)growingTextViewShouldBeginEditing:(UdeskHPGrowingTextView *)growingTextView {
-
-    if ([self.delegate respondsToSelector:@selector(inputBar:willBeginEditing:)]) {
-        [self.delegate inputBar:self willBeginEditing:growingTextView];
-    }
-    _emotionButton.selected = NO;
-    _voiceButton.selected = NO;
-
+    
     self.selectInputBarType = UMCInputBarTypeText;
-
+    
+    if ([self.inputTextView.textColor isEqual:[UIColor lightGrayColor]] && [self.inputTextView.text isEqualToString:UMCLocalizedString(@"udesk_typing")]) {
+        self.inputTextView.text = @"";
+        self.inputTextView.textColor = [UIColor blackColor];
+    }
+    
+    self.emotionButton.selected = NO;
+    self.voiceButton.selected = NO;
+    
     return YES;
 }
 
@@ -339,9 +334,10 @@ static CGFloat const UDInputBarViewCustomToolBarHeight = 44.0;
 
 - (BOOL)growingTextView:(UdeskHPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     
+    self.selectInputBarType = UMCInputBarTypeText;
     if ([text isEqualToString:@"\n"]) {
-        if ([self.delegate respondsToSelector:@selector(inputBar:didSendText:)]) {
-            [self.delegate inputBar:self didSendText:growingTextView.text];
+        if ([self.delegate respondsToSelector:@selector(didSendText:)]) {
+            [self.delegate didSendText:growingTextView.text];
         }
         self.inputTextView.text = @"";
         return NO;
@@ -349,128 +345,42 @@ static CGFloat const UDInputBarViewCustomToolBarHeight = 44.0;
     return YES;
 }
 
-- (void)growingTextView:(UdeskHPGrowingTextView *)growingTextView willChangeHeight:(float)height
-{
-    float diff     = (self.inputTextView.frame.size.height - height);
+- (void)growingTextView:(UdeskHPGrowingTextView *)growingTextView willChangeHeight:(float)height {
+    
+    float diff = (self.inputTextView.frame.size.height - height);
     //确保tableView的y不大于原始的y
-    CGFloat tableViewOriginY = self.imTableView.frame.origin.y + diff;
-    if (tableViewOriginY > self.originalTableViewFrame.origin.y) {
-        tableViewOriginY = self.originalTableViewFrame.origin.y;
+    CGFloat tableViewOriginY = self.messageTableView.frame.origin.y + diff;
+    if (tableViewOriginY > self.originalChatViewFrame.origin.y) {
+        tableViewOriginY = self.originalChatViewFrame.origin.y;
     }
-    self.imTableView.frame = CGRectMake(self.imTableView.frame.origin.x, tableViewOriginY, self.imTableView.frame.size.width, self.imTableView.frame.size.height);
-    self.frame     = CGRectMake(0, self.frame.origin.y + diff, self.frame.size.width, self.frame.size.height - diff);
     
+    self.messageTableView.frame = CGRectMake(self.messageTableView.frame.origin.x, tableViewOriginY, self.messageTableView.frame.size.width, self.messageTableView.frame.size.height);
+    self.frame = CGRectMake(0, self.frame.origin.y + diff, self.frame.size.width, self.frame.size.height - diff);
     //按钮靠下
-    [self reFramefunctionBtnAfterTextViewChange];
+    [self updateButtonBottom:-diff];
 }
 
-- (void)reFramefunctionBtnAfterTextViewChange
-{
-    CGFloat buttonY = self.umcHeight-UDInputBarViewToVerticalEdgeSpacing-UDInputBarViewButtonDiameter;
+- (void)updateButtonBottom:(CGFloat)diff {
     
-    CGFloat customToolBarHeight = 0;
-    if (self.customToolBar) {
-        self.customToolBar.umcTop = 0;
-        customToolBarHeight = UDInputBarViewCustomToolBarHeight;
-        _defaultToolBar.umcTop = self.customToolBar.umcBottom;
-    }
-    
-    _emotionButton.umcTop = buttonY - customToolBarHeight;
-    _voiceButton.umcTop = buttonY - customToolBarHeight;
-    _cameraButton.umcTop = buttonY - customToolBarHeight;
-    _albumButton.umcTop = buttonY - customToolBarHeight;
-    _surveyButton.umcTop = buttonY - customToolBarHeight;
-}
-
-//隐藏相册
-- (void)setHiddenAlbumButton:(BOOL)hiddenAlbumButton {
-    
-    _hiddenAlbumButton = hiddenAlbumButton;
-    if (_albumButton) {
-        _albumButton.hidden = hiddenAlbumButton;
-    }
-}
-
-//隐藏相机
-- (void)setHiddenCameraButton:(BOOL)hiddenCameraButton {
-    
-    _hiddenCameraButton = hiddenCameraButton;
-    if (_cameraButton) {
-        _cameraButton.hidden = hiddenCameraButton;
-        _albumButton.frame = CGRectMake(_voiceButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-    }
-}
-
-//隐藏语音
-- (void)setHiddenVoiceButton:(BOOL)hiddenVoiceButton {
-    
-    _hiddenVoiceButton = hiddenVoiceButton;
-    if (_voiceButton) {
-        _voiceButton.hidden = hiddenVoiceButton;
-        _cameraButton.frame = CGRectMake(_emotionButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-        _albumButton.frame = CGRectMake(_cameraButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-    }
-}
-
-//隐藏表情
-- (void)setHiddenEmotionButton:(BOOL)hiddenEmotionButton {
-    
-    _hiddenEmotionButton = hiddenEmotionButton;
-    if (_emotionButton) {
-        _emotionButton.hidden = hiddenEmotionButton;
-        _voiceButton.frame = CGRectMake(_emotionButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-        _cameraButton.frame = CGRectMake(_voiceButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-        _albumButton.frame = CGRectMake(_cameraButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-    }
-}
-
-//离线留言不显示任何功能按钮
-- (void)updateInputBarForLeaveMessage {
-    
-    if (self.umcHeight == 50.f) {
-        return;
-    }
-    if (self.emotionButton) {
-        self.emotionButton.hidden = YES;
-    }
-    if (self.voiceButton) {
-        self.voiceButton.hidden = YES;
-    }
-    if (self.cameraButton) {
-        self.cameraButton.hidden = YES;
-    }
-    if (self.albumButton) {
-        self.albumButton.hidden = YES;
-    }
-    if (self.surveyButton) {
-        self.surveyButton.hidden = YES;
-    }
-    
-    CGFloat inputViewHeight = 50.f;
-    self.umcHeight = inputViewHeight;
-    self.umcTop += 30;
-    [self.imTableView setTableViewInsetsWithBottomValue:inputViewHeight];
+    self.emotionButton.umcTop += diff;
+    self.voiceButton.umcTop += diff;
+    self.moreButton.umcTop += diff;
 }
 
 - (void)setCustomButtonConfigs:(NSArray<UMCCustomButtonConfig *> *)customButtonConfigs {
     if (!customButtonConfigs || customButtonConfigs == (id)kCFNull) return ;
     if (![customButtonConfigs isKindOfClass:[NSArray class]]) return ;
     if (![customButtonConfigs.firstObject isKindOfClass:[UMCCustomButtonConfig class]]) return ;
-    if (customButtonConfigs.count <= 0) return;
+    if (![UMCSDKConfig sharedConfig].showCustomButtons) return;
     
     _customButtonConfigs = customButtonConfigs;
     
-    if (!self.showCustomButtons) {
-        return;
-    }
-    
-    self.frame = CGRectMake(0, self.frame.origin.y - UDInputBarViewCustomToolBarHeight, self.frame.size.width, self.frame.size.height + UDInputBarViewCustomToolBarHeight);
-    self.defaultToolBar.umcTop = UDInputBarViewCustomToolBarHeight;
-    [self.imTableView setTableViewInsetsWithBottomValue:self.umcHeight];
-    
-    _customToolBar = [[UMCCustomToolBar alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, UDInputBarViewCustomToolBarHeight) customButtonConfigs:customButtonConfigs];
+    _customToolBar = [[UMCCustomToolBar alloc] initWithFrame:CGRectZero customButtonConfigs:customButtonConfigs];
     _customToolBar.delegate = self;
     [self addSubview:_customToolBar];
+    
+    self.frame = CGRectMake(0, self.frame.origin.y - 44, self.frame.size.width, self.frame.size.height + 44);
+    [self.messageTableView setTableViewInsetsWithBottomValue:self.umcHeight];
 }
 
 #pragma mark - @protocol UMCCustomToolBarDelegate
@@ -481,50 +391,27 @@ static CGFloat const UDInputBarViewCustomToolBarHeight = 44.0;
     }
 }
 
-- (void)setIsShowSurvey:(BOOL)isShowSurvey {
-    _isShowSurvey = isShowSurvey;
+//离线留言不显示任何功能按钮
+- (void)updateInputBarForLeaveMessage {
     
-    if (!isShowSurvey) {
-        return;
+    self.voiceButton.hidden = YES;
+    self.emotionButton.hidden = YES;
+    self.moreButton.hidden = YES;
+    self.recordButton.alpha = 0;
+    self.inputTextView.alpha = 1;
+    self.selectInputBarType = UMCInputBarTypeText;
+    
+    if (self.customToolBar) {
+        self.customToolBar.hidden = YES;
+        self.frame = CGRectMake(0, self.frame.origin.y + 44, self.frame.size.width, self.frame.size.height - 44);
+        [self.messageTableView setTableViewInsetsWithBottomValue:self.umcHeight];
     }
-    
-    CGFloat surveyButtonX = _albumButton.umcRight+UDInputBarViewButtonToHorizontalEdgeSpacing;
-    if (self.hiddenAlbumButton) {
-        surveyButtonX = surveyButtonX - _albumButton.umcRight + _cameraButton.umcRight;
-        if (self.hiddenCameraButton) {
-            surveyButtonX = surveyButtonX - _cameraButton.umcRight + _voiceButton.umcRight;
-            if (self.hiddenVoiceButton) {
-                surveyButtonX = surveyButtonX - _voiceButton.umcRight + _emotionButton.umcRight;
-                if (self.hiddenEmotionButton) {
-                    surveyButtonX = UDInputBarViewButtonToHorizontalEdgeSpacing;
-                }
-            }
-        }
-    }
-    
-    //相册
-    _surveyButton = [self createButtonWithImage:[UIImage umcDefaultSurveyImage] HLImage:[UIImage umcDefaultSurveyHighlightedImage]];
-    _surveyButton.frame = CGRectMake(surveyButtonX, UDInputBarViewButtonToVerticalEdgeSpacing, UDInputBarViewButtonDiameter, UDInputBarViewButtonDiameter);
-    _surveyButton.hidden = self.hiddenAlbumButton;
-    [_surveyButton addTarget:self action:@selector(surveyClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_defaultToolBar addSubview:_surveyButton];
 }
 
-- (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(ctx, 1.0);
-    CGContextSetStrokeColorWithColor(ctx, [UIColor colorWithWhite:0.8 alpha:1].CGColor);
-    CGContextMoveToPoint(ctx, 0, 0);
-    CGContextAddLineToPoint(ctx, rect.size.width, 0);
-    
-    CGContextClosePath(ctx);
-    CGContextStrokePath(ctx);
+//重置录音按钮
+- (void)resetRecordButton {
+    [self.recordButton setTitle:UMCLocalizedString(@"udesk_hold_to_talk") forState:UIControlStateNormal];
+    self.recordButton.backgroundColor = [UIColor whiteColor];
 }
 
-- (void)dealloc
-{
-    NSLog(@"%@销毁了",[self class]);
-}
 @end

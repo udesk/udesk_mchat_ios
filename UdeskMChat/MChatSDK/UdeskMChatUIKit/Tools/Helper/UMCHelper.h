@@ -31,5 +31,7 @@
 + (UIViewController *)currentViewController;
 //过滤html
 + (NSString *)filterHTML:(NSString *)html;
+//同步获取网络状态
++ (NSString *)internetStatus;
 
 @end

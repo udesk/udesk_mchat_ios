@@ -18,8 +18,6 @@ static CGFloat const kUDBubbleToTextHorizontalSpacing = 10.0;
 
 /** 聊天气泡和其中的文字垂直间距 */
 CGFloat kUDBubbleToTextVerticalTopSpacing = 12.0;
-/** 聊天气泡和其中的文字垂直间距 */
-CGFloat kUDBubbleToTextVerticalBottomSpacing = 10.0;
 
 
 @interface UMCTextMessage()
@@ -50,8 +48,6 @@ CGFloat kUDBubbleToTextVerticalBottomSpacing = 10.0;
     if (kUMCSystemVersion >= 11.0) {
         /** 聊天气泡和其中的文字垂直间距 */
         kUDBubbleToTextVerticalTopSpacing = 10.0;
-        /** 聊天气泡和其中的文字垂直间距 */
-        kUDBubbleToTextVerticalBottomSpacing = 12.0;
     }
     
     @try {
@@ -86,7 +82,7 @@ CGFloat kUDBubbleToTextVerticalBottomSpacing = 10.0;
         case UMCMessageDirectionIn:{
             
             //文本气泡frame
-            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x-kUDArrowMarginWidth-kUDBubbleToTextHorizontalSpacing*2-kUDAvatarToBubbleSpacing-textSize.width, self.avatarFrame.origin.y, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+kUDBubbleToTextVerticalTopSpacing+kUDBubbleToTextVerticalBottomSpacing);
+            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x-kUDArrowMarginWidth-kUDBubbleToTextHorizontalSpacing*2-kUDAvatarToBubbleSpacing-textSize.width, self.avatarFrame.origin.y, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+(kUDBubbleToTextVerticalTopSpacing*2));
             //文本frame
             self.textFrame = CGRectMake(kUDBubbleToTextHorizontalSpacing, kUDBubbleToTextVerticalTopSpacing, textSize.width, textSize.height);
             //加载中frame
@@ -100,7 +96,7 @@ CGFloat kUDBubbleToTextVerticalBottomSpacing = 10.0;
         case UMCMessageDirectionOut:{
             
             //接收文字气泡frame
-            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDAvatarDiameter+kUDAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+kUDBubbleToTextVerticalTopSpacing+kUDBubbleToTextVerticalBottomSpacing);
+            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDAvatarDiameter+kUDAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+(kUDBubbleToTextVerticalTopSpacing*2));
             //接收文字frame
             self.textFrame = CGRectMake(kUDBubbleToTextHorizontalSpacing+kUDArrowMarginWidth, kUDBubbleToTextVerticalTopSpacing, textSize.width, textSize.height);
             

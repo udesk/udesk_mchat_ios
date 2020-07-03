@@ -66,9 +66,8 @@
 - (UMCSDKConfig *)getConfig {
     
     UMCSDKConfig *config = [UMCSDKConfig sharedConfig];
-    config.clickGoodsBlock = ^(UMCIMViewController *viewController, NSString *url, NSString *goodsId) {
+    config.clickGoodsBlock = ^(UMCIMViewController *viewController, NSString *url) {
         NSLog(@"%@",url);
-        NSLog(@"%@",goodsId);
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
     };
     
@@ -139,7 +138,6 @@
         case UMCSendTypeGoods:{
 
             UMCGoodsModel *goodsModel1 = [[UMCGoodsModel alloc] init];
-            goodsModel1.goodsId = @"12";
             goodsModel1.name = @"Apple iPhone X (A1903) 64GB 深空灰色 移动联通4G手机";
             goodsModel1.url = @"https://item.jd.com/6748052.html";
             goodsModel1.imgUrl = @"http://img12.360buyimg.com/n1/s450x450_jfs/t10675/253/1344769770/66891/92d54ca4/59df2e7fN86c99a27.jpg";

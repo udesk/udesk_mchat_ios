@@ -15,9 +15,6 @@
 #define kUMCDateFormat @"yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 #define kUMCShowDateFormat @"yyyy-MM-dd HH:mm:ss"
 
-//语音最大时长
-#define kUMCVoiceRecorderTotalTime 60.0
-
 // block self
 
 #ifndef    udWeakify

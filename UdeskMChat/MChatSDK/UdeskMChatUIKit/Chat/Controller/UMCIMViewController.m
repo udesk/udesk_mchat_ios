@@ -8,7 +8,6 @@
 
 #import "UMCIMViewController.h"
 #import "UMCIMManager.h"
-#import "UMCVoiceRecordHUD.h"
 #import "UMCIMDataSource.h"
 #import "UMCBaseMessage.h"
 #import "UMCImagePicker.h"
@@ -19,12 +18,20 @@
 #import "UMCProductView.h"
 #import "UMCSurveyView.h"
 #import "UMCToast.h"
+#import "UMCMoreToolBar.h"
+#import "UMCVoiceRecord.h"
+#import "UMCVoiceRecordView.h"
+#import "UMCPrivacyUtil.h"
+#import "UMCVideoCell.h"
+#import "UMCImageCell.h"
+#import "UdeskSmallVideoViewController.h"
+#import "UdeskSmallVideoNavigationController.h"
 
 #import "YYKeyboardManager.h"
 
-static CGFloat const InputBarHeight = 80.0f;
+static CGFloat const InputBarHeight = 52.0f;
 
-@interface UMCIMViewController ()<UITableViewDelegate,UMCInputBarDelegate,YYKeyboardObserver,UdeskVoiceRecordViewDelegate,UDEmotionManagerViewDelegate,UMCBaseCellDelegate>
+@interface UMCIMViewController ()<UITableViewDelegate,UMCInputBarDelegate,UMCMoreToolBarDelegate,YYKeyboardObserver,UDEmotionManagerViewDelegate,UMCBaseCellDelegate,UdeskSmallVideoViewControllerDelegate>
 
 /** sdk配置 */
 @property (nonatomic, strong) UMCSDKConfig         *sdkConfig;
@@ -34,16 +41,17 @@ static CGFloat const InputBarHeight = 80.0f;
 @property (nonatomic, strong) UMCProductView       *productView;
 /** 输入框 */
 @property (nonatomic, strong) UMCInputBar          *inputBar;
+/** 更多 */
+@property (nonatomic, strong) UMCMoreToolBar       *moreView;
 /** 表情 */
 @property (nonatomic, strong) UMCEmojiView         *emojiView;
 /** 录音 */
-@property (nonatomic, strong) UMCVoiceRecordView   *recordView;
+@property (nonatomic, strong) UMCVoiceRecordView   *voiceRecordView;
+@property (nonatomic, strong) UMCVoiceRecord       *voiceRecordHelper;
 /** im TableView */
 @property (nonatomic, strong) UMCIMTableView       *imTableView;
 /** TableView DataSource */
 @property (nonatomic, strong) UMCIMDataSource      *dataSource;
-/** 录音提示HUD */
-@property (nonatomic, strong) UMCVoiceRecordHUD    *voiceRecordHUD;
 /** 输入框工具类 */
 @property (nonatomic, strong) UMCInputBarHelper    *inputBarHelper;
 /** 图片选择类 */
@@ -54,6 +62,8 @@ static CGFloat const InputBarHeight = 80.0f;
 @property (nonatomic, assign) BOOL                  afterSession;
 /** 返回展示满意度 */
 @property (nonatomic, assign) BOOL                  backAlreadyDisplayedSurvey;
+//判断是不是超出了录音最大时长
+@property (nonatomic, assign) BOOL                 isMaxTimeStop;
 
 @end
 
@@ -104,13 +114,10 @@ static CGFloat const InputBarHeight = 80.0f;
         _imTableView.umcHeight = _imTableView.umcHeight - self.productView.umcBottom;
     }
     
-    _inputBar = [[UMCInputBar alloc] initWithFrame:CGRectMake(0, self.view.umcHeight - InputBarHeight, self.view.umcWidth,InputBarHeight) tableView:_imTableView];
+    _inputBar = [[UMCInputBar alloc] initWithFrame:CGRectMake(0.0f,self.view.umcHeight - InputBarHeight - (kUMCIPhoneXSeries?34:0),self.view.umcWidth,InputBarHeight+(kUMCIPhoneXSeries?34:0)) tableView:_imTableView];
     _inputBar.delegate = self;
-    _inputBar.showCustomButtons = _sdkConfig.showCustomButtons;
-    _inputBar.customButtonConfigs = _sdkConfig.customButtons;
+    _inputBar.customButtonConfigs = self.sdkConfig.customButtons;
     [self.view addSubview:_inputBar];
-    //更新功能按钮隐藏属性
-    [self updateInputFunctionButtonHidden];
     
     //根据系统版本去掉自动调整
     if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
@@ -122,36 +129,33 @@ static CGFloat const InputBarHeight = 80.0f;
     [[YYKeyboardManager defaultManager] addObserver:self];
     
     //监听app是否从后台进入前台
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcIMApplicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcIMApplicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
     //登录成功
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcLoginSuccess) name:UMC_LOGIN_SUCCESS_NOTIFICATION object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcLoginSuccess) name:UMC_LOGIN_SUCCESS_NOTIFICATION object:nil];
     
     //适配X
-    if (kUMCIPhoneXSeries) {
-        _inputBar.umcBottom -= 34;
-        _imTableView.umcHeight -= 34;
-        [_imTableView setTableViewInsetsWithBottomValue:self.view.umcHeight - _inputBar.umcTop];
-    }
+    _imTableView.umcHeight -= kUMCIPhoneXSeries?34:0;
+    [_imTableView setTableViewInsetsWithBottomValue:self.view.umcHeight - _inputBar.umcTop];
 }
 
 //登录成功
-- (void)umcLoginSuccess {
-    @udWeakify(self);
-    [self.UIManager fetchNewMessages:^{
-        @udStrongify(self);
-        [self reloadIMTableView];
-    }];
-}
+//- (void)umcLoginSuccess {
+//    @udWeakify(self);
+//    [self.UIManager fetchNewMessages:^{
+//        @udStrongify(self);
+//        [self reloadIMTableView];
+//    }];
+//}
 
 //监听app是否从后台进入前台
-- (void)umcIMApplicationBecomeActive {
-    
-    @udWeakify(self);
-    [self.UIManager fetchNewMessages:^{
-        @udStrongify(self);
-        [self reloadIMTableView];
-    }];
-}
+//- (void)umcIMApplicationBecomeActive {
+//
+//    @udWeakify(self);
+//    [self.UIManager fetchNewMessages:^{
+//        @udStrongify(self);
+//        [self reloadIMTableView];
+//    }];
+//}
 
 #pragma mark - @protocol UMCInputBarDelegate
 - (void)didSelectCustomToolBar:(UMCCustomToolBar *)toolBar atIndex:(NSInteger)index {
@@ -165,66 +169,87 @@ static CGFloat const InputBarHeight = 80.0f;
     }
 }
 
-//选择图片
-- (void)inputBar:(UMCInputBar *)inputBar didSelectImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
-    
-    [self inputBarHide:NO];
-    [self.imagePicker showWithSourceType:sourceType viewController:self];
-    
-    //选择了GIF图片
-    @udWeakify(self);
-    self.imagePicker.FinishGIFImageBlock = ^(NSData *GIFData) {
-        @udStrongify(self);
-        [self sendGIFMessageWithGIFData:GIFData];
-    };
-    //选择了普通图片
-    self.imagePicker.FinishNormalImageBlock = ^(UIImage *image) {
-        @udStrongify(self);
-        [self sendImageMessageWithImage:image];
-    };
-}
-
 //发送文本消息，包括系统的表情
-- (void)inputBar:(UMCInputBar *)inputBar didSendText:(NSString *)text {
+- (void)didSendText:(NSString *)text {
     
     [self sendTextMessageWithContent:text];
 }
 
 //显示表情
-- (void)inputBar:(UMCInputBar *)inputBar didSelectEmotion:(UIButton *)emotionButton {
+- (void)didSelectEmotion:(UMCButton *)emotionButton {
     
     if (emotionButton.selected) {
         [self emojiView];
         [self inputBarHide:NO];
+    } else {
+        [self.inputBar.inputTextView becomeFirstResponder];
+    }
+}
+
+/** 点击更多 */
+- (void)didSelectMore:(UMCButton *)moreButton {
+    
+    if (moreButton.selected) {
+        [self inputBarHide:NO];
+    } else {
+        [self.inputBar.inputTextView becomeFirstResponder];
     }
 }
 
 //点击语音
-- (void)inputBar:(UMCInputBar *)inputBar didSelectVoice:(UIButton *)voiceButton {
+- (void)didSelectVoice:(UMCButton *)voiceButton {
     
     if (voiceButton.selected) {
-        [self recordView];
-        [self inputBarHide:NO];
+        [self inputBarHide:YES];
+    } else {
+        [self.inputBar.inputTextView becomeFirstResponder];
     }
 }
 
-//显示／隐藏
-- (void)inputBarHide:(BOOL)hide {
+/** 准备录音 */
+- (void)prepareRecordingVoiceActionWithCompletion:(BOOL (^)(void))completion {
     
-    [self.inputBarHelper inputBarHide:hide superView:self.view tableView:self.imTableView inputBar:self.inputBar emojiView:self.emojiView recordView:self.recordView completion:^{
-        if (hide) {
-            self.inputBar.selectInputBarType = UMCInputBarTypeNormal;
-        }
-    }];
+    [self.voiceRecordHelper prepareRecordingCompletion:completion];
 }
 
-//是否隐藏部分功能
-- (void)updateInputFunctionButtonHidden {
+/** 开始录音 */
+- (void)didStartRecordingVoiceAction {
     
-    _inputBar.hiddenCameraButton = self.sdkConfig.hiddenCameraButton;
-    _inputBar.hiddenAlbumButton = self.sdkConfig.hiddenAlbumButton;
-    _inputBar.hiddenVoiceButton = self.sdkConfig.hiddenVoiceButton;
-    _inputBar.hiddenEmotionButton = self.sdkConfig.hiddenEmotionButton;
+    [self.voiceRecordView startRecordingAtView:self.view];
+    [self.voiceRecordHelper startRecordingWithStartRecorderCompletion:nil];
+}
+
+/** 手指向上滑动取消录音 */
+- (void)didCancelRecordingVoiceAction {
+    
+    @udWeakify(self);
+    [self.voiceRecordView cancelRecordCompled:^(BOOL fnished) {
+        @udStrongify(self);
+        self.voiceRecordView = nil;
+    }];
+    [self.voiceRecordHelper cancelledDeleteWithCompletion:nil];
+}
+
+/** 松开手指完成录音 */
+- (void)didFinishRecoingVoiceAction {
+    
+    if (self.isMaxTimeStop == NO) {
+        [self finishRecorded];
+    } else {
+        self.isMaxTimeStop = NO;
+    }
+}
+
+/** 当手指离开按钮的范围内时 */
+- (void)didDragOutsideAction {
+    
+    [self.voiceRecordView resaueRecord];
+}
+
+/** 当手指再次进入按钮的范围内时 */
+- (void)didDragInsideAction {
+    
+    [self.voiceRecordView pauseRecord];
 }
 
 //点击空白处隐藏键盘
@@ -235,10 +260,14 @@ static CGFloat const InputBarHeight = 80.0f;
     }
 }
 
-//点击满意度
-- (void)inputBar:(UMCInputBar *)inputBar didSelectSurvey:(UIButton *)surveyButton {
+//显示／隐藏
+- (void)inputBarHide:(BOOL)hide {
     
-    [self showSurveyWithWithMerchantId:self.merchantId agentInvite:NO];
+    [self.inputBarHelper inputBarHide:hide superView:self.view tableView:self.imTableView inputBar:self.inputBar emojiView:self.emojiView moreView:self.moreView completion:^{
+        if (hide) {
+            self.inputBar.selectInputBarType = UMCInputBarTypeNormal;
+        }
+    }];
 }
 
 //显示满意度调查
@@ -341,7 +370,7 @@ static CGFloat const InputBarHeight = 80.0f;
     
     //满意度调查信息
     [self.UIManager fetchSurveyConfig:^(BOOL isShowSurvey, BOOL afterSession) {
-        self.inputBar.isShowSurvey = isShowSurvey;
+        self.moreView.enableSurvey = isShowSurvey;
         self.afterSession = afterSession;
     }];
 }
@@ -386,6 +415,28 @@ static CGFloat const InputBarHeight = 80.0f;
 - (void)resendMessageInCell:(UITableViewCell *)cell resendMessage:(UMCMessage *)resendMessage {
     
     @udWeakify(self);
+    if (resendMessage.sourceData && [UMCHelper isBlankString:resendMessage.content]) {
+        resendMessage.messageStatus = UMCMessageStatusSending;
+        [UMCManager uploadFile:resendMessage.sourceData fileName:resendMessage.fileName progress:^(float percent) {
+            [self updateMediaProgress:percent uploadMessage:resendMessage];
+        } completion:^(NSString *address, NSError *error) {
+            if (!error) {
+                resendMessage.content = address;
+                resendMessage.messageStatus = UMCMessageStatusSuccess;
+                [UMCManager createMessageWithMerchantsEuid:self.merchantId message:resendMessage completion:^(UMCMessage *message) {
+                    
+                    [self.UIManager updateCache:resendMessage newMessage:message];
+                    [self updateSendCompletedMessage:resendMessage];
+                    [self updateMediaProgress:1 uploadMessage:resendMessage];
+                }];
+            } else {
+                resendMessage.messageStatus = UMCMessageStatusFailed;
+                [self updateMediaProgress:0 uploadMessage:resendMessage];
+            }
+        }];
+        return;
+    }
+    
     [UMCManager createMessageWithMerchantsEuid:self.merchantId message:resendMessage completion:^(UMCMessage *message) {
         @udStrongify(self);
         [self.UIManager updateCache:resendMessage newMessage:message];
@@ -394,10 +445,10 @@ static CGFloat const InputBarHeight = 80.0f;
 }
 
 //点击商品消息
-- (void)didTapGoodsMessageCell:(UITableViewCell *)cell goodsURL:(NSString *)goodsURL goodsId:(NSString *)goodsId {
+- (void)didTapGoodsMessageCell:(UITableViewCell *)cell goodsURL:(NSString *)goodsURL {
     
     if (self.sdkConfig.clickGoodsBlock) {
-        self.sdkConfig.clickGoodsBlock(self,goodsURL,goodsId);
+        self.sdkConfig.clickGoodsBlock(self,goodsURL);
         return;
     }
     
@@ -425,25 +476,39 @@ static CGFloat const InputBarHeight = 80.0f;
     return _UIManager;
 }
 
-//吐司提示view
-- (UMCVoiceRecordHUD *)voiceRecordHUD {
-    
-    if (!_voiceRecordHUD) {
-        _voiceRecordHUD = [[UMCVoiceRecordHUD alloc] init];
+#pragma mark - 录音动画view
+- (UMCVoiceRecordView *)voiceRecordView {
+    if (!_voiceRecordView) {
+        _voiceRecordView = [[UMCVoiceRecordView alloc] initWithFrame:CGRectMake(0, 0, 150, 150)];
     }
-    return _voiceRecordHUD;
+    return _voiceRecordView;
 }
 
-//录音动画view
-- (UMCVoiceRecordView *)recordView {
-    
-    if (!_recordView) {
-        _recordView = [[UMCVoiceRecordView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds), 200)];
-        _recordView.alpha = 0.0;
-        _recordView.delegate = self;
-        [self.view addSubview:_recordView];
+- (UMCVoiceRecord *)voiceRecordHelper {
+    if (!_voiceRecordHelper) {
+        _isMaxTimeStop = NO;
+        @udWeakify(self);
+        _voiceRecordHelper = [[UMCVoiceRecord alloc] init];
+        _voiceRecordHelper.maxTimeStopRecorderCompletion = ^{
+            @udStrongify(self);
+            self.isMaxTimeStop = YES;
+            [self.inputBar resetRecordButton];
+            [self finishRecorded];
+        };
+        
+        _voiceRecordHelper.peakPowerForChannel = ^(float peakPowerForChannel) {
+            @udStrongify(self);
+            self.voiceRecordView.peakPower = peakPowerForChannel;
+        };
+        
+        _voiceRecordHelper.tooShortRecorderFailue = ^{
+            @udStrongify(self);
+            [self.voiceRecordView speakDurationTooShort];
+        };
+        
+        _voiceRecordHelper.maxRecordTime = kUMCVoiceRecorderTotalTime;
     }
-    return _recordView;
+    return _voiceRecordHelper;
 }
 
 //咨询对象
@@ -456,16 +521,140 @@ static CGFloat const InputBarHeight = 80.0f;
     return _productView;
 }
 
-#pragma mark - @protocol UdeskVoiceRecordViewDelegate
-//完成录音
-- (void)finishRecordedWithVoicePath:(NSString *)voicePath withAudioDuration:(NSString *)duration {
+//录音完成
+- (void)finishRecorded {
+    @udWeakify(self);
+    [self.voiceRecordView stopRecordCompled:^(BOOL fnished) {
+        @udStrongify(self);
+        self.voiceRecordView = nil;
+    }];
     
-    [self sendVoiceMessageWithVoicePath:voicePath voiceDuration:duration];
+    [self.voiceRecordHelper stopRecordingWithStopRecorderCompletion:^{
+        @udStrongify(self);
+        [self sendVoiceMessageWithVoicePath:self.voiceRecordHelper.recordPath voiceDuration:self.voiceRecordHelper.recordDuration];
+    }];
 }
 
-//录音时间太短
-- (void)speakDurationTooShort {
-    [self.voiceRecordHUD showTooShortRecord:self.view];
+#pragma mark - 更多
+- (UMCMoreToolBar *)moreView {
+    
+    if (!_moreView) {
+        _moreView = [[UMCMoreToolBar alloc] init];
+        _moreView.customMenuItems = self.sdkConfig.customButtons;
+        _moreView.backgroundColor = [UIColor colorWithWhite:0.961 alpha:1.000];
+        _moreView.alpha = 0.0;
+        _moreView.delegate = self;
+        [self.view addSubview:_moreView];
+    }
+    return _moreView;
+}
+
+#pragma mark - UdeskChatToolBarMoreViewDelegate
+//点击默认的按钮
+- (void)didSelectMoreMenuItem:(UMCMoreToolBar *)moreMenuItem itemType:(UMCMoreToolBarType)itemType {
+    
+    switch (itemType) {
+        case UMCMoreToolBarTypeAlubm:
+            
+            //打开相册
+            [self openCustomerAlubm];
+            break;
+        case UMCMoreToolBarTypeShoot:
+            
+            //打开拍摄
+            [self openShoot];
+            break;
+        case UMCMoreToolBarTypeSurvey:
+            
+            //评价
+            [self showSurveyWithWithMerchantId:self.merchantId agentInvite:NO];
+            break;
+        case UMCMoreToolBarTypeShootVideo:
+            
+            //评价
+            [self openShootSmallVideo];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+//选择图片
+- (void)openCustomerAlubm {
+    
+    [self inputBarHide:NO];
+    [self.imagePicker showWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary viewController:self];
+    
+    //选择了GIF图片
+    @udWeakify(self);
+    self.imagePicker.FinishGIFImageBlock = ^(NSData *GIFData) {
+        @udStrongify(self);
+        [self sendGIFMessageWithGIFData:GIFData];
+    };
+    //选择了普通图片
+    self.imagePicker.FinishNormalImageBlock = ^(UIImage *image) {
+        @udStrongify(self);
+        [self sendImageMessageWithImage:image];
+    };
+    //选择了视频
+    self.imagePicker.FinishVideoBlock = ^(NSString *filePath, NSString *fileName) {
+        @udStrongify(self);
+        [self sendVideoMessageWithVideoFile:filePath];
+    };
+}
+
+//选择拍摄
+- (void)openShoot {
+    
+    [self inputBarHide:NO];
+    [self.imagePicker showWithSourceType:UIImagePickerControllerSourceTypeCamera viewController:self];
+    
+    //选择了普通图片
+    @udWeakify(self);
+    self.imagePicker.FinishNormalImageBlock = ^(UIImage *image) {
+        @udStrongify(self);
+        [self sendImageMessageWithImage:image];
+    };
+}
+
+//开启用户相机
+- (void)openShootSmallVideo {
+    
+    //检查权限
+    [UMCPrivacyUtil checkPermissionsOfCamera:^{
+        
+        if ([[UMCHelper currentViewController] isKindOfClass:[UdeskSmallVideoViewController class]]) {
+            return ;
+        }
+        
+        [UMCPrivacyUtil checkPermissionsOfAudio:^{
+            
+            UdeskSmallVideoViewController *smallVideoVC = [[UdeskSmallVideoViewController alloc] init];
+            smallVideoVC.delegate = self;
+            
+            UdeskSmallVideoNavigationController *nav = [[UdeskSmallVideoNavigationController alloc] initWithRootViewController:smallVideoVC];
+            nav.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:nav animated:YES completion:nil];
+        }];
+    }];
+}
+
+#pragma mark - @protocol UdeskSmallVideoViewControllerDelegate
+//拍摄视频
+- (void)didFinishRecordSmallVideo:(NSDictionary *)videoInfo {
+    
+    if (![videoInfo.allKeys containsObject:@"videoURL"]) {
+        return;
+    }
+    NSString *url = videoInfo[@"videoURL"];
+    [self sendVideoMessageWithVideoFile:url];
+}
+
+//拍摄图片
+- (void)didFinishCaptureImage:(UIImage *)image {
+    
+    [self sendImageMessageWithImage:image];
 }
 
 #pragma mark - 表情view
@@ -516,7 +705,7 @@ static CGFloat const InputBarHeight = 80.0f;
     
     CGRect toFrame =  [[YYKeyboardManager defaultManager] convertRect:transition.toFrame toView:self.view];
     [UIView animateWithDuration:0.35 animations:^{
-        self.inputBar.umcBottom = CGRectGetMinY(toFrame);
+        self.inputBar.umcBottom = CGRectGetMinY(toFrame) + (kUMCIPhoneXSeries?34:0);
         if (!transition.toVisible && kUMCIPhoneXSeries) {
             self.inputBar.umcBottom -= 34;
         }
@@ -525,7 +714,7 @@ static CGFloat const InputBarHeight = 80.0f;
         if (transition.toVisible) {
             [self.imTableView scrollToBottomAnimated:NO];
             self.emojiView.alpha = 0.0;
-            self.recordView.alpha = 0.0;
+            self.moreView.alpha = 0.0;
         }
     }];
 }
@@ -565,8 +754,11 @@ static CGFloat const InputBarHeight = 80.0f;
 - (void)sendImageMessageWithImage:(UIImage *)image {
     if (!image || image == (id)kCFNull) return ;
     
-    [self.UIManager sendImageMessage:image completion:^(UMCMessage *message) {
+    [self.UIManager sendImageMessage:image progress:^(UMCMessage *message, float percent) {
+        [self updateMediaProgress:percent uploadMessage:message];
+    } completion:^(UMCMessage *message) {
         [self updateSendCompletedMessage:message];
+        [self updateMediaProgress:message.messageStatus == UMCMessageStatusSuccess?1:0 uploadMessage:message];
     }];
 }
 
@@ -574,9 +766,69 @@ static CGFloat const InputBarHeight = 80.0f;
 - (void)sendGIFMessageWithGIFData:(NSData *)gifData {
     if (!gifData || gifData == (id)kCFNull) return ;
     
-    [self.UIManager sendGIFImageMessage:gifData completion:^(UMCMessage *message) {
+    [self.UIManager sendGIFImageMessage:gifData progress:^(UMCMessage *message, float percent) {
+        [self updateMediaProgress:percent uploadMessage:message];
+    } completion:^(UMCMessage *message) {
         [self updateSendCompletedMessage:message];
+        [self updateMediaProgress:message.messageStatus == UMCMessageStatusSuccess?1:0 uploadMessage:message];
     }];
+}
+
+#pragma mark - 发送视频
+- (void)sendVideoMessageWithVideoFile:(NSString *)videoFile {
+    if (!videoFile || videoFile == (id)kCFNull) return ;
+    if (![videoFile isKindOfClass:[NSString class]]) return ;
+    
+    NSData *videoData = [NSData dataWithContentsOfFile:videoFile];
+    if (!videoData || videoData == (id)kCFNull) {
+        videoData = [NSData dataWithContentsOfURL:[NSURL URLWithString:videoFile]];
+    }
+
+    if (!videoData || videoData == (id)kCFNull) return ;
+    if (![videoData isKindOfClass:[NSData class]]) return ;
+    
+    [self.UIManager sendVideoMessage:videoData progress:^(UMCMessage *message, float percent) {
+        [self updateMediaProgress:percent uploadMessage:message];
+    } completion:^(UMCMessage *message) {
+        [self updateSendCompletedMessage:message];
+        [self updateMediaProgress:message.messageStatus == UMCMessageStatusSuccess?1:0 uploadMessage:message];
+    }];
+}
+
+//更新上传进度
+- (void)updateMediaProgress:(float)progress uploadMessage:(UMCMessage *)message {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSArray *array = [self.UIManager.messagesArray valueForKey:@"messageId"];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[array indexOfObject:message.UUID] inSection:0];
+        UMCBaseCell *cell = [self.imTableView cellForRowAtIndexPath:indexPath];
+        [cell updateLoding:UMCMessageStatusSending];
+        
+        if (message.contentType == UMCMessageContentTypeImage) {
+            UMCImageCell *imageCell = (UMCImageCell *)cell;
+            if ([imageCell isKindOfClass:[UMCImageCell class]]) {
+                if (progress > 0.0f && progress < 1.0f) {
+                    [imageCell imageUploading];
+                    imageCell.progressLabel.text = [NSString stringWithFormat:@"%.f%%",progress*100];
+                } else {
+                    [imageCell uploadImageSuccess];
+                    [imageCell updateLoding:message.messageStatus];
+                }
+            }
+            
+        } else if (message.contentType == UMCMessageContentTypeVideo) {
+            UMCVideoCell *videoCell = (UMCVideoCell *)cell;
+            if ([videoCell isKindOfClass:[UMCVideoCell class]]) {
+                if (progress > 0.0f && progress < 1.0f) {
+                    [videoCell videoUploading];
+                    videoCell.uploadProgressLabel.text = [NSString stringWithFormat:@"%.f%%",progress*100];
+                } else {
+                    [videoCell videoUploadSuccess];
+                    [videoCell updateLoding:message.messageStatus];
+                }
+            }
+        }
+    });
 }
 
 #pragma mark - 发送语音
@@ -656,6 +908,24 @@ static CGFloat const InputBarHeight = 80.0f;
             return;
         }
     });
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    CGFloat spacing = kUMCIPhoneXSeries?34:0;
+    
+    CGFloat moreViewY = CGRectGetHeight(self.view.bounds);
+    if (self.inputBar.selectInputBarType == UMCInputBarTypeMore) {
+        moreViewY = CGRectGetHeight(self.view.frame) - CGRectGetHeight(self.moreView.frame);
+    }
+    self.moreView.frame = CGRectMake(0, moreViewY, CGRectGetWidth(self.view.bounds), 230 + spacing);
+    
+    CGFloat emotionViewY = CGRectGetHeight(self.view.bounds);
+    if (self.inputBar.selectInputBarType == UMCInputBarTypeEmotion) {
+        emotionViewY = CGRectGetHeight(self.view.frame) - CGRectGetHeight(self.emojiView.frame);
+    }
+    self.emojiView.frame = CGRectMake(0, emotionViewY, CGRectGetWidth(self.view.bounds), 230 + spacing);
 }
 
 #pragma mark - 设置背景颜色

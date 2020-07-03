@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "UMCInputBar.h"
 #import "UMCEmojiView.h"
-#import "UMCVoiceRecordView.h"
+#import "UMCMoreToolBar.h"
 #import "UMCIMTableView.h"
 #import "UIView+UMC.h"
 
@@ -20,7 +20,7 @@
            tableView:(UMCIMTableView *)tableView
             inputBar:(UMCInputBar *)inputBar
            emojiView:(UMCEmojiView *)emojiView
-          recordView:(UMCVoiceRecordView *)recordView
+            moreView:(UMCMoreToolBar *)moreView
           completion:(void (^)(void))completion;
 
 @end

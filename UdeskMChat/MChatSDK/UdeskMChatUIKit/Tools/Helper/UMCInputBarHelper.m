@@ -17,7 +17,7 @@
            tableView:(UMCIMTableView *)tableView
             inputBar:(UMCInputBar *)inputBar
            emojiView:(UMCEmojiView *)emojiView
-          recordView:(UMCVoiceRecordView *)recordView
+            moreView:(UMCMoreToolBar *)moreView
           completion:(void (^)(void))completion {
     
     //根据textViewInputViewType切换功能面板
@@ -32,23 +32,22 @@
         }
         
         void (^InputViewAnimation)(BOOL hide) = ^(BOOL hide) {
-            inputViewFrame.origin.y = (hide ? (CGRectGetHeight(superView.bounds) - CGRectGetHeight(inputViewFrame)) - spacing : (CGRectGetMinY(otherMenuViewFrame) - CGRectGetHeight(inputViewFrame)));
+            inputViewFrame.origin.y = (hide ? (CGRectGetHeight(superView.bounds) - CGRectGetHeight(inputViewFrame)) : (CGRectGetMinY(otherMenuViewFrame) - CGRectGetHeight(inputViewFrame)) + spacing);
             inputBar.frame = inputViewFrame;
         };
         
         void (^EmotionManagerViewAnimation)(BOOL hide) = ^(BOOL hide) {
             otherMenuViewFrame = emojiView.frame;
-            otherMenuViewFrame.origin.y = (hide ? CGRectGetHeight(superView.frame) - spacing : (CGRectGetHeight(superView.frame) - CGRectGetHeight(otherMenuViewFrame)) - spacing);
+            otherMenuViewFrame.origin.y = (hide ? CGRectGetHeight(superView.frame) : (CGRectGetHeight(superView.frame) - CGRectGetHeight(otherMenuViewFrame)));
             emojiView.alpha = !hide;
             emojiView.frame = otherMenuViewFrame;
         };
         
-        void (^VoiceManagerViewAnimation)(BOOL hide) = ^(BOOL hide) {
-            otherMenuViewFrame = recordView.frame;
-            otherMenuViewFrame.origin.y = (hide ? CGRectGetHeight(superView.frame) - spacing : (CGRectGetHeight(superView.frame) - CGRectGetHeight(otherMenuViewFrame)) - spacing);
-            recordView.alpha = !hide;
-            recordView.frame = otherMenuViewFrame;
-            
+        void (^MoreViewAnimation)(BOOL hide) = ^(BOOL hide) {
+            otherMenuViewFrame = moreView.frame;
+            otherMenuViewFrame.origin.y = (hide ? CGRectGetHeight(superView.frame) : (CGRectGetHeight(superView.frame) - CGRectGetHeight(otherMenuViewFrame)));
+            moreView.alpha = !hide;
+            moreView.frame = otherMenuViewFrame;
         };
         
         if (hide) {
@@ -57,13 +56,18 @@
                     EmotionManagerViewAnimation(hide);
                     break;
                 }
-                case UMCInputBarTypeVoice: {
-                    VoiceManagerViewAnimation(hide);
+                case UMCInputBarTypeText: {
+                    EmotionManagerViewAnimation(hide);
+                    MoreViewAnimation(hide);
                     break;
                 }
-                case UMCInputBarTypeNormal: {
-                    VoiceManagerViewAnimation(hide);
+                case UMCInputBarTypeMore: {
+                    MoreViewAnimation(hide);
+                    break;
+                }
+                case UMCInputBarTypeVoice: {
                     EmotionManagerViewAnimation(hide);
+                    MoreViewAnimation(hide);
                     break;
                 }
                 default:
@@ -75,7 +79,7 @@
             switch (inputBar.selectInputBarType) {
                 case UMCInputBarTypeEmotion: {
                     // 1、先隐藏和自己无关的View
-                    VoiceManagerViewAnimation(!hide);
+                    MoreViewAnimation(!hide);
                     // 2、再显示和自己相关的View
                     EmotionManagerViewAnimation(hide);
                     break;
@@ -84,12 +88,17 @@
                     // 1、先隐藏和自己无关的View
                     EmotionManagerViewAnimation(!hide);
                     // 2、再显示和自己相关的View
-                    VoiceManagerViewAnimation(hide);
+                    MoreViewAnimation(!hide);
                     break;
                 }
-                case UMCInputBarTypeNormal: {
-                    VoiceManagerViewAnimation(!hide);
+                case UMCInputBarTypeText: {
                     EmotionManagerViewAnimation(!hide);
+                    MoreViewAnimation(!hide);
+                    break;
+                }
+                case UMCInputBarTypeMore: {
+                    EmotionManagerViewAnimation(!hide);
+                    MoreViewAnimation(hide);
                     break;
                 }
                 default:

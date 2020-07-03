@@ -10,8 +10,6 @@
 
 @interface UMCGoodsMessage : UMCBaseMessage
 
-/** id */
-@property (nonatomic, copy, readonly) NSString *goodsId;
 /** 名称 */
 @property (nonatomic, copy, readonly) NSString *name;
 /** 链接 */

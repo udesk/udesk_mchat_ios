@@ -52,15 +52,22 @@
 
 /** 发送图片消息 */
 - (void)sendImageMessage:(UIImage *)image
+                progress:(void(^)(UMCMessage *message,float percent))progress
               completion:(void(^)(UMCMessage *message))completion;
 
 /** 发送gif图片消息 */
 - (void)sendGIFImageMessage:(NSData *)gifData
+                   progress:(void(^)(UMCMessage *message,float percent))progress
                  completion:(void(^)(UMCMessage *message))completion;
 
 /**  发送语音消息 */
 - (void)sendVoiceMessage:(NSString *)voicePath
            voiceDuration:(NSString *)voiceDuration
+              completion:(void(^)(UMCMessage *message))completion;
+
+/** 发送视频消息 */
+- (void)sendVideoMessage:(NSData *)videoData
+                progress:(void(^)(UMCMessage *message,float percent))progress
               completion:(void(^)(UMCMessage *message))completion;
 
 /** 发送商品消息 */

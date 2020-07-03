@@ -38,12 +38,12 @@
     //头像图片
     NSString *avatarUrl = [UMCSDKConfig sharedConfig].merchantImageURL;
     UIImage *avatarImage = [UMCSDKConfig sharedConfig].merchantImage;
-    
+
     if (baseMessage.message.direction == UMCMessageDirectionIn) {
         avatarUrl = [UMCSDKConfig sharedConfig].customerImageURL;
         avatarImage = [UMCSDKConfig sharedConfig].customerImage;
     }
-    
+
     [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[avatarUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:avatarImage];
     
     //气泡
