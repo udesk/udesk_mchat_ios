@@ -20,11 +20,13 @@ static CGFloat const kUMCHUDDuration = 1.2f;
 
 @interface UMCViewController ()<UMCMessageDelegate>
 
-@property (strong, nonatomic) IBOutlet UITextField *uuidTextField;
-@property (strong, nonatomic) IBOutlet UITextField *keyTextField;
-@property (strong, nonatomic) IBOutlet UITextField *euidTextField;
-@property (strong, nonatomic) IBOutlet UITextField *nameTextField;
-@property (strong, nonatomic) IBOutlet UISwitch *environmentSwitch;
+@property (strong, nonatomic)  UITextField *uuidTextField;
+@property (strong, nonatomic)  UITextField *keyTextField;
+@property (strong, nonatomic)  UITextField *euidTextField;
+@property (strong, nonatomic)  UITextField *nameTextField;
+@property (strong, nonatomic)  UITextField *languageTextField;
+
+@property (strong, nonatomic)  UISwitch *environmentSwitch;
 
 @end
 
@@ -32,16 +34,103 @@ static CGFloat const kUMCHUDDuration = 1.2f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"多商户SDK";
     // Do any additional setup after loading the view.
-    
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self setupViews];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msgChange:) name:UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION object:nil];
     [[UMCDelegate shareInstance] addDelegate:self];
     
-    self.uuidTextField.text = @"b1ce357b-8ce8-4ea1-9a87-7d15519dd7e6";
-    self.keyTextField.text = @"27aa6696cba45cc091ee66fbc25aedab";
+//#if 0
+//    self.uuidTextField.text = @"0ad5f61a-3769-4d32-87fc-4ce562d2677a";
+//    self.keyTextField.text = @"8d99703ffa2b06cd2609aa3c20be7128";
+//    self.euidTextField.text = @"abcefg";
+//#elif 1
+//    self.uuidTextField.text = @"b1ce357b-8ce8-4ea1-9a87-7d15519dd7e6";
+//    self.keyTextField.text = @"27aa6696cba45cc091ee66fbc25aedab";
+//    self.euidTextField.text = @"abcefg";
+//#endif
 }
 
-- (IBAction)startUMCAction:(id)sender {
+- (void)setupViews{
+    {
+        UITextField *tx = [[UITextField alloc] initWithFrame:CGRectMake(15, 100, kUMCScreenWidth - 30, 28)];
+        tx.placeholder = @"uuid(后台获取)";
+        tx.font = [UIFont systemFontOfSize:14];
+        tx.layer.borderWidth = 1.0;
+        tx.layer.cornerRadius = 2.0;
+        tx.layer.borderColor = [UIColor grayColor].CGColor;
+        
+        [self.view addSubview:tx];
+        _uuidTextField = tx;
+    }
+    {
+        UITextField *tx = [[UITextField alloc] initWithFrame:CGRectMake(15, 130, kUMCScreenWidth - 30, 28)];
+        tx.placeholder = @"key(生产环境必须输入这个！))";
+        tx.font = [UIFont systemFontOfSize:14];
+        tx.layer.borderWidth = 1.0;
+        tx.layer.cornerRadius = 2.0;
+        tx.layer.borderColor = [UIColor grayColor].CGColor;
+        [self.view addSubview:tx];
+        _keyTextField = tx;
+    }
+    {
+        UITextField *tx = [[UITextField alloc] initWithFrame:CGRectMake(15, 160, kUMCScreenWidth - 30, 28)];
+        tx.placeholder = @"(商户ID)";
+        tx.font = [UIFont systemFontOfSize:14];
+        tx.layer.borderWidth = 1.0;
+        tx.layer.cornerRadius = 2.0;
+        tx.layer.borderColor = [UIColor grayColor].CGColor;
+        [self.view addSubview:tx];
+        _euidTextField = tx;
+    }
+    {
+        UITextField *tx = [[UITextField alloc] initWithFrame:CGRectMake(15, 190, kUMCScreenWidth - 30, 28)];
+        tx.placeholder = @"name(客户名称)";
+        tx.font = [UIFont systemFontOfSize:14];
+        tx.layer.borderWidth = 1.0;
+        tx.layer.cornerRadius = 2.0;
+        tx.layer.borderColor = [UIColor grayColor].CGColor;
+        [self.view addSubview:tx];
+        _nameTextField = tx;
+    }
+    
+    
+    {
+        UITextField *tx = [[UITextField alloc] initWithFrame:CGRectMake(15, 220, kUMCScreenWidth - 30, 28)];
+        tx.placeholder = @"多语言(默认不传，使用zh-CN)";
+        tx.font = [UIFont systemFontOfSize:14];
+        tx.layer.borderWidth = 1.0;
+        tx.layer.cornerRadius = 2.0;
+        tx.layer.borderColor = [UIColor grayColor].CGColor;
+        [self.view addSubview:tx];
+        _languageTextField = tx;
+    }
+    
+    {
+        UISwitch *switchButton = [[UISwitch alloc] initWithFrame:CGRectMake(kUMCScreenWidth - 60 - 20, _languageTextField.frame.origin.y + 50, 60, 40)];
+        switchButton.on = YES;
+        [self.view addSubview:switchButton];
+        _environmentSwitch = switchButton;
+        
+        UILabel *label =[[UILabel alloc] initWithFrame:CGRectMake(0, switchButton.frame.origin.y + 45, kUMCScreenWidth - 16, 20)];
+        label.text = @"打开状态为测试环境";
+        label.font = [UIFont systemFontOfSize:14];
+        label.textAlignment = NSTextAlignmentRight;
+        [self.view addSubview:label];
+        
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(15, label.frame.origin.y + 30, kUMCScreenWidth - 30, 30)];
+        button.layer.cornerRadius = 2.0;
+        button.layer.borderWidth = 1.0;
+        button.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        [button setTitle:@"开启" forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:button];
+    }
+}
+
+- (void)buttonPressed:(id)sender {
     
     if (self.uuidTextField.text.length == 0) {
         [self showTextMessage:self.uuidTextField.placeholder];
@@ -53,33 +142,30 @@ static CGFloat const kUMCHUDDuration = 1.2f;
         return;
     }
     
+    if (self.keyTextField.text.length == 0) {
+        [self showTextMessage:self.keyTextField.placeholder];
+        return;
+    }
+    
+    if (self.languageTextField.text.length > 0) {
+        [UMCLanguage sharedInstance].language = self.languageTextField.text;
+    }
+    
+    [UMCLanguage sharedInstance].language = self.languageTextField.text;
+    
+    NSString *bundlePath = [[NSBundle bundleForClass:[UMCViewController class]] pathForResource:@"udCustomBundle" ofType:@"bundle"];
+    [UMCLanguage sharedInstance].customBundle = [NSBundle bundleWithPath:bundlePath];
     //测试环境
     if (self.environmentSwitch.on) {
-        
         [UMCManager setIsDeveloper:YES];
-        
-        [self showWaitingMessage:nil];
-        NSString *url = [NSString stringWithFormat:@"http://mchat.udeskmonkey.com/sdk/v1/%@/demo_sign",self.uuidTextField.text];
-        [self serversSignWithURL:url completion:^(NSString *sign,NSString *timestamp) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self pushSetingVCWithSign:sign timestamp:timestamp];
-            });
-        }];
     }
     else {
-        
-        if (self.keyTextField.text.length == 0) {
-            [self showTextMessage:self.keyTextField.placeholder];
-            return;
-        }
-        
         [UMCManager setIsDeveloper:NO];
-        
-        NSTimeInterval s = [[NSDate date] timeIntervalSince1970];
-        NSString *sha1 = [NSString stringWithFormat:@"%@%@%.f",self.uuidTextField.text,self.keyTextField.text,s];
-        
-        [self pushSetingVCWithSign:[self sha1:sha1] timestamp:[NSString stringWithFormat:@"%.f",s]];
     }
+    NSTimeInterval s = [[NSDate date] timeIntervalSince1970];
+    NSString *sha1 = [NSString stringWithFormat:@"%@%@%.f",self.uuidTextField.text,self.keyTextField.text,s];
+    
+    [self pushSetingVCWithSign:[self sha1:sha1] timestamp:[NSString stringWithFormat:@"%.f",s]];
 }
 
 - (void)pushSetingVCWithSign:(NSString *)sign timestamp:(NSString *)timestamp {
@@ -92,7 +178,7 @@ static CGFloat const kUMCHUDDuration = 1.2f;
     
     UMCCustomer *customer = [UMCCustomer new];
     customer.euid = self.euidTextField.text;
-    if (self.nameTextField.text.length == 0) {
+    if (self.nameTextField.text.length > 0) {
         customer.name = self.nameTextField.text;
     }
     

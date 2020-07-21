@@ -177,13 +177,13 @@
 		44BC681924B5AB0D008885DA /* UdeskMChatBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 44BC677B24B5AB0B008885DA /* UdeskMChatBundle.bundle */; };
 		44BC681A24B5AB0D008885DA /* UdeskMChatSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44BC677C24B5AB0B008885DA /* UdeskMChatSDK.framework */; };
 		44D3AC8C2327B100003B6029 /* UMCOrderTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC7C2327B0FE003B6029 /* UMCOrderTestViewController.m */; };
-		44D3AC8D2327B100003B6029 /* UMCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC7D2327B0FE003B6029 /* UMCViewController.m */; };
 		44D3AC8E2327B100003B6029 /* UMCDeveloperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC7F2327B0FE003B6029 /* UMCDeveloperViewController.m */; };
 		44D3AC8F2327B100003B6029 /* UMCGoodsMessageTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC822327B0FF003B6029 /* UMCGoodsMessageTestViewController.m */; };
 		44D3AC902327B100003B6029 /* UMCCustomButtonTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC842327B0FF003B6029 /* UMCCustomButtonTableViewController.m */; };
 		44D3AC912327B100003B6029 /* UMCSessionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC872327B0FF003B6029 /* UMCSessionListViewController.m */; };
 		44D3AC922327B100003B6029 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC882327B100003B6029 /* MBProgressHUD.m */; };
 		44D3AC932327B100003B6029 /* UMCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D3AC8A2327B100003B6029 /* UMCSettingViewController.m */; };
+		44F4C33624C6D7A100E75FEB /* UMCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44F4C33524C6D7A100E75FEB /* UMCViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -527,7 +527,6 @@
 		44BC677B24B5AB0B008885DA /* UdeskMChatBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UdeskMChatBundle.bundle; sourceTree = "<group>"; };
 		44BC677C24B5AB0B008885DA /* UdeskMChatSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UdeskMChatSDK.framework; sourceTree = "<group>"; };
 		44D3AC7C2327B0FE003B6029 /* UMCOrderTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCOrderTestViewController.m; sourceTree = "<group>"; };
-		44D3AC7D2327B0FE003B6029 /* UMCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCViewController.m; sourceTree = "<group>"; };
 		44D3AC7E2327B0FE003B6029 /* UMCDeveloperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCDeveloperViewController.h; sourceTree = "<group>"; };
 		44D3AC7F2327B0FE003B6029 /* UMCDeveloperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCDeveloperViewController.m; sourceTree = "<group>"; };
 		44D3AC802327B0FF003B6029 /* UMCSessionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCSessionListViewController.h; sourceTree = "<group>"; };
@@ -541,7 +540,8 @@
 		44D3AC882327B100003B6029 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		44D3AC892327B100003B6029 /* UMCOrderTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCOrderTestViewController.h; sourceTree = "<group>"; };
 		44D3AC8A2327B100003B6029 /* UMCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCSettingViewController.m; sourceTree = "<group>"; };
-		44D3AC8B2327B100003B6029 /* UMCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCViewController.h; sourceTree = "<group>"; };
+		44F4C33424C6D7A100E75FEB /* UMCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMCViewController.h; sourceTree = "<group>"; };
+		44F4C33524C6D7A100E75FEB /* UMCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMCViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -613,8 +613,8 @@
 			children = (
 				44D3AC812327B0FF003B6029 /* MBProgressHUD.h */,
 				44D3AC882327B100003B6029 /* MBProgressHUD.m */,
-				44D3AC8B2327B100003B6029 /* UMCViewController.h */,
-				44D3AC7D2327B0FE003B6029 /* UMCViewController.m */,
+				44F4C33424C6D7A100E75FEB /* UMCViewController.h */,
+				44F4C33524C6D7A100E75FEB /* UMCViewController.m */,
 				44D3AC852327B0FF003B6029 /* UMCCustomButtonTableViewController.h */,
 				44D3AC842327B0FF003B6029 /* UMCCustomButtonTableViewController.m */,
 				44D3AC7E2327B0FE003B6029 /* UMCDeveloperViewController.h */,
@@ -1595,6 +1595,7 @@
 				44BC67C924B5AB0C008885DA /* SDDiskCache.m in Sources */,
 				44BC680A24B5AB0D008885DA /* UdeskSmallVideoBottomView.m in Sources */,
 				44BC67AC24B5AB0C008885DA /* UdeskOneScrollView.m in Sources */,
+				44F4C33624C6D7A100E75FEB /* UMCViewController.m in Sources */,
 				44BC678324B5AB0C008885DA /* UIViewController+UMC.m in Sources */,
 				44BC67CD24B5AB0C008885DA /* SDWeakProxy.m in Sources */,
 				44BC67C824B5AB0C008885DA /* SDImageIOCoder.m in Sources */,
@@ -1702,7 +1703,6 @@
 				44BC680324B5AB0D008885DA /* UMCIMTableView.m in Sources */,
 				44BC677D24B5AB0C008885DA /* UIImage+UMC.m in Sources */,
 				44BC67E524B5AB0D008885DA /* UIImage+Metadata.m in Sources */,
-				44D3AC8D2327B100003B6029 /* UMCViewController.m in Sources */,
 				44BC67B524B5AB0C008885DA /* SDAnimatedImage.m in Sources */,
 				44BC679024B5AB0C008885DA /* UMCToast.m in Sources */,
 				44BC67E824B5AB0D008885DA /* TTTAttributedLabel.m in Sources */,
@@ -1897,6 +1897,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo/Lib",
 				);
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.merchants;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1924,6 +1925,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo/Lib",
 				);
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.udesk.merchants;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
