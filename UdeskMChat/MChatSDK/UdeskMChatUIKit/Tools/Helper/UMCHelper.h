@@ -33,5 +33,7 @@
 + (NSString *)filterHTML:(NSString *)html;
 //同步获取网络状态
 + (NSString *)internetStatus;
+//链接正则
++ (NSRange)linkRegexsMatch:(NSString *)content;
 
 @end

@@ -12,7 +12,7 @@
 #import "UMCHelper.h"
 #import "UMCSDKConfig.h"
 
-#import "YYCache.h"
+#import "Udesk_YYCache.h"
 
 #define VoicePlayHasInterrupt @"VoicePlayHasInterrupt"
 
@@ -139,7 +139,7 @@
         UMCVoiceMessage *voiceMessage = (UMCVoiceMessage *)self.baseMessage;
         if (!voiceMessage || ![voiceMessage isKindOfClass:[UMCVoiceMessage class]]) return nil;
         
-        YYCache *cache = [[YYCache alloc] initWithName:UMCVoiceCache];
+        Udesk_YYCache *cache = [[Udesk_YYCache alloc] initWithName:UMCVoiceCache];
         if ([cache containsObjectForKey:voiceMessage.message.UUID]) {
             NSData *voiceData = (NSData *)[cache objectForKey:voiceMessage.message.UUID];
             

@@ -11,12 +11,12 @@
 #import "UMCSDKConfig.h"
 #import "UMCHelper.h"
 
-#import "TTTAttributedLabel.h"
-#import "UIImageView+WebCache.h"
+#import "UDTTTAttributedLabel.h"
+#import "Udesk_YYWebImage.h"
 
-@interface UMCGoodsCell()<TTTAttributedLabelDelegate>
+@interface UMCGoodsCell()<UDTTTAttributedLabelDelegate>
 
-@property (nonatomic, strong) TTTAttributedLabel *goodsMessageLabel;
+@property (nonatomic, strong) UDTTTAttributedLabel *goodsMessageLabel;
 @property (nonatomic, strong) UIImageView        *goodsMessageImageView;
 
 @end
@@ -35,7 +35,7 @@
 
 - (void)setup {
     
-    _goodsMessageLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
+    _goodsMessageLabel = [[UDTTTAttributedLabel alloc] initWithFrame:CGRectZero];
     _goodsMessageLabel.numberOfLines = 0;
     _goodsMessageLabel.delegate = self;
     _goodsMessageLabel.textAlignment = NSTextAlignmentLeft;
@@ -75,7 +75,7 @@
     self.goodsMessageLabel.frame = goodsMessage.textFrame;
     
     self.goodsMessageImageView.frame = goodsMessage.imageFrame;
-    [self.goodsMessageImageView sd_setImageWithURL:[NSURL URLWithString:[goodsMessage.imgUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:[UIImage umcDefaultLoadingImage]];
+    [self.goodsMessageImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[goodsMessage.imgUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:[UIImage umcDefaultLoadingImage]];
 }
 
 - (void)awakeFromNib {

@@ -10,10 +10,13 @@
 #import "UdeskMChatUIKit.h"
 #import "UMCOrderTestViewController.h"
 #import "UMCSessionListViewController.h"
+#import "UMCImagePicker.h"
 
 @interface UMCCustomButtonTableViewController ()
 
 @property (nonatomic, strong) NSMutableArray *customButtons;
+@property (nonatomic, strong) NSIndexPath *currentIndexPath;
+@property (nonatomic, strong) UMCImagePicker *imagePicker;
 
 @end
 
@@ -32,26 +35,37 @@
 
 - (void)appendCustomButton:(id)sender {
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"请输入自定义按钮标题" preferredStyle:1];
+    UMCCustomButtonConfig *buttonConfig = [[UMCCustomButtonConfig alloc] initWithTitle:@"自定义按钮" clickBlock:^(UMCCustomButtonConfig *customButton, UMCIMViewController *viewController) {
+        UMCOrderTestViewController *orders = [[UMCOrderTestViewController alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:orders];
+        [viewController presentViewController:nav animated:YES completion:nil];
+        
+        orders.didSendOrderBlock = ^(UMCSendType sendType,UMCGoodsModel *goodsModel) {
+            [self sendOrderWithType:sendType viewController:viewController goodsModel:goodsModel];
+        };
+    }];
+    [self.customButtons insertObject:buttonConfig atIndex:0];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"请选择按钮位置" preferredStyle:0];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        //ipad适配
+        [alert setModalPresentationStyle:UIModalPresentationPopover];
+        UIPopoverPresentationController *popPresenter = [alert popoverPresentationController];
+        popPresenter.sourceView = self.view;
+        popPresenter.sourceRect = CGRectMake(self.view.center.x, 74, 1, 1);
+    }
+    
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alert addAction:[UIAlertAction actionWithTitle:@"输入栏上方" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-        UITextField *textField = alert.textFields.firstObject;
-        
-        UMCCustomButtonConfig *button = [[UMCCustomButtonConfig alloc] initWithTitle:textField.text clickBlock:^(UMCCustomButtonConfig *customButton, UMCIMViewController *viewController) {
-            UMCOrderTestViewController *orders = [[UMCOrderTestViewController alloc] init];
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:orders];
-            [viewController presentViewController:nav animated:YES completion:nil];
-            
-            orders.didSendOrderBlock = ^(UMCSendType sendType,UMCGoodsModel *goodsModel) {
-                [self sendOrderWithType:sendType viewController:viewController goodsModel:goodsModel];
-            };
-        }];
-        [self.customButtons insertObject:button atIndex:0];
+        buttonConfig.type = UMCCustomButtonTypeInInputTop;
         [self.tableView reloadData];
     }]];
-    
-    [alert addTextFieldWithConfigurationHandler:nil];
+    [alert addAction:[UIAlertAction actionWithTitle:@"更多内部" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        buttonConfig.type = UMCCustomButtonTypeInMoreView;
+        [self.tableView reloadData];
+    }]];
     
     [self presentViewController:alert animated:YES completion:nil];
 }
@@ -86,6 +100,10 @@
 }
 
 #pragma mark - Table view data source
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.customButtons.count;
 }
@@ -94,7 +112,14 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:indexPath];
     
     UMCCustomButtonConfig *config = self.customButtons[indexPath.row];
-    cell.textLabel.text = config.title;
+    cell.imageView.image = config.image;
+    
+    if (config.type == UMCCustomButtonTypeInInputTop) {
+        cell.textLabel.text = [config.title stringByAppendingPathComponent:@"（我在输入框上面）"];
+    }
+    else {
+        cell.textLabel.text = [config.title stringByAppendingPathComponent:@"（我在更多里面）"];
+    }
     
     return cell;
 }
@@ -113,6 +138,51 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    _currentIndexPath = indexPath;
+    
+    UMCCustomButtonConfig *config = self.customButtons[_currentIndexPath.row];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"请选择需要修改的内容" preferredStyle:0];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        //ipad适配
+        [alert setModalPresentationStyle:UIModalPresentationPopover];
+        UIPopoverPresentationController *popPresenter = [alert popoverPresentationController];
+        popPresenter.sourceView = self.view;
+        popPresenter.sourceRect = CGRectMake(self.view.center.x, 74, 1, 1);
+    }
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"图片" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        @udWeakify(self);
+        [self.imagePicker showWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary viewController:self];
+        self.imagePicker.FinishNormalImageBlock = ^(UIImage *image) {
+            @udStrongify(self);
+            config.image = image;
+            [self.tableView reloadData];
+        };
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"标题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"请输入标题" preferredStyle:1];
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            UITextField *textField = alert.textFields.firstObject;
+            config.title = textField.text;
+            [self.tableView reloadData];
+        }]];
+        
+        [alert addTextFieldWithConfigurationHandler:nil];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 - (void)sendOrderWithType:(UMCSendType)sendType viewController:(UMCIMViewController *)viewController goodsModel:(UMCGoodsModel *)goodsModel {
     
     //以下数据都是伪造的，实际开发已真实为例
@@ -123,7 +193,7 @@
             break;
         case UMCSendTypeImage:
             
-            [viewController sendImageMessageWithImage:[UIImage imageNamed:@"product"]];
+            [viewController sendImageMessageWithImage:[UIImage imageNamed:@"avatar"]];
             break;
         case UMCSendTypeVoice:
             
@@ -178,6 +248,13 @@
         _customButtons = [NSMutableArray array];
     }
     return _customButtons;
+}
+
+- (UMCImagePicker *)imagePicker {
+    if (!_imagePicker) {
+        _imagePicker = [[UMCImagePicker alloc] init];
+    }
+    return _imagePicker;
 }
 
 @end

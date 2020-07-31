@@ -174,4 +174,8 @@
 /** 设置是否为开发环境（用于sdk开发测试，用户无需使用这个接口） */
 + (void)setIsDeveloper:(BOOL)isDeveloper;
 
+/** 更新客户在线状态排队放弃用 */
++ (void)updateCustomerStatusInQueueWithMerchantEuid:(NSString *)merchantEuid
+                                        completion:(void (^)(NSError *error))completion;
+
 @end

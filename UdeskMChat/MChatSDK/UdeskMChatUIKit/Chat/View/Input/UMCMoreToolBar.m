@@ -119,31 +119,31 @@
     }
 }
 
-//- (void)setCustomMenuItems:(NSArray *)customMenuItems {
-//
-//    if (!customMenuItems || customMenuItems == (id)kCFNull) return ;
-//    if (![customMenuItems isKindOfClass:[NSArray class]]) return ;
-//    if (!customMenuItems.count) return;
-//    if (![customMenuItems.firstObject isKindOfClass:[UMCCustomButtonConfig class]]) return;
-//
-//    //没有在更多view里的自定义按钮
-//    NSArray *types = [customMenuItems valueForKey:@"type"];
-//    if (![types containsObject:@1]) return;
-//
-//    _customMenuItems = customMenuItems;
-//
-//    for (UMCCustomButtonConfig *customButton in customMenuItems) {
-//        if (![customButton isKindOfClass:[UMCCustomButtonConfig class]]) return;
-//
-//        if (customButton.type == UdeskCustomButtonConfigTypeInMoreView) {
-//
-//            UdeskButton *button = [self buttonWithImage:[UMCImageHelper imageResize:customButton.image toSize:CGSizeMake(60, 60)] title:customButton.title];
-//            button.tag = 9347 + [customMenuItems indexOfObject:customButton] + 5;
-//            [_scrollview addSubview:button];
-//            [self.allItems addObject:button];
-//        }
-//    }
-//}
+- (void)setCustomMenuItems:(NSArray *)customMenuItems {
+
+    if (!customMenuItems || customMenuItems == (id)kCFNull) return ;
+    if (![customMenuItems isKindOfClass:[NSArray class]]) return ;
+    if (!customMenuItems.count) return;
+    if (![customMenuItems.firstObject isKindOfClass:[UMCCustomButtonConfig class]]) return;
+
+    //没有在更多view里的自定义按钮
+    NSArray *types = [customMenuItems valueForKey:@"type"];
+    if (![types containsObject:@1]) return;
+
+    _customMenuItems = customMenuItems;
+
+    for (UMCCustomButtonConfig *customButton in customMenuItems) {
+        if (![customButton isKindOfClass:[UMCCustomButtonConfig class]]) return;
+
+        if (customButton.type == UMCCustomButtonTypeInMoreView) {
+
+            UMCButton *button = [self buttonWithImage:[UMCImageHelper imageResize:customButton.image toSize:CGSizeMake(60, 60)] title:customButton.title];
+            button.tag = 9347 + [customMenuItems indexOfObject:customButton] + 5;
+            [_scrollview addSubview:button];
+            [self.allItems addObject:button];
+        }
+    }
+}
 
 - (void)appendSurveyButton {
     

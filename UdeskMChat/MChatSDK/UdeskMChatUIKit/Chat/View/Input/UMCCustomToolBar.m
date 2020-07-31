@@ -56,19 +56,21 @@ static CGFloat kUdeskCustomButtonHeight = 30;
     
     for (UMCCustomButtonConfig *customButton in self.customButtonConfigs) {
         if (![customButton isKindOfClass:[UMCCustomButtonConfig class]]) return;
-            
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button addTarget:self action:@selector(customButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [button setTitle:customButton.title forState:UIControlStateNormal];
-        button.titleLabel.font = [UIFont systemFontOfSize:14];
-        [button setTitleColor:[UIColor colorWithRed:0.471f  green:0.471f  blue:0.471f alpha:1] forState:UIControlStateNormal];
-        button.tag = 9447 + [self.customButtonConfigs indexOfObject:customButton];
-        [button.layer setCornerRadius:13];
-        [button.layer setMasksToBounds:YES];
-        [button.layer setBorderWidth:1];
-        [button.layer setBorderColor:[UIColor colorWithRed:0.906f  green:0.906f  blue:0.906f alpha:1].CGColor];
-        [self.scrollview addSubview:button];
-        [self.customButtons addObject:button];
+        
+        if (customButton.type == UMCCustomButtonTypeInInputTop) {
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            [button addTarget:self action:@selector(customButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+            [button setTitle:customButton.title forState:UIControlStateNormal];
+            button.titleLabel.font = [UIFont systemFontOfSize:14];
+            [button setTitleColor:[UIColor colorWithRed:0.471f  green:0.471f  blue:0.471f alpha:1] forState:UIControlStateNormal];
+            button.tag = 9447 + [self.customButtonConfigs indexOfObject:customButton];
+            [button.layer setCornerRadius:13];
+            [button.layer setMasksToBounds:YES];
+            [button.layer setBorderWidth:1];
+            [button.layer setBorderColor:[UIColor colorWithRed:0.906f  green:0.906f  blue:0.906f alpha:1].CGColor];
+            [self.scrollview addSubview:button];
+            [self.customButtons addObject:button];
+        }
     }
 }
 

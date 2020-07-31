@@ -7,8 +7,7 @@
 //
 
 #import "UdeskOneScrollView.h"
-#import "FLAnimatedImageView.h"
-#import "UIImageView+WebCache.h"
+#import "Udesk_YYWebImage.h"
 
 #define AnimationTime 0.25
 
@@ -19,7 +18,7 @@
 }
 
 //保存图片
-@property(nonatomic,weak) FLAnimatedImageView *mainImageView;
+@property(nonatomic,weak) Udesk_YYAnimatedImageView *mainImageView;
 
 //双击动作,在下载完图片后才会有双击手势动作
 @property(nonatomic,strong)UITapGestureRecognizer *twoTap;
@@ -43,7 +42,7 @@
         self.delegate = self;
         
         //添加主图片显示View
-        FLAnimatedImageView *mainImageView = [[FLAnimatedImageView alloc] init];
+        Udesk_YYAnimatedImageView *mainImageView = [[Udesk_YYAnimatedImageView alloc] init];
         mainImageView.userInteractionEnabled = YES;
         [self addSubview:mainImageView];
         self.mainImageView = mainImageView;
@@ -115,7 +114,7 @@
         imageH = imageView.image.size.height;
         //放大的图片 显示原图片 不缩小
         self.mainImageView.image = imageView.image;
-        [self.mainImageView sd_setImageWithURL:[NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:imageView.image];
+        [self.mainImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:imageView.image];
     }
     
     //设置主图片Frame 与缩小比例

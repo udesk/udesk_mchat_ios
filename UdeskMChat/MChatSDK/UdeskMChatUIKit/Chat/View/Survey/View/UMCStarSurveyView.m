@@ -7,7 +7,7 @@
 //
 
 #import "UMCStarSurveyView.h"
-#import "HCSStarRatingView.h"
+#import "Udesk_HCSStarRatingView.h"
 #import "UMCSurveyModel.h"
 #import "UIImage+UMC.h"
 #import "UIView+UMC.h"
@@ -19,7 +19,7 @@ static CGFloat kUDSurveyTipLabelHeight = 18;
 
 @interface UMCStarSurveyView()
 
-@property (nonatomic, strong) HCSStarRatingView *starRatingView;
+@property (nonatomic, strong) Udesk_HCSStarRatingView *starRatingView;
 @property (nonatomic, strong) UILabel *tipLabel;
 
 @end
@@ -39,7 +39,7 @@ static CGFloat kUDSurveyTipLabelHeight = 18;
     if (!starSurvey || starSurvey == (id)kCFNull) return ;
     _starSurvey = starSurvey;
     
-    _starRatingView = [[HCSStarRatingView alloc] init];
+    _starRatingView = [[Udesk_HCSStarRatingView alloc] init];
     _starRatingView.maximumValue = 5;
     _starRatingView.allowsHalfStars = NO;
     _starRatingView.emptyStarImage = [UIImage umcDefaultSurveyStarEmptyImage];
@@ -64,7 +64,7 @@ static CGFloat kUDSurveyTipLabelHeight = 18;
     }
 }
 
-- (void)didChangeValue:(HCSStarRatingView *)sender {
+- (void)didChangeValue:(Udesk_HCSStarRatingView *)sender {
     
     int index = fabs(sender.value - 5);
     if (index >=0 && self.starSurvey.options.count > index) {

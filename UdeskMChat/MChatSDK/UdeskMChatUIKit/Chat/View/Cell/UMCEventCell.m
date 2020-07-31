@@ -9,7 +9,7 @@
 #import "UMCEventCell.h"
 #import "UMCEventMessage.h"
 #import "UMCHelper.h"
-#import "TTTAttributedLabel.h"
+#import "UDTTTAttributedLabel.h"
 #import "UMCUIMacro.h"
 #import "UIView+UMC.h"
 #import "UMCBundleHelper.h"
@@ -62,7 +62,7 @@
     return YES;//返回YES，直接跳转Safari
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+- (void)attributedLabel:(UDTTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
     
     if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", url.absoluteString]]];
@@ -71,7 +71,7 @@
     }
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
+- (void)attributedLabel:(UDTTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
     
     UIAlertController *sheet = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"%@\n可能是一个电话号码，你可以",phoneNumber] preferredStyle:UIAlertControllerStyleActionSheet];
     

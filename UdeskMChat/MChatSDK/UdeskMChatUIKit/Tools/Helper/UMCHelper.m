@@ -7,7 +7,7 @@
 //
 
 #import "UMCHelper.h"
-#import "Reachability.h"
+#import "UdeskReachability.h"
 
 @implementation UMCHelper
 
@@ -262,20 +262,20 @@
 //同步获取网络状态
 + (NSString *)internetStatus {
     
-    Reachability *reachability   = [Reachability reachabilityWithHostName:@"www.apple.com"];
-    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
+    UdeskReachability *reachability   = [UdeskReachability reachabilityWithHostName:@"www.baidu.com"];
+    UDNetworkStatus internetStatus = [reachability currentReachabilityStatus];
     
     NSString *net = nil;
     switch (internetStatus) {
-        case ReachableViaWiFi:
+        case UDReachableViaWiFi:
             net = @"wifi";
             break;
             
-        case ReachableViaWWAN:
+        case UDReachableViaWWAN:
             net = @"WWAN";
             break;
             
-        case NotReachable:
+        case UDNotReachable:
             net = @"notReachable";
             
         default:
@@ -283,6 +283,26 @@
     }
     
     return net;
+}
+
++ (NSArray *)linkRegexs {
+    
+    return @[@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)",
+             @"^[hH][tT][tT][pP]([sS]?):\\/\\/(\\S+\\.)+\\S{2,}$"];
+}
+
++ (NSRange)linkRegexsMatch:(NSString *)content {
+    
+    NSArray *numberRegexs = [UMCHelper linkRegexs];
+    // 数字正则匹配
+    for (NSString *numberRegex in numberRegexs) {
+        NSRange range = [content rangeOfString:numberRegex options:NSRegularExpressionSearch];
+        if (range.location != NSNotFound) {
+            return range;
+        }
+    }
+    
+    return NSMakeRange(NSNotFound, 0);
 }
 
 @end

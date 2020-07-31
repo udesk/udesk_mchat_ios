@@ -7,15 +7,15 @@
 //
 
 #import "UMCImageCell.h"
-#import "FLAnimatedImageView.h"
 #import "UdeskPhotoManeger.h"
 #import "UMCImageMessage.h"
 #import "UMCHelper.h"
-#import "FLAnimatedImageView+WebCache.h"
+#import "Udesk_YYWebImage.h"
+#import "UIImage+UMC.h"
 
 @interface UMCImageCell()
 
-@property (nonatomic, strong) FLAnimatedImageView *chatImageView;
+@property (nonatomic, strong) Udesk_YYAnimatedImageView *chatImageView;
 @property (nonatomic, strong) UIView *shadowView;
 @property (nonatomic, strong) UIActivityIndicatorView *progressLoadingView;
 
@@ -35,7 +35,7 @@
 
 - (void)initChatImageView {
     
-    _chatImageView = [FLAnimatedImageView new];
+    _chatImageView = [Udesk_YYAnimatedImageView new];
     _chatImageView.userInteractionEnabled = YES;
     _chatImageView.layer.cornerRadius = 5;
     _chatImageView.layer.masksToBounds  = YES;
@@ -83,16 +83,18 @@
     if ([UMCHelper isBlankString:imageUrl]) {
         imageUrl = imageMessage.message.UUID;
     }
-    
-    [[SDWebImageManager sharedManager].imageCache queryImageForKey:imageMessage.message.UUID options:SDWebImageRetryFailed context:nil completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
-        
-        if (image) {
-            self.chatImageView.image = image;
+    if (imageMessage.image) {
+        self.chatImageView.image = imageMessage.image;
+    }
+    else if ([[Udesk_YYWebImageManager sharedManager].cache containsImageForKey:imageUrl]) {
+        self.chatImageView.image = [[Udesk_YYWebImageManager sharedManager].cache getImageForKey:imageUrl];
+    }
+    else {
+        NSRange range = [UMCHelper linkRegexsMatch:imageUrl];
+        if (range.location != NSNotFound) {
+            [self.chatImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[imageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:[UIImage umcDefaultLoadingImage]];
         }
-        else {
-            [self.chatImageView sd_setImageWithURL:[NSURL URLWithString:[imageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-        }
-    }];
+    }
     
     self.chatImageView.frame = imageMessage.imageFrame;
     self.shadowView.frame = imageMessage.shadowFrame;

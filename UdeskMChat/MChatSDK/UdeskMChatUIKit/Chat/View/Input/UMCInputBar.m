@@ -373,6 +373,10 @@ static CGFloat const kInputToolBarIconToVerticalEdgeSpacing = 12.0;
     if (![customButtonConfigs.firstObject isKindOfClass:[UMCCustomButtonConfig class]]) return ;
     if (![UMCSDKConfig sharedConfig].showCustomButtons) return;
     
+    //没有在输入框上方的自定义按钮
+    NSArray *types = [customButtonConfigs valueForKey:@"type"];
+    if (![types containsObject:@0]) return;
+    
     _customButtonConfigs = customButtonConfigs;
     
     _customToolBar = [[UMCCustomToolBar alloc] initWithFrame:CGRectZero customButtonConfigs:customButtonConfigs];

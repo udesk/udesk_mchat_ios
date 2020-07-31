@@ -27,11 +27,11 @@
 #import "UdeskSmallVideoViewController.h"
 #import "UdeskSmallVideoNavigationController.h"
 
-#import "YYKeyboardManager.h"
+#import "Udesk_YYKeyboardManager.h"
 
 static CGFloat const InputBarHeight = 52.0f;
 
-@interface UMCIMViewController ()<UITableViewDelegate,UMCInputBarDelegate,UMCMoreToolBarDelegate,YYKeyboardObserver,UDEmotionManagerViewDelegate,UMCBaseCellDelegate,UdeskSmallVideoViewControllerDelegate>
+@interface UMCIMViewController ()<UITableViewDelegate,UMCInputBarDelegate,UMCMoreToolBarDelegate,Udesk_YYKeyboardObserver,UDEmotionManagerViewDelegate,UMCBaseCellDelegate,UdeskSmallVideoViewControllerDelegate>
 
 /** sdk配置 */
 @property (nonatomic, strong) UMCSDKConfig         *sdkConfig;
@@ -126,26 +126,32 @@ static CGFloat const InputBarHeight = 52.0f;
     self.navigationController.navigationBar.translucent = NO;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     //获取键盘管理器
-    [[YYKeyboardManager defaultManager] addObserver:self];
+    [[Udesk_YYKeyboardManager defaultManager] addObserver:self];
     
     //监听app是否从后台进入前台
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcIMApplicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
     //登录成功
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcLoginSuccess) name:UMC_LOGIN_SUCCESS_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcLoginSuccess) name:UMC_LOGIN_SUCCESS_NOTIFICATION object:nil];
     
     //适配X
     _imTableView.umcHeight -= kUMCIPhoneXSeries?34:0;
     [_imTableView setTableViewInsetsWithBottomValue:self.view.umcHeight - _inputBar.umcTop];
+    
+    //
+    //self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(buttonPressed)];
 }
 
+- (void)buttonPressed{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 //登录成功
-//- (void)umcLoginSuccess {
-//    @udWeakify(self);
-//    [self.UIManager fetchNewMessages:^{
-//        @udStrongify(self);
-//        [self reloadIMTableView];
-//    }];
-//}
+- (void)umcLoginSuccess {
+    @udWeakify(self);
+    [self.UIManager fetchNewMessages:^{
+        @udStrongify(self);
+        [self reloadIMTableView];
+    }];
+}
 
 //监听app是否从后台进入前台
 //- (void)umcIMApplicationBecomeActive {
@@ -550,6 +556,24 @@ static CGFloat const InputBarHeight = 52.0f;
 }
 
 #pragma mark - UdeskChatToolBarMoreViewDelegate
+//点击自定义的按钮
+- (void)didSelectCustomMoreMenuItem:(UMCMoreToolBar *)moreMenuItem atIndex:(NSInteger)index {
+    
+    [self callbackCustomButtonActionWithIndex:index];
+}
+
+//回调
+- (void)callbackCustomButtonActionWithIndex:(NSInteger)index {
+    
+    NSArray *customButtons = self.sdkConfig.customButtons;
+    if (index >= customButtons.count) return;
+    
+    UMCCustomButtonConfig *customButton = customButtons[index];
+    if (customButton.clickBlock) {
+        customButton.clickBlock(customButton,self);
+    }
+}
+
 //点击默认的按钮
 - (void)didSelectMoreMenuItem:(UMCMoreToolBar *)moreMenuItem itemType:(UMCMoreToolBarType)itemType {
     
@@ -697,13 +721,13 @@ static CGFloat const InputBarHeight = 52.0f;
 }
 
 #pragma mark - @protocol YYKeyboardObserver
-- (void)keyboardChangedWithTransition:(YYKeyboardTransition)transition {
+- (void)keyboardChangedWithTransition:(UdeskYYKeyboardTransition)transition {
     
     if (self.inputBar.selectInputBarType != UMCInputBarTypeText) {
         return;
     }
     
-    CGRect toFrame =  [[YYKeyboardManager defaultManager] convertRect:transition.toFrame toView:self.view];
+    CGRect toFrame =  [[Udesk_YYKeyboardManager defaultManager] convertRect:transition.toFrame toView:self.view];
     [UIView animateWithDuration:0.35 animations:^{
         self.inputBar.umcBottom = CGRectGetMinY(toFrame) + (kUMCIPhoneXSeries?34:0);
         if (!transition.toVisible && kUMCIPhoneXSeries) {
@@ -937,6 +961,11 @@ static CGFloat const InputBarHeight = 52.0f;
 #pragma mark - dismissChatViewController
 - (void)dismissChatViewController {
     
+    [UMCManager updateCustomerStatusInQueueWithMerchantEuid:self.merchantId
+                                                 completion:^(NSError *error) {
+        
+    }];
+    
     //已提示过满意度调查
     if (!self.afterSession) {
         [self realDismissViewController];
@@ -1003,7 +1032,7 @@ static CGFloat const InputBarHeight = 52.0f;
 
 - (void)dealloc {
     NSLog(@"%@销毁了",[self class]);
-    [[YYKeyboardManager defaultManager] removeObserver:self];
+    [[Udesk_YYKeyboardManager defaultManager] removeObserver:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UMC_LOGIN_SUCCESS_NOTIFICATION object:nil];
 }

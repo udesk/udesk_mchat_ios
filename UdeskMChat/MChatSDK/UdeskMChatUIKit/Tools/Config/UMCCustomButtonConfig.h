@@ -6,10 +6,16 @@
 //  Copyright © 2018年 Udesk. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
 @class UMCCustomButtonConfig;
 @class UMCIMViewController;
+
+typedef NS_ENUM(NSUInteger, UMCCustomButtonType) {
+    UMCCustomButtonTypeInInputTop,   //在输入栏上方
+    UMCCustomButtonTypeInMoreView, //在更多view里面
+};
 
 //点击回调，返回按钮所在的控制器
 typedef void(^CustomButtonClickBlock)(UMCCustomButtonConfig *customButton,UMCIMViewController *viewController);
@@ -17,6 +23,8 @@ typedef void(^CustomButtonClickBlock)(UMCCustomButtonConfig *customButton,UMCIMV
 @interface UMCCustomButtonConfig : NSObject
 
 @property (nonatomic, copy  ) NSString *title;
+@property (nonatomic, strong) UIImage  *image;
+@property (nonatomic, assign) UMCCustomButtonType type;
 @property (nonatomic, copy  ) CustomButtonClickBlock clickBlock;
 
 /**

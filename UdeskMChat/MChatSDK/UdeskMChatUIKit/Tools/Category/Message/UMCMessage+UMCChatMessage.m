@@ -12,9 +12,7 @@
 #import "UMCHelper.h"
 #import "UMCVideoCache.h"
 
-#import "SDWebImageManager.h"
-#import "FLAnimatedImage.h"
-#import "YYCache.h"
+#import "Udesk_YYCache.h"
 #import "UMCImageHelper.h"
 
 @implementation UMCMessage (UMCChatMessage)
@@ -49,9 +47,6 @@
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
         self.sourceData = [UMCImageHelper imageWithOriginalImage:[UMCImageHelper fixOrientation:image] quality:0.5];
         self.fileName = [self.UUID stringByAppendingString:@".jpg"];
-        
-        //缓存
-        [[SDWebImageManager sharedManager].imageCache storeImage:image imageData:nil forKey:self.UUID cacheType:SDImageCacheTypeAll completion:nil];
     }
     
     return self;
@@ -70,10 +65,6 @@
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
         self.sourceData = gifData;
         self.fileName = [self.UUID stringByAppendingString:@".gif"];
-        
-        //缓存
-        YYCache *cache = [[YYCache alloc] initWithName:UMCVoiceCache];
-        [cache setObject:gifData forKey:self.UUID];
     }
     
     return self;
@@ -99,7 +90,7 @@
         self.fileName = [self.UUID stringByAppendingString:@".wav"];
         
         //缓存
-        YYCache *cache = [[YYCache alloc] initWithName:UMCVoiceCache];
+        Udesk_YYCache *cache = [[Udesk_YYCache alloc] initWithName:UMCVoiceCache];
         [cache setObject:voiceData forKey:self.UUID];
     }
     

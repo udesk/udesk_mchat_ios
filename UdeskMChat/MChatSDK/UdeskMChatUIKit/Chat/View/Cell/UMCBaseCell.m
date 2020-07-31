@@ -13,7 +13,7 @@
 #import "NSDate+UMC.h"
 #import "UIView+UMC.h"
 
-#import "UIImageView+WebCache.h"
+#import "Udesk_YYWebImage.h"
 
 @implementation UMCBaseCell
 
@@ -44,7 +44,7 @@
         avatarImage = [UMCSDKConfig sharedConfig].customerImage;
     }
 
-    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[avatarUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:avatarImage];
+    [self.avatarImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[avatarUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:avatarImage];
     
     //气泡
     self.bubbleImageView.frame = baseMessage.bubbleFrame;

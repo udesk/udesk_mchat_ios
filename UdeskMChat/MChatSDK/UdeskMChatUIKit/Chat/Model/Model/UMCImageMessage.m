@@ -22,6 +22,7 @@ static CGFloat const kUDImageHeight = 150.0;
 @property (nonatomic, assign, readwrite) CGRect  shadowFrame;
 @property (nonatomic, assign, readwrite) CGRect  imageLoadingFrame;
 @property (nonatomic, assign, readwrite) CGRect  imageProgressFrame;
+@property (nonatomic, strong, readwrite) Udesk_YYImage *image;
 
 @end
 
@@ -32,6 +33,9 @@ static CGFloat const kUDImageHeight = 150.0;
     self = [super initWithMessage:message];
     if (self) {
         
+        if (self.message.sourceData) {
+            self.image = [Udesk_YYImage imageWithData:self.message.sourceData];
+        }
         [self layoutImageMessage];
     }
     return self;

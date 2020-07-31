@@ -12,7 +12,7 @@
 #import "UIImage+UMC.h"
 #import "UIView+UMC.h"
 
-#import "UIImageView+WebCache.h"
+#import "Udesk_YYWebImage.h"
 
 /** 咨询对象图片距离屏幕水平边沿距离 */
 static CGFloat const kUDProductImageToHorizontalEdgeSpacing = 10.0;
@@ -102,7 +102,7 @@ static CGFloat const kUDProductDetailHeight = 20;
     
     //咨询对象图片
     self.productImageView.frame = CGRectMake(kUDProductImageToHorizontalEdgeSpacing, kUDProductImageToVerticalEdgeSpacing, kUDProductImageDiameter, kUDProductImageDiameter);
-    [self.productImageView sd_setImageWithURL:[NSURL URLWithString:[productModel.image stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:[UIImage umcDefaultLoadingImage]];
+    [self.productImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[productModel.image stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:[UIImage umcDefaultLoadingImage]];
     
     //咨询对象标题
     CGFloat productTitleX = self.productImageView.umcRight+kUDProductTitleToProductImageHorizontalEdgeSpacing;

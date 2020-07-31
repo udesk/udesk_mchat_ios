@@ -6,9 +6,9 @@
 //  Copyright © 2017年 Udesk. All rights reserved.
 //
 
-#import "YYCache.h"
+#import "Udesk_YYCache.h"
 
-@interface UMCVideoCache : YYCache
+@interface UMCVideoCache : Udesk_YYCache
 
 + (instancetype)sharedManager;
 

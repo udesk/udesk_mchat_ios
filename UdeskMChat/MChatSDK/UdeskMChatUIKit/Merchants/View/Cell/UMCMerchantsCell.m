@@ -16,9 +16,9 @@
 #import "UIColor+UMC.h"
 #import "UMCHelper.h"
 
-#import "UIImageView+WebCache.h"
-#import "JSCustomBadge.h"
-#import "TTTAttributedLabel.h"
+#import "Udesk_YYWebImage.h"
+#import "Udesk_JSCustomBadge.h"
+#import "UDTTTAttributedLabel.h"
 
 /** 商户视图之间的空隙 */
 static CGFloat const kUDMerchantPadding = 10.0;
@@ -40,8 +40,8 @@ static CGFloat const kUDMerchantUnreadY = 5;
 @property (nonatomic, strong) UIImageView   *avatarImageView;
 @property (nonatomic, strong) UILabel       *nickNameLabel;
 @property (nonatomic, strong) UILabel       *dateLabel;
-@property (nonatomic, strong) JSCustomBadge *badgeView;
-@property (nonatomic, strong) TTTAttributedLabel  *contentLabel;
+@property (nonatomic, strong) Udesk_JSCustomBadge *badgeView;
+@property (nonatomic, strong) UDTTTAttributedLabel  *contentLabel;
 
 @end
 
@@ -82,14 +82,14 @@ static CGFloat const kUDMerchantUnreadY = 5;
     [self.contentView addSubview:_nickNameLabel];
     
     //最后一条消息
-    _contentLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(_nickNameLabel.umcLeft, _nickNameLabel.umcBottom, kUMCScreenWidth-_avatarImageView.umcWidth-(kUDMerchantPadding*3), kUDMerchantLastContentTextHeight)];
+    _contentLabel = [[UDTTTAttributedLabel alloc] initWithFrame:CGRectMake(_nickNameLabel.umcLeft, _nickNameLabel.umcBottom, kUMCScreenWidth-_avatarImageView.umcWidth-(kUDMerchantPadding*3), kUDMerchantLastContentTextHeight)];
     _contentLabel.userInteractionEnabled = YES;
     _contentLabel.font = [UIFont systemFontOfSize:14.f];
     _contentLabel.textColor = [UIColor umcColorWithHexString:@"#999999"];
     [self.contentView addSubview:_contentLabel];
     
     //未读条数view
-    _badgeView = [JSCustomBadge customBadgeWithString:nil
+    _badgeView = [Udesk_JSCustomBadge customBadgeWithString:nil
                                            withStringColor:[UIColor whiteColor]
                                             withInsetColor:[UIColor redColor]
                                             withBadgeFrame:YES
@@ -106,7 +106,7 @@ static CGFloat const kUDMerchantUnreadY = 5;
     _merchant = merchant;
     
     self.dateLabel.text = [[NSDate dateWithString:merchant.lastMessage.createdAt format:kUMCDateFormat] umcStyleDate];
-    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[merchant.logoURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:[UIImage umcContactsMerchantAvatarImage]];
+    [self.avatarImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[merchant.logoURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:[UIImage umcContactsMerchantAvatarImage]];
     self.nickNameLabel.text = merchant.name;
     self.contentLabel.text = [self getLastMessageContent:merchant.lastMessage];
     
