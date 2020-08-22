@@ -14,7 +14,7 @@
 @property (nonatomic, strong) UMCSurveyContentView *surveyContentView;
 @property (nonatomic, strong) UIView *contentView;
 
-- (instancetype)initWithMerchantId:(NSString *)merchantId surveyResponseObject:(id)surveyResponseObject;
+- (instancetype)initWithMerchantEuid:(NSString *)merchantEuid surveyResponseObject:(id)surveyResponseObject;
 
 - (void)show;
 - (void)dismiss;

@@ -27,7 +27,7 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
 @property (nonatomic, strong) UITableView            *merchantsTableView;
 @property (nonatomic, strong) UISearchBar            *searchBar;
 //正在会话的商户ID
-@property (nonatomic, strong) NSString               *currentMerchantId;
+@property (nonatomic, strong) NSString               *currentMerchantEuid;
 
 @end
 
@@ -131,9 +131,9 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
         [self.merchantsTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
     
-    _currentMerchantId = merchant.euid;
+    _currentMerchantEuid = merchant.euid;
     _sdkConfig.imTitle = merchant.name;
-    UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantId:merchant.euid];
+    UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantEuid:merchant.euid];
     sdkManager.sdkConfig = _sdkConfig;
     [sdkManager pushUdeskInViewController:self.viewController completion:nil];
     
@@ -145,7 +145,7 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
     
     self.sdkConfig.leaveChatViewController = ^{
         @udStrongify(self);
-        self.currentMerchantId = nil;
+        self.currentMerchantEuid = nil;
     };
 }
 
@@ -171,7 +171,7 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
         UMCMerchant *merchant = [self.dataSource.merchantsArray objectAtIndex:index];
         if (!merchant) return;
         
-        if (![message.merchantEuid isEqualToString:self.currentMerchantId]) {
+        if (![message.merchantEuid isEqualToString:self.currentMerchantEuid]) {
             merchant.unreadCount = [NSString stringWithFormat:@"%ld",merchant.unreadCount.integerValue + 1];
         }
         
@@ -207,9 +207,9 @@ static CGFloat const kUDMerchantsSearchHeight = 44;
 
 - (void)reloadMerchantsTableView {
     
-    if (self.currentMerchantId) {
+    if (self.currentMerchantEuid) {
         [self.merchantsManager.merchantsArray enumerateObjectsUsingBlock:^(UMCMerchant *merchant, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([merchant.euid isEqualToString:self.currentMerchantId]) {
+            if ([merchant.euid isEqualToString:self.currentMerchantEuid]) {
                 merchant.unreadCount = @"";
                 *stop = YES;
             }

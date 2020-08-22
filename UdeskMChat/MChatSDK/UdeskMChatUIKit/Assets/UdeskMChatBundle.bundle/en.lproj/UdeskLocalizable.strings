@@ -34,6 +34,7 @@
 "udesk_shooting" = "Shooting";
 "udesk_survey" = "Survey";
 "udesk_shooting_video" = "Shoot Video";
+"udesk_file" = "File";
 "udesk_small_video_tips" = "Long press to shoot a video";
 "udesk_second" = "Second";
 "udesk_microphone_denied" = "Allow app to access your microphone";
@@ -76,6 +77,7 @@
 "udesk_wwan_tips" = "Data alert";
 "udesk_video_send_tips" = "Non-Wi-Fi environments, sending files will consume phone data. Continue?";
 "udesk_video_big_tips" = "File is too large to send";
+"udesk_file_big_tips" = "File is too large to send";
 "udesk_file_not_exist" = "The file does not exist, link error";
 "udesk_download_failed" = "Download failed";
 "udesk_rollback" = "Recalled a message";
@@ -85,6 +87,7 @@
 "udesk_last_voice" = "[voice]";
 "udesk_last_goods" = "[product]";
 "udesk_last_video" = "[video]";
+"udesk_last_file" = "[file]";
 "udesk_service_survey" = "Satisfaction Rating";
 "udesk_submit_survey" = "Submit Feedback";
 "udesk_survey_satisfied" = "Satisfied";
@@ -92,3 +95,5 @@
 "udesk_survey_unsatisfactory" = "Unsatisfied";
 "udesk_survey_tips" = "Thanks for your feedback！！";
 "udesk_survey_remark_required" = "Remarks are required";
+"udesk_navigate_go_back_pre" = "Go back";
+"udesk_navigate_required" = "Please Choose navigation";

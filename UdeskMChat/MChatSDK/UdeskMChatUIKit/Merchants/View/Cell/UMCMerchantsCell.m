@@ -146,7 +146,9 @@ static CGFloat const kUDMerchantUnreadY = 5;
         case UMCMessageContentTypeVideo:
             return UMCLocalizedString(@"udesk_last_video");
             break;
-            
+        case UMCMessageContentTypeFile:
+            return UMCLocalizedString(@"udesk_last_file");
+            break;
             
         default:
             break;

@@ -59,6 +59,8 @@ typedef NS_ENUM(NSUInteger, UMCSmallVideoResolutionType) {
 @property (nonatomic, assign) BOOL     hiddenCameraButton;
 /** 是否隐藏相册 */
 @property (nonatomic, assign) BOOL     hiddenAlbumButton;
+/** 是否隐藏文件 */
+@property (nonatomic, assign) BOOL     hiddenFileButton;
 /** 是否隐藏商户搜索功能 */
 @property (nonatomic, assign) BOOL     hiddenMerchantsSearch;
 

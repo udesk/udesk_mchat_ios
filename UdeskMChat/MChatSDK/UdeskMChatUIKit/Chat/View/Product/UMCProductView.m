@@ -102,7 +102,9 @@ static CGFloat const kUDProductDetailHeight = 20;
     
     //咨询对象图片
     self.productImageView.frame = CGRectMake(kUDProductImageToHorizontalEdgeSpacing, kUDProductImageToVerticalEdgeSpacing, kUDProductImageDiameter, kUDProductImageDiameter);
-    [self.productImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[productModel.image stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:[UIImage umcDefaultLoadingImage]];
+    if (productModel.image && [productModel.image isKindOfClass:[NSString class]]) {
+        [self.productImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[productModel.image stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:[UIImage umcDefaultLoadingImage]];
+    }
     
     //咨询对象标题
     CGFloat productTitleX = self.productImageView.umcRight+kUDProductTitleToProductImageHorizontalEdgeSpacing;
@@ -119,7 +121,6 @@ static CGFloat const kUDProductDetailHeight = 20;
     
     //背景
     self.productBackGroundView.frame = CGRectMake(0, 0, kUMCScreenWidth, kUDProductHeight);
-
 }
 
 /*

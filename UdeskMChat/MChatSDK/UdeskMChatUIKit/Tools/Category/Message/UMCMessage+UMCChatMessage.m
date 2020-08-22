@@ -46,7 +46,9 @@
         self.messageStatus = UMCMessageStatusSending;
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
         self.sourceData = [UMCImageHelper imageWithOriginalImage:[UMCImageHelper fixOrientation:image] quality:0.5];
-        self.fileName = [self.UUID stringByAppendingString:@".jpg"];
+        UMCMessageExtras *extras = [UMCMessageExtras new];
+        extras.filename = [self.UUID stringByAppendingString:@".jpg"];
+        self.extras = extras;
     }
     
     return self;
@@ -64,7 +66,9 @@
         self.category = UMCMessageCategoryTypeChat;
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
         self.sourceData = gifData;
-        self.fileName = [self.UUID stringByAppendingString:@".gif"];
+        UMCMessageExtras *extras = [UMCMessageExtras new];
+        extras.filename = [self.UUID stringByAppendingString:@".gif"];
+        self.extras = extras;
     }
     
     return self;
@@ -84,10 +88,10 @@
         
         UMCMessageExtras *extras = [UMCMessageExtras new];
         extras.duration = duration;
+        extras.filename = [self.UUID stringByAppendingString:@".wav"];
         self.extras = extras;
         
         self.sourceData = voiceData;
-        self.fileName = [self.UUID stringByAppendingString:@".wav"];
         
         //缓存
         Udesk_YYCache *cache = [[Udesk_YYCache alloc] initWithName:UMCVoiceCache];
@@ -109,10 +113,44 @@
         self.category = UMCMessageCategoryTypeChat;
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
         self.sourceData = videoData;
-        self.fileName = [self.UUID stringByAppendingString:@".mp4"];
+        UMCMessageExtras *extras = [UMCMessageExtras new];
+        extras.filename = [self.UUID stringByAppendingString:@".mp4"];
+        self.extras = extras;
         
         //缓存
         [[UMCVideoCache sharedManager] storeVideo:videoData videoId:self.UUID];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithFile:(NSString *)filePath {
+    
+    self = [super init];
+    if (self) {
+        
+        self.UUID = [[NSUUID UUID] UUIDString];
+        self.contentType = UMCMessageContentTypeFile;
+        self.direction = UMCMessageDirectionIn;
+        self.messageStatus = UMCMessageStatusSending;
+        self.category = UMCMessageCategoryTypeChat;
+        self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
+        self.sourceData = [NSData dataWithContentsOfFile:filePath];
+        
+        UMCMessageExtras *extras = [[UMCMessageExtras alloc] init];
+        NSArray *array = [filePath componentsSeparatedByString:@"/"];
+        NSString *fileName = [array lastObject];
+        extras.filename = [fileName stringByRemovingPercentEncoding];
+        
+        CGFloat size = self.sourceData.length/1024.f/1024.f;
+        extras.filesize = [NSString stringWithFormat:@"%.2fM",size];
+        if (size < 1) {
+            extras.filesize = [NSString stringWithFormat:@"%.2fK",size*1024.f];
+        }
+        
+        extras.fileext = [[extras.filename componentsSeparatedByString:@"."] lastObject];
+        
+        self.extras = extras;
     }
     
     return self;
@@ -147,6 +185,43 @@
         self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
         self.goodsMessage = model;
         self.content = @"";
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithNavigates:(NSArray *)navigates navDescribe:(NSString *)navDescribe {
+    
+    self = [super init];
+    if (self) {
+        
+        self.UUID = [[NSUUID UUID] UUIDString];
+        self.contentType = UMCMessageContentTypeNavigate;
+        self.category = UMCMessageCategoryTypeChat;
+        self.direction = UMCMessageDirectionOut;
+        self.messageStatus = UMCMessageStatusSuccess;
+        self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
+        self.navigates = navigates;
+        self.navDescribe = navDescribe;
+        self.content = navDescribe;
+        self.navEnabled = YES;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithNavigate:(NSString *)text {
+    
+    self = [super init];
+    if (self) {
+        
+        self.UUID = [[NSUUID UUID] UUIDString];
+        self.contentType = UMCMessageContentTypeNavigate;
+        self.category = UMCMessageCategoryTypeChat;
+        self.direction = UMCMessageDirectionIn;
+        self.messageStatus = UMCMessageStatusSending;
+        self.createdAt = [[NSDate date] stringWithFormat:kUMCDateFormat];
+        self.content = text;
     }
     
     return self;

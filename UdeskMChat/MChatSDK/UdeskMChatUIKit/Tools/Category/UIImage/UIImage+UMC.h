@@ -284,4 +284,19 @@
 //小视频下载
 + (UIImage *)umcDefaultVideoPlay;
 
+//文件
++ (UIImage *)umcDefaultChatBarMoreFile;
++ (UIImage *)umcDefaultFileSendOther;
++ (UIImage *)umcDefaultFileReceiveOther;
++ (UIImage *)umcDefaultFileSendPDF;
++ (UIImage *)umcDefaultFileReceivePDF;
++ (UIImage *)umcDefaultFileSendPPT;
++ (UIImage *)umcDefaultFileReceivePPT;
++ (UIImage *)umcDefaultFileSendTxt;
++ (UIImage *)umcDefaultFileReceiveTxt;
++ (UIImage *)umcDefaultFileSendWord;
++ (UIImage *)umcDefaultFileReceiveWord;
++ (UIImage *)umcDefaultFileSendExcel;
++ (UIImage *)umcDefaultFileReceiveExcel;
+
 @end

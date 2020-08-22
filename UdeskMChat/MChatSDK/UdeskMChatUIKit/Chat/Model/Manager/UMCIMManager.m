@@ -14,11 +14,14 @@
 #import "UMCEventMessage.h"
 #import "UMCGoodsMessage.h"
 #import "UMCVideoMessage.h"
+#import "UMCFileMessage.h"
+#import "UMCNavigatesMessage.h"
 #import "NSDate+UMC.h"
 #import "UMCHelper.h"
 #import "UMCImageHelper.h"
 #import "UMCBundleHelper.h"
 #import "UMCVideoCache.h"
+#import "UMCToast.h"
 
 #import "Udesk_YYWebImage.h"
 
@@ -32,45 +35,50 @@
 @property (nonatomic, strong, readwrite) id surveyResponseObject;
 
 /** 商户ID */
-@property (nonatomic, copy  ) NSString             *merchantId;
+@property (nonatomic, copy  ) NSString             *merchantEuid;
 /** sdk配置 */
 @property (nonatomic, strong) UMCSDKConfig         *sdkConfig;
+
+@property (nonatomic, strong) NSArray  *navigatesArray;
+@property (nonatomic, copy  ) NSString *navDescribe;
+@property (nonatomic, copy, readwrite) NSString *menuId;
+
+@property (nonatomic, assign) BOOL isNavigatesStatus;
 
 @end
 
 @implementation UMCIMManager
 
-- (instancetype)initWithSDKConfig:(UMCSDKConfig *)config merchantId:(NSString *)merchantId
+- (instancetype)initWithSDKConfig:(UMCSDKConfig *)config merchantEuid:(NSString *)merchantEuid
 {
     self = [super init];
     if (self) {
         
         _sdkConfig = config;
-        _merchantId = merchantId;
-        [self checkProduct];
+        _merchantEuid = merchantEuid;
         [[UMCDelegate shareInstance] addDelegate:self];
     }
     return self;
 }
 
 /** 获取商户详情 */
-- (void)fetchMerchantWithMerchantId:(NSString *)merchantId
-                         completion:(void (^)(UMCMerchant *merchant))completion {
+- (void)fetchMerchantWithMerchantEuid:(NSString *)merchantEuid
+                           completion:(void (^)(UMCMerchant *merchant))completion {
     
-    [UMCManager getMerchantWithMerchantId:merchantId completion:completion];
+    [UMCManager getMerchantWithMerchantEuid:merchantEuid completion:completion];
 }
 
 /** 标记商户消息为已读 */
-- (void)readMerchantsWithMerchantId:(NSString *)merchantId
+- (void)readMerchantsWithMerchantEuid:(NSString *)merchantEuid
                          completion:(void(^)(BOOL result))completion {
     
-    [UMCManager readMerchantsWithEuid:merchantId completion:completion];
+    [UMCManager readMerchantsWithEuid:merchantEuid completion:completion];
 }
 
 /** 获取满意度调查配置 */
 - (void)fetchSurveyConfig:(void(^)(BOOL isShowSurvey,BOOL afterSession))completion {
     
-    [UMCManager getSurveyOptionsWithMerchantId:self.merchantId completion:^(id responseObject, NSError *error) {
+    [UMCManager getSurveyOptionsWithMerchantEuid:self.merchantEuid completion:^(id responseObject, NSError *error) {
         
         self.surveyResponseObject = responseObject;
         
@@ -82,13 +90,88 @@
     }];
 }
 
+/** 获取导航配置 */
+- (void)fetchNavigates:(void(^)(void))completion {
+    
+    @udWeakify(self);
+    [UMCManager getNavigatesWithMerchantEuid:self.merchantEuid completion:^(NSString *navDescribe, NSArray<UMCNavigate *> *navigatesArray) {
+        @udStrongify(self);
+        
+        if (!navigatesArray || navigatesArray.count == 0) {
+            [self checkProduct];
+            self.isNavigatesStatus = NO;
+        } else {
+            self.isNavigatesStatus = YES;
+        }
+        
+        self.navigatesArray = navigatesArray;
+        self.navDescribe = navDescribe;
+
+        [self createNavigateMessageWithId:@"item_0"];
+    }];
+}
+
+- (void)receiveMessageWithNavigateModel:(UMCNavigate *)model {
+    
+    if (model.hasNext.boolValue) {
+        [self createNavigateMessageWithId:model.navigateId];
+    } else {
+        self.menuId = model.navigateId;
+        self.isNavigatesStatus = NO;
+        [self checkProduct];
+    }
+}
+
+- (void)receiveMessageWithParentId:(NSString *)parentId {
+    if (!self.navigatesArray || self.navigatesArray == (id)kCFNull) return ;
+    if (self.navigatesArray.count == 0) return;
+    
+    NSString *lastParentId;
+    for (UMCNavigate *navigate in self.navigatesArray) {
+        if ([navigate.navigateId isEqualToString:parentId]) {
+            lastParentId = navigate.parentId;
+            continue;
+        }
+    }
+    if (lastParentId) {
+        NSMutableArray *array = [NSMutableArray array];
+        for (UMCNavigate *navigate in self.navigatesArray) {
+            if ([navigate.parentId isEqualToString:lastParentId]) {
+                [array addObject:navigate];
+            }
+        }
+        if (array.count) {
+            UMCMessage *message = [[UMCMessage alloc] initWithNavigates:array navDescribe:self.navDescribe];
+            message.merchantEuid = self.merchantEuid;
+            [self didReceiveMessage:message];
+        }
+    }
+}
+
+- (void)createNavigateMessageWithId:(NSString *)navigateId {
+    if (!self.navigatesArray || self.navigatesArray == (id)kCFNull) return ;
+    if (self.navigatesArray.count == 0) return;
+    
+    NSMutableArray *array = [NSMutableArray array];
+    for (UMCNavigate *navigate in self.navigatesArray) {
+        if ([navigate.parentId isEqualToString:navigateId]) {
+            [array addObject:navigate];
+        }
+    }
+    UMCMessage *message = [[UMCMessage alloc] initWithNavigates:array navDescribe:self.navDescribe];
+    message.merchantEuid = self.merchantEuid;
+    [self didReceiveMessage:message];
+    
+    [UMCManager storeMessage:message];
+}
+
 /** 获取新消息 */
 - (void)fetchNewMessages:(void (^)(void))completion {
     
-    [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:nil completion:^(NSArray<UMCMessage *> *merchantsArray) {
+    [UMCManager getMessagesWithMerchantsEuid:_merchantEuid messageUUID:nil completion:^(NSArray<UMCMessage *> *merchantsArray) {
         self.hasMore = merchantsArray.count;
         self.messagesArray = nil;
-        [self updateMerchantMessagesArray:merchantsArray];
+        [self addMessageToChatMessageArray:merchantsArray];
     }];
 }
 
@@ -112,9 +195,9 @@
         messageUUID = array.firstObject;
     }
     
-    [UMCManager getMessagesWithMerchantsEuid:_merchantId messageUUID:messageUUID completion:^(NSArray<UMCMessage *> *merchantsArray) {
+    [UMCManager getMessagesWithMerchantsEuid:_merchantEuid messageUUID:messageUUID completion:^(NSArray<UMCMessage *> *merchantsArray) {
         self.hasMore = merchantsArray.count;
-        [self updateMerchantMessagesArray:merchantsArray];
+        [self addMessageToChatMessageArray:merchantsArray];
     }];
 }
 
@@ -134,7 +217,7 @@
     UMCMessage *message = [[UMCMessage alloc] initWithImage:image];
     
     [[Udesk_YYWebImageManager sharedManager].cache setImage:[Udesk_YYImage imageWithData:message.sourceData] forKey:message.UUID];
-    [self createMediaMessage:message mediaData:message.sourceData fileName:message.fileName progress:progress completion:completion];
+    [self createMediaMessage:message mediaData:message.sourceData fileName:message.extras.filename progress:progress completion:completion];
 }
 
 /** 发送gif图片消息 */
@@ -146,7 +229,7 @@
     
     //缓存图片
     [[Udesk_YYWebImageManager sharedManager].cache setImage:[Udesk_YYImage imageWithData:gifData] forKey:message.UUID];
-    [self createMediaMessage:message mediaData:message.sourceData fileName:message.fileName progress:progress completion:completion];
+    [self createMediaMessage:message mediaData:message.sourceData fileName:message.extras.filename progress:progress completion:completion];
 }
 
 /** 发送语音消息 */
@@ -155,26 +238,46 @@
               completion:(void(^)(UMCMessage *message))completion {
     
     UMCMessage *message = [[UMCMessage alloc] initWithVoice:[NSData dataWithContentsOfFile:voicePath] duration:voiceDuration];
-    [self createMediaMessage:message mediaData:message.sourceData fileName:message.fileName progress:nil completion:completion];
+    [self createMediaMessage:message mediaData:message.sourceData fileName:message.extras.filename progress:nil completion:completion];
 }
 
 /** 发送视频消息 */
 - (void)sendVideoMessage:(NSData *)videoData progress:(void(^)(UMCMessage *message,float percent))progress completion:(void(^)(UMCMessage *message))completion {
     
     //超过发送限制
-    CGFloat size = videoData.length/1024.f/1024.f;
-    if (size > 31.f) {
-        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0/*延迟执行时间*/ * NSEC_PER_SEC));
-        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:UMCLocalizedString(@"udesk_video_big_tips") preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:UMCLocalizedString(@"udesk_sure") style:UIAlertActionStyleCancel handler:nil]];
-            [[UMCHelper currentViewController] presentViewController:alert animated:YES completion:nil];
-        });
+    if (![self checkFileSizeWithData:videoData alertTitle:UMCLocalizedString(@"udesk_video_big_tips")]) {
         return;
     }
     
     UMCMessage *message = [[UMCMessage alloc] initWithVideo:videoData];
-    [self createMediaMessage:message mediaData:message.sourceData fileName:message.fileName progress:progress completion:completion];
+    [self createMediaMessage:message mediaData:message.sourceData fileName:message.extras.filename progress:progress completion:completion];
+}
+
+/** 发送文件消息 */
+- (void)sendFileMessage:(NSString *)filePath progress:(void(^)(UMCMessage *message,float percent))progress completion:(void(^)(UMCMessage *message))completion {
+    
+    UMCMessage *message = [[UMCMessage alloc] initWithFile:filePath];
+    //超过发送限制
+    if (![self checkFileSizeWithData:message.sourceData alertTitle:UMCLocalizedString(@"udesk_file_big_tips")]) {
+        return;
+    }
+    [self createMediaMessage:message mediaData:message.sourceData fileName:message.extras.filename progress:progress completion:completion];
+}
+
+- (BOOL)checkFileSizeWithData:(NSData *)data alertTitle:(NSString *)alertTitle {
+    
+    //超过发送限制
+    CGFloat size = data.length/1024.f/1024.f;
+    if (size > 31.f) {
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0/*延迟执行时间*/ * NSEC_PER_SEC));
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:alertTitle preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:UMCLocalizedString(@"udesk_sure") style:UIAlertActionStyleCancel handler:nil]];
+            [[UMCHelper currentViewController] presentViewController:alert animated:YES completion:nil];
+        });
+        return NO;
+    }
+    return YES;
 }
 
 /** 发送商品消息 */
@@ -184,14 +287,39 @@
     [self createMessage:message completion:completion];
 }
 
-- (void)createMessage:(UMCMessage *)message completion:(void(^)(UMCMessage *message))completion {
+/** 发送导航消息 */
+- (void)sendNavigateMessage:(NSString *)text
+                 completion:(void(^)(UMCMessage *message))completion {
     
+    UMCMessage *message = [[UMCMessage alloc] initWithNavigate:text];
+    [self createMessage:message completion:completion];
+}
+
+//发送本地文本消息
+- (void)sendLocalTextMessage:(NSString *)text {
+    if (!text || text == (id)kCFNull) return ;
+    if (![text isKindOfClass:[NSString class]]) return ;
+    if (text.length == 0) return;
+
+    UMCMessage *message = [[UMCMessage alloc] initWithText:text];
+    message.messageStatus = UMCMessageStatusSuccess;
+    [self addMessageToChatMessageArray:@[message]];
+    
+    [UMCManager storeMessage:message];
+}
+
+- (void)createMessage:(UMCMessage *)message completion:(void(^)(UMCMessage *message))completion {
     if (!message || message == (id)kCFNull) return ;
+    
+    if (self.isNavigatesStatus && message.contentType != UMCMessageContentTypeNavigate) {
+        [UMCToast showToast:UMCLocalizedString(@"udesk_navigate_required") duration:1.0f window:[UIApplication sharedApplication].keyWindow];
+        return;
+    }
     
     //转换成要展示的model
     [self addMessageToChatMessageArray:@[message]];
     
-    [UMCManager createMessageWithMerchantsEuid:self.merchantId message:message completion:^(UMCMessage *newMessage) {
+    [UMCManager createMessageWithMerchantsEuid:self.merchantEuid menuId:self.menuId message:message completion:^(UMCMessage *newMessage) {
     
         [self updateCache:message newMessage:newMessage];
         if (completion) {
@@ -201,8 +329,12 @@
 }
 
 - (void)createMediaMessage:(UMCMessage *)message mediaData:(NSData *)mediaData fileName:(NSString *)fileName progress:(void(^)(UMCMessage *message,float percent))progress completion:(void(^)(UMCMessage *message))completion {
-    
     if (!message || message == (id)kCFNull) return ;
+    
+    if (self.isNavigatesStatus && message.contentType != UMCMessageContentTypeNavigate) {
+        [UMCToast showToast:UMCLocalizedString(@"udesk_navigate_required") duration:1.0f window:[UIApplication sharedApplication].keyWindow];
+        return;
+    }
     
     //转换成要展示的model
     [self addMessageToChatMessageArray:@[message]];
@@ -218,7 +350,7 @@
         
         if (!error) {
             message.content = address;
-            [UMCManager createMessageWithMerchantsEuid:self.merchantId message:message completion:^(UMCMessage *newMessage) {
+            [UMCManager createMessageWithMerchantsEuid:self.merchantEuid menuId:self.menuId message:message completion:^(UMCMessage *newMessage) {
                 
                 [self updateCache:message newMessage:newMessage];
                 if (completion) {
@@ -282,45 +414,38 @@
     oldMessage.UUID = newMessage.UUID;
 }
 
-- (void)updateMerchantMessagesArray:(NSArray *)messagesArrat {
-    
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSMutableArray *array = [NSMutableArray arrayWithArray:self.messagesArray];
-        for (UMCMessage *message in messagesArrat) {
-            UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
-            if (baseMsg) {
-                [array insertObject:baseMsg atIndex:0];
-            }
-        }
-        
-        self.messagesArray = [array copy];
-        [self reloadMessages];
-    });
-}
-
 - (void)addMessageToChatMessageArray:(NSArray *)messages {
-    if (messages.count < 1) return;
+    if (!messages || messages == (id)kCFNull) return ;
+    if (![messages isKindOfClass:[NSArray class]]) return;
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        
         @synchronized(self) {
-            NSMutableArray *mMessages = [NSMutableArray arrayWithArray:self.messagesArray];
+            NSMutableArray *array = [NSMutableArray arrayWithArray:self.messagesArray];
             for (UMCMessage *message in messages) {
                 UMCBaseMessage *baseMsg = [self umcChatMessageWithMessage:message];
                 if (baseMsg) {
-                    [mMessages addObject:baseMsg];
+                    [array addObject:baseMsg];
                 }
             }
             
-            //数组去重
-            NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.messagesArray];
-            for (UMCBaseMessage *msg in mMessages) {
-                if (![self checkMessage:msg existInList:tmpArray]) {
-                    [tmpArray addObject:msg];
+            NSMutableArray *empty = [NSMutableArray array];
+            for (UMCBaseMessage *msg in array) {
+                if (msg && ![self checkMessage:msg existInList:empty]) {
+                    [empty addObject:msg];
                 }
             }
             
-            self.messagesArray = [tmpArray copy];
+            array = [empty copy];
+            NSArray *messageList = [array sortedArrayUsingComparator:^NSComparisonResult(UMCBaseMessage * obj1, UMCBaseMessage * obj2) {
+                if (obj2.message.createdAt && obj1.message.createdAt) {
+                    NSDate *date2 = [NSDate dateWithString:obj2.message.createdAt format:kUMCDateFormat];
+                    NSDate *date1 = [NSDate dateWithString:obj1.message.createdAt format:kUMCDateFormat];
+                    return [date1 compare:date2];
+                }
+                return NSOrderedSame;
+            }];
+            
+            self.messagesArray = [messageList copy];
             [self reloadMessages];
         }
     });
@@ -353,14 +478,14 @@
         return;
     }
     
-    [UMCManager createProductWithMerchantsEuid:self.merchantId product:self.sdkConfig.product completion:nil];
+    [UMCManager createProductWithMerchantsEuid:self.merchantEuid menuId:self.menuId product:self.sdkConfig.product completion:nil];
 }
 
 #pragma mark - @protocol UMCManagerDelegate
 - (void)didReceiveMessage:(UMCMessage *)message {
     if (!message || message == (id)kCFNull) return ;
     
-    if ([message.merchantEuid isEqualToString:self.merchantId]) {
+    if ([message.merchantEuid isEqualToString:self.merchantEuid]) {
         
         //撤回消息
         if (message.category == UMCMessageCategoryTypeEvent && message.eventType == UMCEventContentTypeRollback) {
@@ -444,6 +569,22 @@
                     
                     UMCVideoMessage *videoMessage = [[UMCVideoMessage alloc] initWithMessage:message];
                     return videoMessage;
+                    break;
+                }
+                case UMCMessageContentTypeFile: {
+                    
+                    UMCFileMessage *fileMessage = [[UMCFileMessage alloc] initWithMessage:message];
+                    return fileMessage;
+                }
+                case UMCMessageContentTypeNavigate: {
+                    
+                    if (message.direction == UMCMessageDirectionIn) {
+                        UMCTextMessage *textMessage = [[UMCTextMessage alloc] initWithMessage:message];
+                        return textMessage;
+                    } else {
+                        UMCNavigatesMessage *navigateMessage = [[UMCNavigatesMessage alloc] initWithMessage:message];
+                        return navigateMessage;
+                    }
                     break;
                 }
                     

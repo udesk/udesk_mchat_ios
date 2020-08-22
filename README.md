@@ -2,7 +2,24 @@
 
 **接入sdk编译报错误请升级Xcode到最新版本或者选择“sdk_xcode10”分支下载导入！！！**
 
-### 1.导入SDK
+### SDK下载地址
+
+https://github.com/udesk/udesk_mchat_ios
+
+
+
+# 一、集成SDK
+
+### 兼容性
+
+| 类别      | 兼容范围                      |
+| --------- | ----------------------------- |
+| 系统      | 支持iOS 8.0及以上系统         |
+| 架构      | armv7、arm64、i386、x86_64    |
+| 开发环境  | 建议使用最新版本Xcode进行开发 |
+| Cocoapods | 不支持                        |
+
+### 导入SDK
 
 - 把Udesk SDK 文件夹中的 `UdeskMChatSDK.framework` 、 `UdeskMChatUIKit`文件夹 拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者将这两个个文件拖入 Xcode 工程目录结构中。
 
@@ -36,7 +53,9 @@
 <string>App需要访问您的相册</string>
 ```
 
-### 2.快速使用
+
+
+# 二、快速使用
 
 > 引入 ‘ \#import <UdeskMChatSDK/UdeskMChatSDK.h>’
 >
@@ -57,26 +76,50 @@ sign = SHA1("uuid+secret+timestamp")
 ```
 
 ```objective-c
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  
-  UMCSystem *system = [UMCSystem new];
-  //租户ID，Udesk后台系统获取
-  system.UUID = @"a04d138d-98fb-4b9d-b2a7-478b7c0c1ce9";
-  //时间戳，由你们后端返回
-  system.timestamp = @"timestamp";
-  //签名，由你们后端返回
-  system.sign = @"sign";
+//初始化sdk（UUID、timestamp、sign 都是必传字段！！！）
+UMCSystem *system = [UMCSystem new];
+system.UUID = @"a04d138d-98fb-4b9d-b2a7-478b7c0c1ce9";
+system.timestamp = @"timestamp";
+system.sign = @"sign";
             
-  UMCCustomer *customer = [UMCCustomer new];
-  //用户ID是用户的唯一标示，请不要重复，并且只允许使用数字、字母、数字+字母
-  customer.euid = @"用户ID";
-  customer.name = @"用户姓名";
+UMCCustomer *customer = [UMCCustomer new];
+customer.euid = @"euid"; //必填字段！！！
+customer.name = @"name"; //必填字段！！！
+
+//非必填字段
+customer.cellphone = @"13888888888";
+customer.email = @"test@udesk.cn";
+customer.org = @"org";
+customer.tags = @"测试1,测试2";
+customer.customerDescription = @"用户描述";
+customer.customField = @{
+  @"TextField_34012":@"测试",
+  @"SelectField_533":@[@(1)],
+};
             
-  [UMCManager initWithSystem:system customer:customer completion:^(NSError *error) {
-       NSLog(@"%@",error);
-  }];
-}
+[UMCManager initWithSystem:system customer:customer completion:^(NSError *error) {
+    NSLog(@"%@",error);
+}];
 ```
+
+| 参数名称            | 类型         | 是否必填 | 说明                                                         |
+| :------------------ | ------------ | :------: | :----------------------------------------------------------- |
+| UUID                | NSString     |    是    | 贵公司注册Udesk多商户系统，后台分配的ID                      |
+| timestamp、sign     | NSString     |    是    | 时间戳、签名，由你们后端返回                                 |
+| euid                | NSString     |    是    | 用户的唯一标识，用来识别身份,是**你们生成传入给我们**的。**传入的字符请使用 字母 / 数字 等常见字符集** 。就如同身份证一样，**不允许出现一个身份证号对应多个人，或者一个人有多个身份证号**；其次如果给顾客设置了邮箱和手机号码，也要保证不同顾客对应的手机号和邮箱不一样，如出现相同的，则不会创建新顾客 |
+| name                | NSString     |    是    | 用户昵称                                                     |
+| email               | NSString     |    否    | 用户邮箱，**需要严格按照邮箱规则。没有则不填！不可以为空！不可以为固定值！不可以随便填！** |
+| cellphone           | NSString     |    否    | 用户号码，**需要严格按照号码规则。没有则不填！不可以为空！不可以为固定值！不可以随便填！** |
+| org                 | NSString     |    否    | 公司名称                                                     |
+| tags                | NSString     |    否    | 用户标签，用逗号分隔 如："帅气,漂亮"                         |
+| customerDescription | NSString     |    否    | 用户描述                                                     |
+| customField         | NSDictionary |    否    | 用户自定义字段                                               |
+
+- UUID可以在 管理后台  ->  平台信息 获得
+- fieldKey是Udesk生成的，可以在 “管理后台”  ->  “管理中心”  ->  “管理”  ->  “客户字段” 获得
+- fieldValue有两种类型，1.文字字段：字符串类型；2.选择字段：数组类型（数组元素为选项的下标）
+
+
 
 > 在合适的地方添加商户列表View
 
@@ -97,7 +140,19 @@ UMCMerchantsView *merchats = [[UMCMerchantsView alloc] initWithFrame:CGRectMake(
 
 > 进入聊天页
 
-###### 客户通过某个商品详情页点击咨询按钮直接和客服进行会话
+```objective-c
+UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantId:@"商户ID"];
+sdkManager.sdkConfig = [UMCSDKConfig sharedConfig];
+[sdkManager pushUdeskInViewController:self completion:nil];
+```
+
+
+
+# 三、自定义配置
+
+### 3.1 咨询对象
+
+客户通过某个商品详情页点击咨询按钮直接和客服进行会话
 
 ```objective-c
 UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantId:@"商户ID"];
@@ -129,7 +184,7 @@ sdkManager.sdkConfig = [self getConfig];
 }
 ```
 
-### 3.商品消息
+### 3.2 商品消息
 
 ```objective-c
 UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantId:@"商户ID"];
@@ -189,9 +244,50 @@ sdkManager.sdkConfig = [self getConfig];
 }
 ```
 
-### 4.离线推送
+### 3.3 自定义按钮
 
 ```objective-c
+//按钮位于输入框上方
+UMCCustomButtonConfig *buttonConfig1 = [[UMCCustomButtonConfig alloc] initWithTitle:@"自定义按钮1" clickBlock:^(UMCCustomButtonConfig *customButton, UMCIMViewController *viewController) {
+		//do something
+	  //UdeskChatViewController 有可以发送消息的方法。
+}];
+buttonConfig1.type = UMCCustomButtonTypeInInputTop;
+
+//按钮位于更多
+UMCCustomButtonConfig *buttonConfig2 = [[UMCCustomButtonConfig alloc] initWithTitle:@"自定义按钮2" clickBlock:^(UMCCustomButtonConfig *customButton, UMCIMViewController *viewController) {
+		//do something
+	  //UdeskChatViewController 有可以发送消息的方法。
+}];
+buttonConfig2.type = UMCCustomButtonTypeInMoreView;
+
+UMCSDKConfig *config = [UMCSDKConfig sharedConfig];
+config.showCustomButtons = YES;
+config.customButtons = @[buttonConfig1,buttonConfig2];
+    
+UMCSDKStyle *style = [UMCSDKStyle defaultStyle];
+config.sdkStyle = style;
+
+//直接进入聊天页面
+UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantEuid:@"merchantEuid"];
+sdkManager.sdkConfig = config;
+[sdkManager pushUdeskInViewController:self completion:nil];
+
+//进入到商户列表
+//UMCMerchantsView *merchats = [[UMCMerchantsView alloc] initWithFrame:self.view.bounds sdkConfig:config];
+//[self.view addSubview:merchats];
+```
+
+
+
+# 四、离线推送
+
+```objective-c
+//获取deviceToken(注意：如果是用的第三方推送，需要传第三方自己的ID)
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [UMCManager registerDeviceToken:deviceToken];
+}
+
 //App 进入后台时，关闭Udesk推送
 - (void)applicationDidEnterBackground:(UIApplication *)application {
   
@@ -213,13 +309,13 @@ sdkManager.sdkConfig = [self getConfig];
 
 //App 进入前台时，开启Udesk推送
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-	[UMCManager endUdeskMChatPush];
+		[UMCManager endUdeskMChatPush];
 }
 ```
 
-### 5.接口说明
+# 五、接口说明
 
-##### 1.接受消息代理
+##### 5.1 接受消息代理
 
 ```objective-c
 //添加当前类为代理，
@@ -233,7 +329,7 @@ sdkManager.sdkConfig = [self getConfig];
 [[UMCDelegate shareInstance] removeDelegate:self];
 ```
 
-##### 2.未读消息回调
+##### 5.2 未读消息回调
 
 ```objective-c
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msgUnreadCountHasChange:) name:UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION object:nil];
@@ -252,3 +348,34 @@ sdkManager.sdkConfig = [self getConfig];
 
 > 其他API参考UMCManager.h
 
+
+
+# 六、更新记录
+
+#### 更新记录：
+
+sdk v1.0.5版本更新功能:
+
+1.支持导航菜单
+
+2.支持更多客户信息
+
+3.支持发送文件
+
+------
+
+sdk v1.0.4版本更新功能:
+
+1.第三方框架私有化
+
+2.支持推送
+
+3.支持自定义按钮
+
+4.多商户排队放弃和离线客户检测机制
+
+------
+
+sdk v1.0.3版本更新功能:
+
+5.部分表情支持

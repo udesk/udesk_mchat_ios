@@ -8,6 +8,7 @@
 
 #import <UdeskMChatSDK/UdeskMChatSDK.h>
 @class UMCGoodsModel;
+@class UMCNavigate;
 
 @interface UMCMessage (UMCChatMessage)
 
@@ -17,6 +18,9 @@
 - (instancetype)initWithGIFImage:(NSData *)gifData;
 - (instancetype)initWithVoice:(NSData *)voiceData duration:(NSString *)duration;
 - (instancetype)initWithVideo:(NSData *)videoData;
+- (instancetype)initWithFile:(NSString *)filePath;
 - (instancetype)initWithGoodsModel:(UMCGoodsModel *)model;
+- (instancetype)initWithNavigate:(NSString *)text;
+- (instancetype)initWithNavigates:(NSArray *)navigates navDescribe:(NSString *)navDescribe;
 
 @end

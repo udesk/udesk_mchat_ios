@@ -89,7 +89,8 @@
         for (NSString *richContent in textMessage.matchArray) {
             
             if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
-                [self.textContentLabel addLinkToURL:[NSURL URLWithString:richContent] withRange:[textMessage.richURLDictionary[richContent] rangeValue]];
+                NSString *url = [[richContent stringByRemovingPercentEncoding] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                [self.textContentLabel addLinkToURL:[NSURL URLWithString:url] withRange:[textMessage.richURLDictionary[richContent] rangeValue]];
             }
         }
         

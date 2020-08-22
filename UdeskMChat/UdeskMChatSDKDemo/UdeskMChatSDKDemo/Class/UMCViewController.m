@@ -41,15 +41,27 @@ static CGFloat const kUMCHUDDuration = 1.2f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(msgChange:) name:UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION object:nil];
     [[UMCDelegate shareInstance] addDelegate:self];
     
-//#if 0
-//    self.uuidTextField.text = @"0ad5f61a-3769-4d32-87fc-4ce562d2677a";
-//    self.keyTextField.text = @"8d99703ffa2b06cd2609aa3c20be7128";
-//    self.euidTextField.text = @"abcefg";
-//#elif 1
-//    self.uuidTextField.text = @"b1ce357b-8ce8-4ea1-9a87-7d15519dd7e6";
-//    self.keyTextField.text = @"27aa6696cba45cc091ee66fbc25aedab";
-//    self.euidTextField.text = @"abcefg";
-//#endif
+#if 0
+    self.uuidTextField.text = @"0ad5f61a-3769-4d32-87fc-4ce562d2677a";
+    self.keyTextField.text = @"8d99703ffa2b06cd2609aa3c20be7128";
+    self.euidTextField.text = @"abcefg";
+#elif 1
+    self.uuidTextField.text = @"b1ce357b-8ce8-4ea1-9a87-7d15519dd7e6";
+    self.keyTextField.text = @"27aa6696cba45cc091ee66fbc25aedab";
+    self.euidTextField.text = @"abcdefg";
+    self.nameTextField.text = @"TestName";
+#endif
+    //点击键盘消失
+    [self configKeyBoard];
+}
+
+- (void)configKeyBoard{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyBoard)];
+    [self.view addGestureRecognizer:tap];
+}
+
+- (void)closeKeyBoard{
+    [self.view endEditing:YES];
 }
 
 - (void)setupViews{
@@ -142,6 +154,11 @@ static CGFloat const kUMCHUDDuration = 1.2f;
         return;
     }
     
+    if (self.nameTextField.text.length == 0) {
+        [self showTextMessage:self.nameTextField.placeholder];
+        return;
+    }
+    
     if (self.keyTextField.text.length == 0) {
         [self showTextMessage:self.keyTextField.placeholder];
         return;
@@ -178,9 +195,15 @@ static CGFloat const kUMCHUDDuration = 1.2f;
     
     UMCCustomer *customer = [UMCCustomer new];
     customer.euid = self.euidTextField.text;
-    if (self.nameTextField.text.length > 0) {
-        customer.name = self.nameTextField.text;
-    }
+    customer.name = self.nameTextField.text;
+//    customer.cellphone = @"15101509938";
+//    customer.email = @"xuchen7@udesk.cn";
+//    customer.org = @"udesk5";
+//    customer.tags = @"测试7,test3";
+//    customer.customerDescription = @"44442212125g";
+//    customer.customField = @{@"TextField_34012":@"bbbvbb",
+//                             @"SelectField_533":@[@(1)],
+//    };
     
     [UMCManager initWithSystem:system customer:customer completion:^(NSError *error) {
         

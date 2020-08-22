@@ -23,8 +23,10 @@ typedef NS_ENUM(NSUInteger, UMCMessageContentType) {
     UMCMessageContentTypeImage,         //图片
     UMCMessageContentTypeVoice,         //语音
     UMCMessageContentTypeVideo,         //视频
+    UMCMessageContentTypeFile,          //文件
     UMCMessageContentTypeProduct,       //咨询对象
     UMCMessageContentTypeGoods,         //商品消息
+    UMCMessageContentTypeNavigate,      //导航消息
 };
 
 typedef NS_ENUM(NSUInteger, UMCEventContentType) {
@@ -92,7 +94,23 @@ typedef NS_ENUM(NSUInteger, UMCMessageStatus) {
 @interface UMCMessageExtras : NSObject
 
 //语音时长
-@property (nonatomic, copy  ) NSString     *duration;
+@property (nonatomic, copy) NSString *duration;
+/** 文件名称 */
+@property (nonatomic, copy) NSString *filename;
+/** 文件大小 */
+@property (nonatomic, copy) NSString *filesize;
+/** 文件类型 */
+@property (nonatomic, copy) NSString *fileext;
+
+@end
+
+@interface UMCNavigate : NSObject
+
+//导航id
+@property (nonatomic, copy  ) NSString     *navigateId;
+@property (nonatomic, copy  ) NSString     *parentId;
+@property (nonatomic, copy  ) NSString     *itemName;
+@property (nonatomic, copy  ) NSNumber     *hasNext;
 
 @end
 
@@ -122,9 +140,14 @@ typedef NS_ENUM(NSUInteger, UMCMessageStatus) {
 @property (nonatomic, copy  ) NSString *createdAt;
 /** 消息所属的商户 */
 @property (nonatomic, copy  ) NSString *merchantEuid;
-/** 文件名称 */
-@property (nonatomic, copy  ) NSString *fileName;
-/** 资源数据（image/voice/video） */
+/** 资源数据（image/voice/video/file） */
 @property (nonatomic, strong) NSData   *sourceData;
+
+/** 导航栏引导语 */
+@property (nonatomic, copy  ) NSString *navDescribe;
+/** 导航消息 */
+@property (nonatomic, strong) NSArray<UMCNavigate *> *navigates;
+/** 导航是否可用 */
+@property (nonatomic, assign) BOOL navEnabled;
 
 @end

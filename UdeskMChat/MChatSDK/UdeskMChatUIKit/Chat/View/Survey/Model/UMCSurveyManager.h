@@ -12,17 +12,17 @@
 @interface UMCSurveyManager : NSObject
 
 //满意度调查配置选项
-- (void)fetchSurveyOptionsWithMerchantId:(NSString *)merchantId
+- (void)fetchSurveyOptionsWithMerchantEuid:(NSString *)merchantEuid
                               completion:(void(^)(UMCSurveyModel *surveyModel))completion
                     surveyResponseObject:(id)surveyResponseObject;
 //提交满意度调查
 - (void)submitSurveyWithParameters:(NSDictionary *)parameters
                       surveyRemark:(NSString *)surveyRemark
                               tags:(NSArray *)tags
-                        merchantId:(NSString *)merchantId
+                        merchantEuid:(NSString *)merchantEuid
                         completion:(void(^)(NSError *error))completion;
 //检查是否已经评价
-- (void)checkHasSurveyWithMerchantId:(NSString *)merchantId
+- (void)checkHasSurveyWithMerchantEuid:(NSString *)merchantEuid
                           completion:(void(^)(BOOL result,NSError *error))completion;
 
 @end

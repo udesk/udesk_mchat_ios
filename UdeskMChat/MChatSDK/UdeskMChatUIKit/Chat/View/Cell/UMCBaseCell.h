@@ -15,6 +15,10 @@
 - (void)resendMessageInCell:(UITableViewCell *)cell resendMessage:(UMCMessage *)resendMessage;
 //点击商品消息
 - (void)didTapGoodsMessageCell:(UITableViewCell *)cell goodsURL:(NSString *)goodsURL;
+//点击导航
+- (void)didTapNavigate:(UITableViewCell *)cell navigate:(UMCNavigate *)navigate;
+//点击导航返回上一级
+- (void)didTapNavGoback:(UITableViewCell *)cell parentId:(NSString *)parentId;
 
 @end
 

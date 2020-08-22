@@ -14,6 +14,7 @@ typedef NS_ENUM(NSUInteger, UMCMoreToolBarType) {
     UMCMoreToolBarTypeShoot,      //拍摄
     UMCMoreToolBarTypeSurvey,     //评价
     UMCMoreToolBarTypeShootVideo, //拍摄视频
+    UMCMoreToolBarTypeFile,       //文件
 };
 
 @protocol UMCMoreToolBarDelegate <NSObject>

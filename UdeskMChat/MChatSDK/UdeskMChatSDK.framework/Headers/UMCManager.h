@@ -28,6 +28,11 @@
  */
 + (void)initWithSystem:(UMCSystem *)system customer:(UMCCustomer *)customer completion:(void(^)(NSError *error))completion;
 
+/// 创建用户
+/// @param euid 商户euid
+/// @param completion 完成回调，回调成功error为nil
++ (void)createCustomerWithMerchantEuid:(NSString *)euid completion:(void(^)(NSError *error))completion;
+
 /**
  获取所有商户
 
@@ -38,11 +43,11 @@
 /**
  获取单个商户信息
 
- @param merchantId 商户ID
+ @param merchantEuid 商户ID
  @param completion 完成回调
  */
-+ (void)getMerchantWithMerchantId:(NSString *)merchantId
-                       completion:(void(^)(UMCMerchant *merchant))completion;
++ (void)getMerchantWithMerchantEuid:(NSString *)merchantEuid
+                         completion:(void(^)(UMCMerchant *merchant))completion;
 
 /**
  标记商户消息为已读
@@ -81,6 +86,7 @@
  @param completion 完成回调
  */
 + (void)createMessageWithMerchantsEuid:(NSString *)euid
+                                menuId:(NSString *)menuId
                                message:(UMCMessage *)message
                             completion:(void(^)(UMCMessage *message))completion;
 
@@ -92,6 +98,7 @@
  @param completion 完成回调
  */
 + (void)createProductWithMerchantsEuid:(NSString *)euid
+                                menuId:(NSString *)menuId
                                product:(UMCProduct *)product
                             completion:(void(^)(BOOL result))completion;
 
@@ -119,9 +126,9 @@
  *
  *  @param completion 回调选项内容
  */
-+ (void)getSurveyOptionsWithMerchantId:(NSString *)merchantId
-                            completion:(void (^)(id responseObject, NSError *error))completion
-                          configHandle:(void (^)(BOOL surveyEnabled,BOOL afterSession))configHandle;
++ (void)getSurveyOptionsWithMerchantEuid:(NSString *)merchantEuid
+                              completion:(void (^)(id responseObject, NSError *error))completion
+                            configHandle:(void (^)(BOOL surveyEnabled,BOOL afterSession))configHandle;
 
 
 /**
@@ -143,6 +150,12 @@
  */
 + (void)checkHasSurveyWithMerchantEuid:(NSString *)merchantEuid
                             completion:(void (^)(NSString *hasSurvey,NSError *error))completion;
+
+/// 获取导航栏
+/// @param merchantEuid 商户Euid
+/// @param completion 回调
++ (void)getNavigatesWithMerchantEuid:(NSString *)merchantEuid
+                          completion:(void (^)(NSString *navDescribe, NSArray<UMCNavigate *> *navigatesArray))completion;
 
 /**
  开始推送
@@ -177,5 +190,9 @@
 /** 更新客户在线状态排队放弃用 */
 + (void)updateCustomerStatusInQueueWithMerchantEuid:(NSString *)merchantEuid
                                         completion:(void (^)(NSError *error))completion;
+
+/// 存储消息到本地
+/// @param message 消息
++ (void)storeMessage:(UMCMessage *)message;
 
 @end

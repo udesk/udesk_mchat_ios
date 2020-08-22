@@ -11,22 +11,23 @@
 #import "UMCSDKShow.h"
 #import "UIImage+UMC.h"
 #import "UMCHelper.h"
+#import "UMCToast.h"
 
 @interface UMCSDKManager()
 
 @property (nonatomic, strong) UMCSDKShow *show;
-@property (nonatomic, copy  ) NSString *merchantId;
+@property (nonatomic, copy  ) NSString *merchantEuid;
 
 @end
 
 @implementation UMCSDKManager
 
-- (instancetype)initWithMerchantId:(NSString *)merchantId {
+- (instancetype)initWithMerchantEuid:(NSString *)merchantEuid {
     
     self = [super init];
     if (self) {
         
-        _merchantId = merchantId;
+        _merchantEuid = merchantEuid;
     }
     return self;
 }
@@ -52,27 +53,33 @@
 - (void)pushUdeskInViewController:(UIViewController *)viewController
                        completion:(void (^)(void))completion {
     
-    if ([UMCHelper isBlankString:_merchantId]) {
+    if ([UMCHelper isBlankString:_merchantEuid]) {
         NSLog(@"UMC:请传入正确的商户ID");
         return;
     }
     
     //把会话设置为已读
     [self readIMSession];
-    UMCIMViewController *chatViewController = [[UMCIMViewController alloc] initWithSDKConfig:_sdkConfig merchantId:_merchantId];
-    [self.show presentOnViewController:viewController udeskViewController:chatViewController completion:completion];
-    
-    chatViewController.UpdateLastMessageBlock = ^(UMCMessage *message) {
-        if (self.UpdateLastMessageBlock) {
-            self.UpdateLastMessageBlock(message);
+    [UMCManager createCustomerWithMerchantEuid:self.merchantEuid completion:^(NSError *error) {
+        if (error) {
+            [UMCToast showToast:@"创建用户失败!" duration:1 window:[UIApplication sharedApplication].keyWindow];
+            return;
         }
-    };
+        UMCIMViewController *chatViewController = [[UMCIMViewController alloc] initWithSDKConfig:_sdkConfig merchantEuid:_merchantEuid];
+        [self.show presentOnViewController:viewController udeskViewController:chatViewController completion:completion];
+        
+        chatViewController.UpdateLastMessageBlock = ^(UMCMessage *message) {
+            if (self.UpdateLastMessageBlock) {
+                self.UpdateLastMessageBlock(message);
+            }
+        };
+    }];
 }
 
 - (void)readIMSession {
     
     //设置已读
-    [UMCManager readMerchantsWithEuid:self.merchantId completion:^(BOOL result) {
+    [UMCManager readMerchantsWithEuid:self.merchantEuid completion:^(BOOL result) {
         if (result) {
             [[NSNotificationCenter defaultCenter] postNotificationName:UMC_UNREAD_MSG_HAS_CHANED_NOTIFICATION object:nil userInfo:nil];
         }

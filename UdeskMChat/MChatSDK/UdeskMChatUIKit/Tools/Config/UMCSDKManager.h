@@ -21,7 +21,7 @@
 /**
  * 对象方法调用
  */
-- (instancetype)initWithMerchantId:(NSString *)merchantId;
+- (instancetype)initWithMerchantEuid:(NSString *)merchantEuid;
 
 /**
  * 在一个ViewController中Push出一个客服聊天界面

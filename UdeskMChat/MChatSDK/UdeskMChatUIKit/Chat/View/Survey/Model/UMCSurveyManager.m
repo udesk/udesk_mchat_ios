@@ -12,9 +12,9 @@
 
 @implementation UMCSurveyManager
 
-- (void)fetchSurveyOptionsWithMerchantId:(NSString *)merchantId
-                              completion:(void(^)(UMCSurveyModel *surveyModel))completion
-                    surveyResponseObject:(id)surveyResponseObject {
+- (void)fetchSurveyOptionsWithMerchantEuid:(NSString *)merchantEuid
+                                completion:(void(^)(UMCSurveyModel *surveyModel))completion
+                      surveyResponseObject:(id)surveyResponseObject {
     
     if (surveyResponseObject) {
         UMCSurveyModel *surveyModel = [self surveyModelWithResponseObject:surveyResponseObject];
@@ -24,7 +24,7 @@
         return;
     }
     
-    [UMCManager getSurveyOptionsWithMerchantId:merchantId completion:^(id responseObject, NSError *error) {
+    [UMCManager getSurveyOptionsWithMerchantEuid:merchantEuid completion:^(id responseObject, NSError *error) {
         
         @try {
             
@@ -64,12 +64,12 @@
 - (void)submitSurveyWithParameters:(NSDictionary *)parameters
                       surveyRemark:(NSString *)surveyRemark
                               tags:(NSArray *)tags
-                        merchantId:(NSString *)merchantId
+                      merchantEuid:(NSString *)merchantEuid
                         completion:(void(^)(NSError *error))completion {
     
     if (!parameters || parameters == (id)kCFNull) return ;
     if (![parameters isKindOfClass:[NSDictionary class]]) return;
-    if (!merchantId || merchantId == (id)kCFNull) return ;
+    if (!merchantEuid || merchantEuid == (id)kCFNull) return ;
     
     NSArray *array = [parameters allKeys];
     if (![array containsObject:@"option_id"]) return;
@@ -88,14 +88,14 @@
         }
     }
     
-    [UMCManager submitSurveyWithMerchantEuid:merchantId parameters:@{@"survey":mParameters} completion:completion];
+    [UMCManager submitSurveyWithMerchantEuid:merchantEuid parameters:@{@"survey":mParameters} completion:completion];
 }
 
 //检查是否已经评价
-- (void)checkHasSurveyWithMerchantId:(NSString *)merchantId
-                          completion:(void(^)(BOOL result,NSError *error))completion {
+- (void)checkHasSurveyWithMerchantEuid:(NSString *)merchantEuid
+                            completion:(void(^)(BOOL result,NSError *error))completion {
     
-    [UMCManager checkHasSurveyWithMerchantEuid:merchantId completion:^(NSString *hasSurvey, NSError *error) {
+    [UMCManager checkHasSurveyWithMerchantEuid:merchantEuid completion:^(NSString *hasSurvey, NSError *error) {
         
         if (completion) {
             completion(hasSurvey.boolValue,error);

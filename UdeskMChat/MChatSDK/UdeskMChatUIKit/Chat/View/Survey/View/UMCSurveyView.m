@@ -29,20 +29,20 @@
 
 @property (nonatomic, strong) NSArray *options;
 
-@property (nonatomic, copy  ) NSString *merchantId;
+@property (nonatomic, copy  ) NSString *merchantEuid;
 @property (nonatomic, strong) id surveyResponseObject;
 
 @end
 
 @implementation UMCSurveyView
 
-- (instancetype)initWithMerchantId:(NSString *)merchantId surveyResponseObject:(id)surveyResponseObject;
+- (instancetype)initWithMerchantEuid:(NSString *)merchantEuid surveyResponseObject:(id)surveyResponseObject;
 {
     self = [super initWithFrame:[[UIScreen mainScreen] bounds]];
     if (self) {
         
         _surveyResponseObject = surveyResponseObject;
-        _merchantId = merchantId;
+        _merchantEuid = merchantEuid;
         
         [self setupUI];
         [self fetchSurveyOptions];
@@ -69,7 +69,7 @@
 
 - (void)fetchSurveyOptions {
     
-    [self.surveyManager fetchSurveyOptionsWithMerchantId:self.merchantId
+    [self.surveyManager fetchSurveyOptionsWithMerchantEuid:self.merchantEuid
                                               completion:^(UMCSurveyModel *surveyModel) {
         
         if (!surveyModel) {
@@ -235,7 +235,7 @@
 - (void)clickSubmitSurvey:(UMCSurveyContentView *)survey {
     
     [self.surveyContentView.remarkTextView resignFirstResponder];
-    if (!self.merchantId || self.merchantId == (id)kCFNull) return ;
+    if (!self.merchantEuid || self.merchantEuid == (id)kCFNull) return ;
     
     @try {
         
@@ -257,7 +257,7 @@
                                      @"type":[self.surveyModel stringWithOptionType],
                                      };
         
-        [self.surveyManager submitSurveyWithParameters:parameters surveyRemark:survey.remarkTextView.text tags:survey.selectedOptionTags merchantId:self.merchantId completion:^(NSError *error) {
+        [self.surveyManager submitSurveyWithParameters:parameters surveyRemark:survey.remarkTextView.text tags:survey.selectedOptionTags merchantEuid:self.merchantEuid completion:^(NSError *error) {
             NSString *string = UMCLocalizedString(@"udesk_top_view_thanks_evaluation");
             if (error) {
                 string = UMCLocalizedString(@"udesk_top_view_failure");

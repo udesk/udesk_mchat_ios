@@ -55,16 +55,13 @@ CGFloat kUDBubbleToTextVerticalTopSpacing = 12.0;
         if (!self.message.content || [NSNull isEqual:self.message.content]) return;
         if ([UMCHelper isBlankString:self.message.content]) return;
         
-        if (self.message.contentType == UMCMessageContentTypeText) {
-            
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.3) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self setTextMessageUI];
-                });
-            }
-            else {
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.3) {
+            dispatch_async(dispatch_get_main_queue(), ^{
                 [self setTextMessageUI];
-            }
+            });
+        }
+        else {
+            [self setTextMessageUI];
         }
         
     } @catch (NSException *exception) {

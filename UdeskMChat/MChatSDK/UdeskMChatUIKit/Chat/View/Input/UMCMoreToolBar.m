@@ -30,6 +30,7 @@
 @property (nonatomic, strong) UMCButton *shootButton;
 @property (nonatomic, strong) UMCButton *surveyButton;
 @property (nonatomic, strong) UMCButton *shootVideoButton;
+@property (nonatomic, strong) UMCButton *fileButton;
 
 @property (nonatomic, strong) NSMutableArray *allItems;
 
@@ -91,6 +92,13 @@
         _shootVideoButton.tag = 9347 + 3;
         [_scrollview addSubview:_shootVideoButton];
         [self.allItems addObject:_shootVideoButton];
+    }
+    
+    if (!sdkConfig.hiddenFileButton) {
+        _fileButton = [self buttonWithImage:[UIImage umcDefaultChatBarMoreFile] title:UMCLocalizedString(@"udesk_file")];
+        _fileButton.tag = 9347 + 4;
+        [_scrollview addSubview:_fileButton];
+        [self.allItems addObject:_fileButton];
     }
 }
 

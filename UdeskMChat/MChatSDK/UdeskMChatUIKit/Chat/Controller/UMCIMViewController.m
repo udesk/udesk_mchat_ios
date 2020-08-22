@@ -24,6 +24,7 @@
 #import "UMCPrivacyUtil.h"
 #import "UMCVideoCell.h"
 #import "UMCImageCell.h"
+#import "UMCFileCell.h"
 #import "UdeskSmallVideoViewController.h"
 #import "UdeskSmallVideoNavigationController.h"
 
@@ -31,7 +32,7 @@
 
 static CGFloat const InputBarHeight = 52.0f;
 
-@interface UMCIMViewController ()<UITableViewDelegate,UMCInputBarDelegate,UMCMoreToolBarDelegate,Udesk_YYKeyboardObserver,UDEmotionManagerViewDelegate,UMCBaseCellDelegate,UdeskSmallVideoViewControllerDelegate>
+@interface UMCIMViewController ()<UITableViewDelegate,UMCInputBarDelegate,UMCMoreToolBarDelegate,Udesk_YYKeyboardObserver,UDEmotionManagerViewDelegate,UMCBaseCellDelegate,UdeskSmallVideoViewControllerDelegate,UIDocumentPickerDelegate>
 
 /** sdk配置 */
 @property (nonatomic, strong) UMCSDKConfig         *sdkConfig;
@@ -57,7 +58,7 @@ static CGFloat const InputBarHeight = 52.0f;
 /** 图片选择类 */
 @property (nonatomic, strong) UMCImagePicker       *imagePicker;
 /** 商户ID */
-@property (nonatomic, copy  ) NSString             *merchantId;
+@property (nonatomic, copy  ) NSString             *merchantEuid;
 /** 离开显示满意度调查 */
 @property (nonatomic, assign) BOOL                  afterSession;
 /** 返回展示满意度 */
@@ -69,13 +70,13 @@ static CGFloat const InputBarHeight = 52.0f;
 
 @implementation UMCIMViewController
 
-- (instancetype)initWithSDKConfig:(UMCSDKConfig *)config merchantId:(NSString *)merchantId
+- (instancetype)initWithSDKConfig:(UMCSDKConfig *)config merchantEuid:(NSString *)merchantEuid
 {
     self = [super init];
     if (self) {
         
         _sdkConfig = config;
-        _merchantId = merchantId;
+        _merchantEuid = merchantEuid;
     }
     return self;
 }
@@ -277,22 +278,22 @@ static CGFloat const InputBarHeight = 52.0f;
 }
 
 //显示满意度调查
-- (void)showSurveyWithWithMerchantId:(NSString *)merchantId agentInvite:(BOOL)agentInvite {
+- (void)showSurveyWithWithMerchantEuid:(NSString *)merchantEuid agentInvite:(BOOL)agentInvite {
     
     [self inputBarHide:YES];
     
     if (agentInvite) {
-        UMCSurveyView *surveyView = [[UMCSurveyView alloc] initWithMerchantId:self.merchantId surveyResponseObject:self.UIManager.surveyResponseObject];
+        UMCSurveyView *surveyView = [[UMCSurveyView alloc] initWithMerchantEuid:self.merchantEuid surveyResponseObject:self.UIManager.surveyResponseObject];
         [surveyView show];
         return;
     }
-    [UMCManager checkHasSurveyWithMerchantEuid:merchantId completion:^(NSString *hasSurvey, NSError *error) {
+    [UMCManager checkHasSurveyWithMerchantEuid:merchantEuid completion:^(NSString *hasSurvey, NSError *error) {
         
         if ([hasSurvey boolValue]) {
             [UMCToast showToast:UMCLocalizedString(@"udesk_has_survey") duration:0.35 window:self.view];
         }
         else {
-            UMCSurveyView *surveyView = [[UMCSurveyView alloc] initWithMerchantId:self.merchantId surveyResponseObject:self.UIManager.surveyResponseObject];
+            UMCSurveyView *surveyView = [[UMCSurveyView alloc] initWithMerchantEuid:self.merchantEuid surveyResponseObject:self.UIManager.surveyResponseObject];
             [surveyView show];
         }
     }];
@@ -362,15 +363,15 @@ static CGFloat const InputBarHeight = 52.0f;
     //收到满意度调查邀请
     self.UIManager.DidReceiveInviteSurveyBlock = ^(NSString *merchantEuid) {
         @udStrongify(self);
-        [self showSurveyWithWithMerchantId:merchantEuid agentInvite:YES];
+        [self showSurveyWithWithMerchantEuid:merchantEuid agentInvite:YES];
     };
     
     //获取商户信息
-    [self.UIManager fetchMerchantWithMerchantId:self.merchantId completion:^(UMCMerchant *merchant) {
+    [self.UIManager fetchMerchantWithMerchantEuid:self.merchantEuid completion:^(UMCMerchant *merchant) {
         @udStrongify(self);
         self.title = merchant.name;
         self.sdkConfig.merchantImageURL = merchant.logoURL;
-        if (merchant.euid) { self.merchantId = merchant.euid;}
+        if (merchant.euid) { self.merchantEuid = merchant.euid;}
         [self checkIsBlocked:merchant.isBlocked];
     }];
     
@@ -378,6 +379,11 @@ static CGFloat const InputBarHeight = 52.0f;
     [self.UIManager fetchSurveyConfig:^(BOOL isShowSurvey, BOOL afterSession) {
         self.moreView.enableSurvey = isShowSurvey;
         self.afterSession = afterSession;
+    }];
+    
+    //导航菜单
+    [self.UIManager fetchNavigates:^{
+        
     }];
 }
 
@@ -423,13 +429,13 @@ static CGFloat const InputBarHeight = 52.0f;
     @udWeakify(self);
     if (resendMessage.sourceData && [UMCHelper isBlankString:resendMessage.content]) {
         resendMessage.messageStatus = UMCMessageStatusSending;
-        [UMCManager uploadFile:resendMessage.sourceData fileName:resendMessage.fileName progress:^(float percent) {
+        [UMCManager uploadFile:resendMessage.sourceData fileName:resendMessage.extras.filename progress:^(float percent) {
             [self updateMediaProgress:percent uploadMessage:resendMessage];
         } completion:^(NSString *address, NSError *error) {
             if (!error) {
                 resendMessage.content = address;
                 resendMessage.messageStatus = UMCMessageStatusSuccess;
-                [UMCManager createMessageWithMerchantsEuid:self.merchantId message:resendMessage completion:^(UMCMessage *message) {
+                [UMCManager createMessageWithMerchantsEuid:self.merchantEuid menuId:self.UIManager.menuId message:resendMessage completion:^(UMCMessage *message) {
                     
                     [self.UIManager updateCache:resendMessage newMessage:message];
                     [self updateSendCompletedMessage:resendMessage];
@@ -443,7 +449,7 @@ static CGFloat const InputBarHeight = 52.0f;
         return;
     }
     
-    [UMCManager createMessageWithMerchantsEuid:self.merchantId message:resendMessage completion:^(UMCMessage *message) {
+    [UMCManager createMessageWithMerchantsEuid:self.merchantEuid menuId:self.UIManager.menuId message:resendMessage completion:^(UMCMessage *message) {
         @udStrongify(self);
         [self.UIManager updateCache:resendMessage newMessage:message];
         [self updateSendCompletedMessage:resendMessage];
@@ -469,6 +475,28 @@ static CGFloat const InputBarHeight = 52.0f;
     }
 }
 
+//点击导航
+- (void)didTapNavigate:(UITableViewCell *)cell navigate:(UMCNavigate *)navigate {
+    
+    if (navigate.itemName && [navigate.itemName isKindOfClass:[NSString class]] && navigate.itemName.length>0) {
+        [self.UIManager sendNavigateMessage:navigate.itemName completion:^(UMCMessage *message) {
+            [self updateSendCompletedMessage:message];
+        }];
+    }
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.UIManager receiveMessageWithNavigateModel:navigate];
+    });
+}
+
+- (void)didTapNavGoback:(UITableViewCell *)cell parentId:(NSString *)parentId {
+    
+    [self.UIManager sendLocalTextMessage:UMCLocalizedString(@"udesk_navigate_go_back_pre")];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.UIManager receiveMessageWithParentId:parentId];
+    });
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -477,7 +505,7 @@ static CGFloat const InputBarHeight = 52.0f;
 //vc逻辑处理
 - (UMCIMManager *)UIManager {
     if (!_UIManager) {
-        _UIManager = [[UMCIMManager alloc] initWithSDKConfig:_sdkConfig merchantId:_merchantId];
+        _UIManager = [[UMCIMManager alloc] initWithSDKConfig:_sdkConfig merchantEuid:_merchantEuid];
     }
     return _UIManager;
 }
@@ -591,12 +619,17 @@ static CGFloat const InputBarHeight = 52.0f;
         case UMCMoreToolBarTypeSurvey:
             
             //评价
-            [self showSurveyWithWithMerchantId:self.merchantId agentInvite:NO];
+            [self showSurveyWithWithMerchantEuid:self.merchantEuid agentInvite:NO];
             break;
         case UMCMoreToolBarTypeShootVideo:
             
-            //评价
+            //拍视频
             [self openShootSmallVideo];
+            break;
+        case UMCMoreToolBarTypeFile:
+            
+            //打开文件
+            [self openDocument];
             break;
             
         default:
@@ -662,6 +695,52 @@ static CGFloat const InputBarHeight = 52.0f;
             [self presentViewController:nav animated:YES completion:nil];
         }];
     }];
+}
+
+//打开文件
+- (void)openDocument {
+    // 根据需求添加具体文件格式
+    NSArray *documentTypes = @[@"public.content",
+                               @"public.text",
+                               @"public.source-code",
+                               @"public.image",
+                               @"public.archive",
+                               @"public.data",
+                               @"public.audiovisual-content",
+                               @"com.adobe.pdf",
+                               @"com.apple.keynote.key",
+                               @"com.microsoft.word.doc",
+                               @"com.microsoft.excel.xls",
+                               @"com.microsoft.powerpoint.ppt"];
+    UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeImport];
+    documentPicker.delegate = self;
+    documentPicker.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:documentPicker animated:YES completion:nil];
+}
+
+#pragma mark - UIDocumentPickerDelegate
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
+    
+    NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+    NSError *error = nil;
+    [coordinator coordinateReadingItemAtURL:url options:0 error:&error byAccessor:^(NSURL *newURL) {
+        NSData *data = [NSData dataWithContentsOfURL:newURL];
+        if (data.length <= 0) {
+            UIAlertController *alertCtrl = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"udesk_file_not_exist",@"") message:nil preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"udesk_sure",@"") style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {
+
+            }];
+            [alertCtrl addAction:confirmAction];
+            [self presentViewController:alertCtrl animated:YES completion:nil];
+            return;
+        }
+
+        [self sendFileMessageWithFilePath:[newURL path]];
+        [controller dismissViewControllerAnimated:YES completion:nil];
+    }];
+    if (error) {
+        NSLog(@"ERROR: read data with DocumentAtURL failed");
+    }
 }
 
 #pragma mark - @protocol UdeskSmallVideoViewControllerDelegate
@@ -819,6 +898,19 @@ static CGFloat const InputBarHeight = 52.0f;
     }];
 }
 
+#pragma mark - 发送文件
+- (void)sendFileMessageWithFilePath:(NSString *)filePath {
+    if (!filePath || filePath == (id)kCFNull) return ;
+    if (![filePath isKindOfClass:[NSString class]]) return ;
+    
+    [self.UIManager sendFileMessage:filePath progress:^(UMCMessage *message, float percent) {
+        [self updateMediaProgress:percent uploadMessage:message];
+    } completion:^(UMCMessage *message) {
+        [self updateSendCompletedMessage:message];
+        [self updateMediaProgress:message.messageStatus == UMCMessageStatusSuccess?1:0 uploadMessage:message];
+    }];
+}
+
 //更新上传进度
 - (void)updateMediaProgress:(float)progress uploadMessage:(UMCMessage *)message {
     
@@ -851,6 +943,11 @@ static CGFloat const InputBarHeight = 52.0f;
                     [videoCell updateLoding:message.messageStatus];
                 }
             }
+        } else if (message.contentType == UMCMessageContentTypeFile) {
+            UMCFileCell *fileCell = (UMCFileCell *)cell;
+            if ([fileCell isKindOfClass:[UMCFileCell class]]) {
+                [fileCell updataProgress:progress];
+            }
         }
     });
 }
@@ -881,7 +978,7 @@ static CGFloat const InputBarHeight = 52.0f;
 #pragma mark - 消息发送完成回调
 - (void)updateSendCompletedMessage:(UMCMessage *)message {
     
-    message.merchantEuid = self.merchantId;
+    message.merchantEuid = self.merchantEuid;
     //更新商户列表最后一条消息
     if (self.UpdateLastMessageBlock) {
         self.UpdateLastMessageBlock(message);
@@ -961,7 +1058,7 @@ static CGFloat const InputBarHeight = 52.0f;
 #pragma mark - dismissChatViewController
 - (void)dismissChatViewController {
     
-    [UMCManager updateCustomerStatusInQueueWithMerchantEuid:self.merchantId
+    [UMCManager updateCustomerStatusInQueueWithMerchantEuid:self.merchantEuid
                                                  completion:^(NSError *error) {
         
     }];
@@ -973,7 +1070,7 @@ static CGFloat const InputBarHeight = 52.0f;
     }
     
     //有客服ID才弹出评价
-    if (!self.merchantId) {
+    if (!self.merchantEuid) {
         [self realDismissViewController];
         return;
     }
@@ -985,7 +1082,7 @@ static CGFloat const InputBarHeight = 52.0f;
     }
     
     //检查是否已经评价
-    [UMCManager checkHasSurveyWithMerchantEuid:self.merchantId completion:^(NSString *hasSurvey, NSError *error) {
+    [UMCManager checkHasSurveyWithMerchantEuid:self.merchantEuid completion:^(NSString *hasSurvey, NSError *error) {
        
         //失败
         if (error) {
@@ -996,7 +1093,7 @@ static CGFloat const InputBarHeight = 52.0f;
         if (![hasSurvey boolValue]) {
             //标记满意度只显示一次
             self.backAlreadyDisplayedSurvey = YES;
-            [self showSurveyWithWithMerchantId:self.merchantId agentInvite:NO];
+            [self showSurveyWithWithMerchantEuid:self.merchantEuid agentInvite:NO];
         }
         else {
             [self realDismissViewController];
@@ -1021,7 +1118,7 @@ static CGFloat const InputBarHeight = 52.0f;
     [[UMCAudioPlayerHelper shareInstance] stopAudio];
     [UMCManager leaveChatViewController];
     //离开页面 标记已读
-    [UMCManager readMerchantsWithEuid:self.merchantId completion:nil];
+    [UMCManager readMerchantsWithEuid:self.merchantEuid completion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

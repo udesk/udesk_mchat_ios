@@ -16,7 +16,7 @@
 //更新最后一条消息
 @property (nonatomic, copy) void(^UpdateLastMessageBlock)(UMCMessage *message);
 
-- (instancetype)initWithSDKConfig:(UMCSDKConfig *)config merchantId:(NSString *)merchantId;
+- (instancetype)initWithSDKConfig:(UMCSDKConfig *)config merchantEuid:(NSString *)merchantEuid;
 
 - (void)dismissChatViewController;
 

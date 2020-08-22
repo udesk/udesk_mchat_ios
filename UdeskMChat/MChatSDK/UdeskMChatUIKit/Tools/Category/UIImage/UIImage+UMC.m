@@ -342,4 +342,44 @@
     return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udVideoPlay.png")];
 }
 
++ (UIImage *)umcDefaultChatBarMoreFile {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udChatBarMoreFile.png")];
+}
++ (UIImage *)umcDefaultFileSendOther {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileSendOther.png")];
+}
++ (UIImage *)umcDefaultFileReceiveOther {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileReceiveOther.png")];
+}
++ (UIImage *)umcDefaultFileSendPDF {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileSendPDF.png")];
+}
++ (UIImage *)umcDefaultFileReceivePDF {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileReceivePDF.png")];
+}
++ (UIImage *)umcDefaultFileSendPPT {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileSendPPT.png")];
+}
++ (UIImage *)umcDefaultFileReceivePPT {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileReceivePPT.png")];
+}
++ (UIImage *)umcDefaultFileSendTxt {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileSendTxt.png")];
+}
++ (UIImage *)umcDefaultFileReceiveTxt {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileReceiveTxt.png")];
+}
++ (UIImage *)umcDefaultFileSendWord {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileSendWord.png")];
+}
++ (UIImage *)umcDefaultFileReceiveWord {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileReceiveWord.png")];
+}
++ (UIImage *)umcDefaultFileSendExcel {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileSendXLS.png")];
+}
++ (UIImage *)umcDefaultFileReceiveExcel {
+    return [UIImage imageWithContentsOfFile:UMCBundlePath(@"udFileReceiveXLS.png")];
+}
+
 @end

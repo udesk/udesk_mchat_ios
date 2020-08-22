@@ -34,6 +34,7 @@
 "udesk_shooting" = "拍摄";
 "udesk_survey" = "评价";
 "udesk_shooting_video" = "拍视频";
+"udesk_file" = "文件";
 "udesk_small_video_tips" = "长按拍摄小视频";
 "udesk_second" = "秒";
 "udesk_file_not_exist" = "该文件不存在,链接错误";
@@ -77,12 +78,14 @@
 "udesk_wwan_tips" = "流量提醒";
 "udesk_video_send_tips" = "当前在非Wi-Fi环境，发送文件将消耗一定流量，是否继续？";
 "udesk_video_big_tips" = "视频不可以过大，请压缩";
+"udesk_file_big_tips" = "文件不可以过大，请压缩";
 "udesk_customer_leave_msg" = "客户留言";
 "udesk_rollback" = "撤回一条消息";
 "udesk_last_image" = "[图片]";
 "udesk_last_voice" = "[语音]";
 "udesk_last_goods" = "[商品消息]";
 "udesk_last_video" = "[视频]";
+"udesk_last_file" = "[文件]";
 "udesk_location" = "位置";
 "udesk_delete" = "删除";
 "udesk_service_survey" = "服务评价";
@@ -92,3 +95,5 @@
 "udesk_survey_unsatisfactory" = "不满意";
 "udesk_survey_tips" = "请您对当前服务做个评价，谢谢！";
 "udesk_survey_remark_required" = "评价备注为必填项";
+"udesk_navigate_go_back_pre" = "返回上一级";
+"udesk_navigate_required" = "请先选择导航菜单再发送消息";

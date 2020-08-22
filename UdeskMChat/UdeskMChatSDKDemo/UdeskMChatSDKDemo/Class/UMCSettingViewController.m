@@ -67,7 +67,7 @@
             UITextField *textField = alert.textFields.firstObject;
             if (textField.text.length) {
                 
-                UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantId:textField.text];
+                UMCSDKManager *sdkManager = [[UMCSDKManager alloc] initWithMerchantEuid:textField.text];
                 sdkManager.sdkConfig = [self getConfig];
                 [sdkManager pushUdeskInViewController:self completion:nil];
             }

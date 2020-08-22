@@ -8,6 +8,7 @@
 
 #import "UMCDeveloperViewController.h"
 #import "UMCCustomButtonTableViewController.h"
+#import "UMCCustomerInfoViewController.h"
 
 @interface UMCDeveloperViewController ()
 
@@ -24,6 +25,7 @@
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCellIdentifier"];
     self.dataSource = @[
                         @"自定义按钮",
+                        @"用户信息"
                         ];
 }
 
@@ -48,6 +50,9 @@
         
         UMCCustomButtonTableViewController *customButtonVC = [[UMCCustomButtonTableViewController alloc] init];
         [self.navigationController pushViewController:customButtonVC animated:YES];
+    } else if (indexPath.row == 1) {
+        UMCCustomerInfoViewController *customerInfoVC = [[UMCCustomerInfoViewController alloc] init];
+        [self.navigationController pushViewController:customerInfoVC animated:YES];
     }
 }
 
