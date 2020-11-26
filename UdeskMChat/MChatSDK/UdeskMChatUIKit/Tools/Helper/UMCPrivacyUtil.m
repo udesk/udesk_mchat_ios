@@ -132,10 +132,10 @@
 + (void)checkPermissionsOfMicrophone:(void(^)(void))completion {
     
     //模拟器
-    if (TARGET_IPHONE_SIMULATOR) {
-        NSLog(@"UdeskSDK：模拟器无法使用录音功能");
-        return;
-    }
+//    if (TARGET_IPHONE_SIMULATOR) {
+//        NSLog(@"UdeskSDK：模拟器无法使用录音功能");
+//        return;
+//    }
     
     if (kUMCSystemVersion >= 7.0) {
         

@@ -354,6 +354,12 @@ sdkManager.sdkConfig = config;
 
 #### 更新记录：
 
+sdk v1.0.6版本更新功能:
+
+1.适配iOS14
+
+------
+
 sdk v1.0.5版本更新功能:
 
 1.支持导航菜单

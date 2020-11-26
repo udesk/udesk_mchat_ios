@@ -108,6 +108,8 @@
     
     CALayer *layer              = ImageView.layer;
     layer.frame                 = (CGRect){{0,0},ImageView.layer.frame.size};
+    layer.contents = (id)self.bubbleImageView.image.CGImage;
+    layer.contentsScale = [UIScreen mainScreen].scale;
     self.chatImageView.layer.mask = layer;
     [self.chatImageView setNeedsDisplay];
     

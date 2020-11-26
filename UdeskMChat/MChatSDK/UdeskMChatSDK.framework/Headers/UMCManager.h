@@ -195,4 +195,7 @@
 /// @param message 消息
 + (void)storeMessage:(UMCMessage *)message;
 
+/// sdk版本
++ (NSString *)sdkVersion;
+
 @end
