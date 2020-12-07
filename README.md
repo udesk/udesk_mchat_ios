@@ -313,6 +313,38 @@ sdkManager.sdkConfig = config;
 }
 ```
 
+##### 给客户服务器地址推送消息的格式：
+
+```json
+{
+   "category" : "auto",
+   "content" : "",
+   "content_type" : "image",
+   "created_at" : "",
+   "customer_name" : "",
+   "customer_openid" : "",
+   "device_token" : "",
+   "direction" : "out",
+   "event_name" : "",
+   "extras" : "",
+   "failed_at" : "",
+   "id" : 1,
+   "isAudioTranslate" : "",
+   "menu_id" : "",
+   "merchant_euid" : "asdssd",
+   "merchant_id" : 1,
+   "message_id" : "",
+   "platform" : "",
+   "recognition" : "",
+   "send_status" : "",
+   "sent_at" : "",
+   "type" : "",
+   "voice_url" : ""
+}
+```
+
+
+
 # 五、接口说明
 
 ##### 5.1 接受消息代理
@@ -353,6 +385,12 @@ sdkManager.sdkConfig = config;
 # 六、更新记录
 
 #### 更新记录：
+
+sdk v1.0.7版本更新功能:
+
+1.优化留言功能
+
+------
 
 sdk v1.0.6版本更新功能:
 

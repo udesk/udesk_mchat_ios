@@ -22,6 +22,7 @@
 #import "UMCBundleHelper.h"
 #import "UMCVideoCache.h"
 #import "UMCToast.h"
+#import "UMCWebViewController.h"
 
 #import "Udesk_YYWebImage.h"
 
@@ -488,17 +489,13 @@
     if ([message.merchantEuid isEqualToString:self.merchantEuid]) {
         
         //撤回消息
-        if (message.category == UMCMessageCategoryTypeEvent && message.eventType == UMCEventContentTypeRollback) {
-            for (UMCBaseMessage *baseMessage in self.messagesArray) {
-                if ([baseMessage.message.UUID isEqualToString:message.UUID]) {
-                    
-                    NSMutableArray *array = [NSMutableArray arrayWithArray:self.messagesArray];
-                    if ([array containsObject:baseMessage]) {
-                        [array removeObject:baseMessage];
-                        self.messagesArray = array;
-                    }
-                    message.content = UMCLocalizedString(@"udesk_rollback");
-                }
+        if (message.category == UMCMessageCategoryTypeEvent) {
+
+            if (message.eventType == UMCEventContentTypeRollback) {
+                [self handleRollbackMessage:message];
+            }
+            else if (message.eventType == UMCEventContentTypeFeedbacks) {
+                [self handleFeedbacksMessage:message];
             }
         }
         
@@ -512,6 +509,30 @@
             }
         }
     }
+}
+
+- (void)handleRollbackMessage:(UMCMessage *)message {
+    
+    for (UMCBaseMessage *baseMessage in self.messagesArray) {
+        if ([baseMessage.message.UUID isEqualToString:message.UUID]) {
+            
+            NSMutableArray *array = [NSMutableArray arrayWithArray:self.messagesArray];
+            if ([array containsObject:baseMessage]) {
+                [array removeObject:baseMessage];
+                self.messagesArray = array;
+            }
+            message.content = UMCLocalizedString(@"udesk_rollback");
+        }
+    }
+}
+
+- (void)handleFeedbacksMessage:(UMCMessage *)message {
+    
+    [UMCManager fetchFeedbacksWithMerchantEuid:self.merchantEuid completion:^(NSString *feedbacksURL) {
+        
+        UMCWebViewController *webVC = [[UMCWebViewController alloc] initWithURL:[NSURL URLWithString:feedbacksURL]];
+        [[UMCHelper currentViewController].navigationController pushViewController:webVC animated:YES];
+    }];
 }
 
 - (UMCBaseMessage *)umcChatMessageWithMessage:(UMCMessage *)message {

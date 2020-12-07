@@ -157,6 +157,13 @@
 + (void)getNavigatesWithMerchantEuid:(NSString *)merchantEuid
                           completion:(void (^)(NSString *navDescribe, NSArray<UMCNavigate *> *navigatesArray))completion;
 
+
+/// 获取留言配置
+/// @param merchantEuid 商户Euid
+/// @param completion 回调
++ (void)fetchFeedbacksWithMerchantEuid:(NSString *)merchantEuid
+                            completion:(void (^)(NSString *feedbacksURL))completion;
+
 /**
  开始推送
  */

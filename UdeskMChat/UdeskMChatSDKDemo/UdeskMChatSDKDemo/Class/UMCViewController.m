@@ -46,8 +46,8 @@ static CGFloat const kUMCHUDDuration = 1.2f;
     self.keyTextField.text = @"8d99703ffa2b06cd2609aa3c20be7128";
     self.euidTextField.text = @"abcefg";
 #elif 1
-    self.uuidTextField.text = @"b1ce357b-8ce8-4ea1-9a87-7d15519dd7e6";
-    self.keyTextField.text = @"27aa6696cba45cc091ee66fbc25aedab";
+    self.uuidTextField.text = @"d1468098-aca6-4490-a684-c2af1064d6a0";
+    self.keyTextField.text = @"37e8dee9f6a346e2a0e0f9011a07d043";
     self.euidTextField.text = @"abcdefg";
     self.nameTextField.text = @"TestName";
 #endif
