@@ -19,7 +19,11 @@ https://github.com/udesk/udesk_mchat_ios
 | 开发环境  | 建议使用最新版本Xcode进行开发 |
 | Cocoapods | 不支持                        |
 
-### 导入SDK
+### 通过Pod导入SDK
+
+- pod 'MChatSDK', :git => 'https://github.com/udesk/udesk_mchat_ios', :branch => 'v2.0'
+
+### 手动导入SDK
 
 - 把Udesk SDK 文件夹中的 `UdeskMChatSDK.framework` 、 `UdeskMChatUIKit`文件夹 拷贝到新创建的工程路径下面，然后在工程目录结构中，右键选择 *Add Files to “工程名”* 。或者将这两个个文件拖入 Xcode 工程目录结构中。
 
