@@ -21,7 +21,7 @@
 
 @property (nonatomic, strong) AVAudioPlayer *player;
 
-@property (nonatomic, assign) id <UDAudioPlayerHelperDelegate> delegate;
+@property (nonatomic, weak) id <UDAudioPlayerHelperDelegate> delegate;
 
 + (id)shareInstance;
 
