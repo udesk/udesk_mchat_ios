@@ -50,12 +50,12 @@ static CGFloat const kUDCellBubbleVoiceMaxContentWidth = 150.0;
 
 - (void)layoutVoiceMessage {
     
-    CGSize voiceSize = CGSizeMake(kUDCellBubbleVoiceMinContentWidth, kUDAvatarDiameter);
+    CGSize voiceSize = CGSizeMake(kUDCellBubbleVoiceMinContentWidth, kUDMAvatarDiameter);
     if (self.message.extras.duration) {
         if ([UMCHelper isPureInt:self.message.extras.duration]) {
-            voiceSize = CGSizeMake(kUDCellBubbleVoiceMinContentWidth + self.message.extras.duration.intValue*3.5f, kUDAvatarDiameter);
+            voiceSize = CGSizeMake(kUDCellBubbleVoiceMinContentWidth + self.message.extras.duration.intValue*3.5f, kUDMAvatarDiameter);
             if (voiceSize.width>kUDCellBubbleVoiceMaxContentWidth) {
-                voiceSize = CGSizeMake(kUDCellBubbleVoiceMaxContentWidth, kUDAvatarDiameter);
+                voiceSize = CGSizeMake(kUDCellBubbleVoiceMaxContentWidth, kUDMAvatarDiameter);
             }
         }
     }
@@ -64,13 +64,13 @@ static CGFloat const kUDCellBubbleVoiceMaxContentWidth = 150.0;
         case UMCMessageDirectionIn:
             
             //语音气泡frame
-            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x-kUDArrowMarginWidth-kUDAvatarToBubbleSpacing-voiceSize.width, self.avatarFrame.origin.y, voiceSize.width+kUDBubbleToAnimationVoiceImageHorizontalSpacing, voiceSize.height);
+            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x-kUDArrowMarginWidth-kUDMAvatarToBubbleSpacing-voiceSize.width, self.avatarFrame.origin.y, voiceSize.width+kUDBubbleToAnimationVoiceImageHorizontalSpacing, voiceSize.height);
             //语音时长frame
-            self.voiceDurationFrame = CGRectMake(self.bubbleFrame.origin.x-kUDAvatarToBubbleSpacing-voiceSize.width, self.bubbleFrame.origin.y+kUDBubbleToAnimationVoiceImageVerticalSpacing, voiceSize.width, kUDVoiceDurationLabelHeight);
+            self.voiceDurationFrame = CGRectMake(self.bubbleFrame.origin.x-kUDMAvatarToBubbleSpacing-voiceSize.width, self.bubbleFrame.origin.y+kUDBubbleToAnimationVoiceImageVerticalSpacing, voiceSize.width, kUDVoiceDurationLabelHeight);
             //发送的语音播放动画图片
             self.voiceAnimationFrame = CGRectMake(self.bubbleFrame.size.width-kUDAnimationVoiceImageViewWidth-kUDArrowMarginWidth-kUDBubbleToAnimationVoiceImageVerticalSpacing, kUDBubbleToAnimationVoiceImageVerticalSpacing, kUDAnimationVoiceImageViewWidth, kUDAnimationVoiceImageViewHeight);
             //发送中
-            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDBubbleToSendStatusSpacing-(kUDSendStatusDiameter*2), self.bubbleFrame.origin.y+kUDCellBubbleToIndicatorSpacing, kUDSendStatusDiameter, kUDSendStatusDiameter);
+            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDMBubbleToSendStatusSpacing-(kUDMSendStatusDiameter*2), self.bubbleFrame.origin.y+kUDMCellBubbleToIndicatorSpacing, kUDMSendStatusDiameter, kUDMSendStatusDiameter);
             //发送失败
             self.failureFrame = self.loadingFrame;
             
@@ -78,9 +78,9 @@ static CGFloat const kUDCellBubbleVoiceMaxContentWidth = 150.0;
         case UMCMessageDirectionOut:{
             
             //接收的语音气泡frame
-            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDAvatarDiameter+kUDAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, voiceSize.width+kUDBubbleToAnimationVoiceImageHorizontalSpacing, voiceSize.height);
+            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDMAvatarDiameter+kUDMAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDMAvatarToVerticalEdgeSpacing, voiceSize.width+kUDBubbleToAnimationVoiceImageHorizontalSpacing, voiceSize.height);
             //接收的语音时长frame
-            self.voiceDurationFrame = CGRectMake(self.bubbleFrame.origin.x+kUDAvatarToBubbleSpacing+self.bubbleFrame.size.width, self.bubbleFrame.origin.y+kUDBubbleToAnimationVoiceImageVerticalSpacing, voiceSize.width, kUDVoiceDurationLabelHeight);
+            self.voiceDurationFrame = CGRectMake(self.bubbleFrame.origin.x+kUDMAvatarToBubbleSpacing+self.bubbleFrame.size.width, self.bubbleFrame.origin.y+kUDBubbleToAnimationVoiceImageVerticalSpacing, voiceSize.width, kUDVoiceDurationLabelHeight);
             //发送的语音播放动画图片
             self.voiceAnimationFrame = CGRectMake(kUDBubbleToAnimationVoiceImageHorizontalSpacing,kUDBubbleToAnimationVoiceImageVerticalSpacing, kUDAnimationVoiceImageViewWidth, kUDAnimationVoiceImageViewHeight);
             
@@ -92,7 +92,7 @@ static CGFloat const kUDCellBubbleVoiceMaxContentWidth = 150.0;
     }
     
     //cell高度
-    self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDCellBottomMargin;
+    self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDMCellBottomMargin;
 }
 
 - (void)getAnimationVoiceImages {

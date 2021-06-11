@@ -7,7 +7,7 @@
 //
 
 #import "UMCBaseMessage.h"
-#import "Udesk_YYImage.h"
+#import "UMC_YYImage.h"
 
 @interface UMCImageMessage : UMCBaseMessage
 
@@ -16,6 +16,6 @@
 @property (nonatomic, assign, readonly) CGRect  shadowFrame;
 @property (nonatomic, assign, readonly) CGRect  imageLoadingFrame;
 @property (nonatomic, assign, readonly) CGRect  imageProgressFrame;
-@property (nonatomic, strong, readonly) Udesk_YYImage *image;
+@property (nonatomic, strong, readonly) UMC_YYImage *image;
 
 @end

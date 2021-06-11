@@ -7,7 +7,7 @@
 //
 
 #import "UMCHelper.h"
-#import "UdeskReachability.h"
+#import "UMCReachability.h"
 
 @implementation UMCHelper
 
@@ -262,20 +262,20 @@
 //同步获取网络状态
 + (NSString *)internetStatus {
     
-    UdeskReachability *reachability   = [UdeskReachability reachabilityWithHostName:@"www.baidu.com"];
-    UDNetworkStatus internetStatus = [reachability currentReachabilityStatus];
+    UMCReachability *reachability   = [UMCReachability reachabilityWithHostName:@"www.baidu.com"];
+    UDMNetworkStatus internetStatus = [reachability currentReachabilityStatus];
     
     NSString *net = nil;
     switch (internetStatus) {
-        case UDReachableViaWiFi:
+        case UDMReachableViaWiFi:
             net = @"wifi";
             break;
             
-        case UDReachableViaWWAN:
+        case UDMReachableViaWWAN:
             net = @"WWAN";
             break;
             
-        case UDNotReachable:
+        case UDMNotReachable:
             net = @"notReachable";
             
         default:

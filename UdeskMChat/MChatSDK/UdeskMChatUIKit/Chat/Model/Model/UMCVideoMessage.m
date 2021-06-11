@@ -98,9 +98,9 @@ const CGFloat kUDVideoUploadProgressHeight = 48;
     switch (self.message.direction) {
         case UMCMessageDirectionIn:{
             
-            self.previewFrame = CGRectMake(self.avatarFrame.origin.x-kUDAvatarToBubbleSpacing-previewSize.width, self.avatarFrame.origin.y, previewSize.width, previewSize.height);
+            self.previewFrame = CGRectMake(self.avatarFrame.origin.x-kUDMAvatarToBubbleSpacing-previewSize.width, self.avatarFrame.origin.y, previewSize.width, previewSize.height);
             //发送中
-            self.loadingFrame = CGRectMake(self.previewFrame.origin.x-kUDBubbleToSendStatusSpacing-kUDSendStatusDiameter, self.previewFrame.origin.y+kUDCellBubbleToIndicatorSpacing, kUDSendStatusDiameter, kUDSendStatusDiameter);
+            self.loadingFrame = CGRectMake(self.previewFrame.origin.x-kUDMBubbleToSendStatusSpacing-kUDMSendStatusDiameter, self.previewFrame.origin.y+kUDMCellBubbleToIndicatorSpacing, kUDMSendStatusDiameter, kUDMSendStatusDiameter);
             //发送失败
             self.failureFrame = self.loadingFrame;
             
@@ -109,7 +109,7 @@ const CGFloat kUDVideoUploadProgressHeight = 48;
         case UMCMessageDirectionOut:{
             
             //视频
-            self.previewFrame = CGRectMake(self.avatarFrame.origin.x+kUDAvatarDiameter+kUDAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, previewSize.width, previewSize.height);
+            self.previewFrame = CGRectMake(self.avatarFrame.origin.x+kUDMAvatarDiameter+kUDMAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDMAvatarToVerticalEdgeSpacing, previewSize.width, previewSize.height);
             
             break;
         }
@@ -124,7 +124,7 @@ const CGFloat kUDVideoUploadProgressHeight = 48;
     self.uploadProgressFrame = CGRectMake((CGRectGetWidth(self.previewFrame)-kUDVideoUploadProgressWidth)/2, (CGRectGetHeight(self.previewFrame)-kUDVideoUploadProgressHeight)/2, kUDVideoUploadProgressWidth, kUDVideoUploadProgressHeight);
     
     //cell高度
-    self.cellHeight = self.previewFrame.size.height+self.previewFrame.origin.y+kUDCellBottomMargin;
+    self.cellHeight = self.previewFrame.size.height+self.previewFrame.origin.y+kUDMCellBottomMargin;
 }
 
 - (void)serviceVideoData {

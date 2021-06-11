@@ -107,7 +107,7 @@
             if (!self.surveyModel.star || self.surveyModel.star == (id)kCFNull) return ;
             if (!self.surveyModel.star.options || self.surveyModel.star.options == (id)kCFNull) return ;
             
-            surveyOptionHeight = kUDSurveyStarOptionHeight;
+            surveyOptionHeight = kUDMSurveyStarOptionHeight;
             self.options = self.surveyModel.star.options;
             
             break;
@@ -118,7 +118,7 @@
             if (!self.surveyModel.text.options || self.surveyModel.text.options == (id)kCFNull) return ;
             
             NSArray *array = [self.surveyModel.text.options filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"enabled>0"]];
-            surveyOptionHeight = array.count * ((kUDTextSurveyButtonToVerticalEdgeSpacing+kUDTextSurveyButtonHeight)) - kUDTextSurveyButtonToVerticalEdgeSpacing;
+            surveyOptionHeight = array.count * ((kUDMTextSurveyButtonToVerticalEdgeSpacing+kUDMTextSurveyButtonHeight)) - kUDMTextSurveyButtonToVerticalEdgeSpacing;
             self.options = self.surveyModel.text.options;
             
             break;
@@ -128,7 +128,7 @@
             if (!self.surveyModel.expression || self.surveyModel.expression == (id)kCFNull) return ;
             if (!self.surveyModel.expression.options || self.surveyModel.expression.options == (id)kCFNull) return ;
             
-            surveyOptionHeight = kUDSurveyExpressionOptionHeight;
+            surveyOptionHeight = kUDMSurveyExpressionOptionHeight;
             self.options = self.surveyModel.expression.options;
             
             break;
@@ -139,33 +139,33 @@
     
     CGFloat tagsHeight = [self tagsHeight];
     
-    CGFloat tagsCollectionHeight = tagsHeight > kUDSurveyTagsCollectionViewMaxHeight ? kUDSurveyTagsCollectionViewMaxHeight : tagsHeight;
+    CGFloat tagsCollectionHeight = tagsHeight > kUDMSurveyTagsCollectionViewMaxHeight ? kUDMSurveyTagsCollectionViewMaxHeight : tagsHeight;
     
-    CGFloat surveyButtonSpacing = surveyOptionHeight ? kUDTextSurveyButtonToVerticalEdgeSpacing : 0;
-    CGFloat tagsCollectionViewSpacing = tagsCollectionHeight ? kUDSurveyCollectionViewItemToVerticalEdgeSpacing : 0;
+    CGFloat surveyButtonSpacing = surveyOptionHeight ? kUDMTextSurveyButtonToVerticalEdgeSpacing : 0;
+    CGFloat tagsCollectionViewSpacing = tagsCollectionHeight ? kUDMSurveyCollectionViewItemToVerticalEdgeSpacing : 0;
     
-    CGFloat remarkHeight = kUDSurveyRemarkTextViewMaxHeight;
-    CGFloat remarkPlaceholderHeight = [self.surveyContentView.remarkTextView.placeholder umcSizeForFont:[UIFont systemFontOfSize:15] size:CGSizeMake(self.contentView.umcWidth-(kUDSurveyContentSpacing*3), MAXFLOAT) mode:NSLineBreakByTruncatingTail].height + 15;
+    CGFloat remarkHeight = kUDMSurveyRemarkTextViewMaxHeight;
+    CGFloat remarkPlaceholderHeight = [self.surveyContentView.remarkTextView.placeholder umcSizeForFont:[UIFont systemFontOfSize:15] size:CGSizeMake(self.contentView.umcWidth-(kUDMSurveyContentSpacing*3), MAXFLOAT) mode:NSLineBreakByTruncatingTail].height + 15;
     
     if (!self.surveyContentView.remarkTextView.text.length) {
-        remarkHeight = MAX(remarkPlaceholderHeight, kUDSurveyRemarkTextViewHeight);
+        remarkHeight = MAX(remarkPlaceholderHeight, kUDMSurveyRemarkTextViewHeight);
     }
     
-    CGFloat contentHeight = kUDSurveyTitleHeight + kUDTextSurveyButtonToVerticalEdgeSpacing + surveyOptionHeight + surveyButtonSpacing + tagsCollectionHeight + tagsCollectionViewSpacing + remarkHeight + kUDSurveySubmitButtonSpacing + kUDSurveySubmitButtonHeight + kUDSurveySubmitButtonSpacing;
+    CGFloat contentHeight = kUDMSurveyTitleHeight + kUDMTextSurveyButtonToVerticalEdgeSpacing + surveyOptionHeight + surveyButtonSpacing + tagsCollectionHeight + tagsCollectionViewSpacing + remarkHeight + kUDMSurveySubmitButtonSpacing + kUDMSurveySubmitButtonHeight + kUDMSurveySubmitButtonSpacing;
     
     if (!self.surveyModel.remarkEnabled.boolValue) {
-        contentHeight -= (remarkHeight+kUDSurveySubmitButtonSpacing);
+        contentHeight -= (remarkHeight+kUDMSurveySubmitButtonSpacing);
     }
     else {
         
         UMCSurveyOption *option = [self selectedOption];
         if (option) {
             if (option.remarkOptionType == UMCRemarkOptionTypeHide) {
-                contentHeight -= (remarkHeight+kUDSurveySubmitButtonSpacing);
+                contentHeight -= (remarkHeight+kUDMSurveySubmitButtonSpacing);
             }
         }
         else {
-            contentHeight -= (remarkHeight+kUDSurveySubmitButtonSpacing);
+            contentHeight -= (remarkHeight+kUDMSurveySubmitButtonSpacing);
         }
     }
     
@@ -173,8 +173,8 @@
     
     CGFloat contentY = kUMCScreenHeight > contentHeight ? kUMCScreenHeight-contentHeight : 0;
     self.contentView.frame = CGRectMake(0, contentY, self.umcWidth, contentHeight);
-    self.titleView.frame = CGRectMake(0, 0, self.contentView.umcWidth, kUDSurveyTitleHeight);
-    self.surveyContentView.frame = CGRectMake(0, self.titleView.umcBottom, self.contentView.umcWidth, contentHeight - kUDSurveyTitleHeight);
+    self.titleView.frame = CGRectMake(0, 0, self.contentView.umcWidth, kUDMSurveyTitleHeight);
+    self.surveyContentView.frame = CGRectMake(0, self.titleView.umcBottom, self.contentView.umcWidth, contentHeight - kUDMSurveyTitleHeight);
 }
 
 //标签高度
@@ -197,7 +197,7 @@
             return 0;
         }
         NSArray *array = [optionModel.tags componentsSeparatedByString:@","];
-        return (ceilf(array.count/2.0)) * (kUDSurveyCollectionViewItemSizeHeight+kUDSurveyCollectionViewItemToVerticalEdgeSpacing) - kUDSurveyCollectionViewItemToVerticalEdgeSpacing;
+        return (ceilf(array.count/2.0)) * (kUDMSurveyCollectionViewItemSizeHeight+kUDMSurveyCollectionViewItemToVerticalEdgeSpacing) - kUDMSurveyCollectionViewItemToVerticalEdgeSpacing;
     } @catch (NSException *exception) {
         NSLog(@"%@",exception);
     } @finally {

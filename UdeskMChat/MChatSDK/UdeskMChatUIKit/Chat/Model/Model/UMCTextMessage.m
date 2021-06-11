@@ -79,11 +79,11 @@ CGFloat kUDBubbleToTextVerticalTopSpacing = 12.0;
         case UMCMessageDirectionIn:{
             
             //文本气泡frame
-            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x-kUDArrowMarginWidth-kUDBubbleToTextHorizontalSpacing*2-kUDAvatarToBubbleSpacing-textSize.width, self.avatarFrame.origin.y, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+(kUDBubbleToTextVerticalTopSpacing*2));
+            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x-kUDArrowMarginWidth-kUDBubbleToTextHorizontalSpacing*2-kUDMAvatarToBubbleSpacing-textSize.width, self.avatarFrame.origin.y, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+(kUDBubbleToTextVerticalTopSpacing*2));
             //文本frame
             self.textFrame = CGRectMake(kUDBubbleToTextHorizontalSpacing, kUDBubbleToTextVerticalTopSpacing, textSize.width, textSize.height);
             //加载中frame
-            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDBubbleToSendStatusSpacing-kUDSendStatusDiameter, self.bubbleFrame.origin.y+kUDCellBubbleToIndicatorSpacing, kUDSendStatusDiameter, kUDSendStatusDiameter);
+            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDMBubbleToSendStatusSpacing-kUDMSendStatusDiameter, self.bubbleFrame.origin.y+kUDMCellBubbleToIndicatorSpacing, kUDMSendStatusDiameter, kUDMSendStatusDiameter);
             
             //加载失败frame
             self.failureFrame = self.loadingFrame;
@@ -93,7 +93,7 @@ CGFloat kUDBubbleToTextVerticalTopSpacing = 12.0;
         case UMCMessageDirectionOut:{
             
             //接收文字气泡frame
-            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDAvatarDiameter+kUDAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+(kUDBubbleToTextVerticalTopSpacing*2));
+            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDMAvatarDiameter+kUDMAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDMAvatarToVerticalEdgeSpacing, textSize.width+(kUDBubbleToTextHorizontalSpacing*3), textSize.height+(kUDBubbleToTextVerticalTopSpacing*2));
             //接收文字frame
             self.textFrame = CGRectMake(kUDBubbleToTextHorizontalSpacing+kUDArrowMarginWidth, kUDBubbleToTextVerticalTopSpacing, textSize.width, textSize.height);
             
@@ -105,7 +105,7 @@ CGFloat kUDBubbleToTextVerticalTopSpacing = 12.0;
     }
     
     //cell高度
-    self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDCellBottomMargin;
+    self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDMCellBottomMargin;
 }
 
 - (void)linkText:(NSString *)content {

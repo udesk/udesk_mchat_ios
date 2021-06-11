@@ -10,12 +10,12 @@
 #import "UdeskPhotoManeger.h"
 #import "UMCImageMessage.h"
 #import "UMCHelper.h"
-#import "Udesk_YYWebImage.h"
+#import "UMC_YYWebImage.h"
 #import "UIImage+UMC.h"
 
 @interface UMCImageCell()
 
-@property (nonatomic, strong) Udesk_YYAnimatedImageView *chatImageView;
+@property (nonatomic, strong) UMC_YYAnimatedImageView *chatImageView;
 @property (nonatomic, strong) UIView *shadowView;
 @property (nonatomic, strong) UIActivityIndicatorView *progressLoadingView;
 
@@ -35,7 +35,7 @@
 
 - (void)initChatImageView {
     
-    _chatImageView = [Udesk_YYAnimatedImageView new];
+    _chatImageView = [UMC_YYAnimatedImageView new];
     _chatImageView.userInteractionEnabled = YES;
     _chatImageView.layer.cornerRadius = 5;
     _chatImageView.layer.masksToBounds  = YES;
@@ -86,8 +86,8 @@
     if (imageMessage.image) {
         self.chatImageView.image = imageMessage.image;
     }
-    else if ([[Udesk_YYWebImageManager sharedManager].cache containsImageForKey:imageUrl]) {
-        self.chatImageView.image = [[Udesk_YYWebImageManager sharedManager].cache getImageForKey:imageUrl];
+    else if ([[UMC_YYWebImageManager sharedManager].cache containsImageForKey:imageUrl]) {
+        self.chatImageView.image = [[UMC_YYWebImageManager sharedManager].cache getImageForKey:imageUrl];
     }
     else {
         NSRange range = [UMCHelper linkRegexsMatch:imageUrl];

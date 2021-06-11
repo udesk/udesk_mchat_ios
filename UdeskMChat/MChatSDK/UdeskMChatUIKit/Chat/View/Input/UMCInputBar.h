@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UdeskHPGrowingTextView.h"
+#import "UMCHPGrowingTextView.h"
 #import "UMCCustomToolBar.h"
 #import "UMCButton.h"
 
@@ -55,7 +55,7 @@ typedef NS_ENUM(NSUInteger, UMCInputBarType) {
 
 @interface UMCInputBar : UIView
 
-@property (nonatomic, strong) UdeskHPGrowingTextView *inputTextView;
+@property (nonatomic, strong) UMCHPGrowingTextView *inputTextView;
 
 @property (nonatomic, weak) id <UMCInputBarDelegate> delegate;
 

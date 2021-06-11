@@ -63,10 +63,10 @@ static CGFloat const kUDNavGoBackPreHeight = 25.0;
     }
     
     CGFloat bubbleHeight = self.isShowGoBackPre ? CGRectGetMaxY(self.goBackPreFrame) : CGRectGetMaxY(self.menuFrame);
-    self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDAvatarDiameter+kUDAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, navWidth+(kUDNavHorizontalEdgeSpacing*3), bubbleHeight+kUDNavVerticalEdgeSpacing);
+    self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDMAvatarDiameter+kUDMAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDMAvatarToVerticalEdgeSpacing, navWidth+(kUDNavHorizontalEdgeSpacing*3), bubbleHeight+kUDNavVerticalEdgeSpacing);
     
     //cell高度
-    self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDCellBottomMargin;
+    self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDMCellBottomMargin;
 }
 
 - (UITableViewCell *)getCellWithReuseIdentifier:(NSString *)cellReuseIdentifer {

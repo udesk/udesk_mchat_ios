@@ -14,27 +14,27 @@
 #import "UMCGoodsCell.h"
 
 /** 头像距离屏幕水平边沿距离 */
-const CGFloat kUDAvatarToHorizontalEdgeSpacing = 8.0;
+const CGFloat kUDMAvatarToHorizontalEdgeSpacing = 8.0;
 /** 头像距离屏幕垂直边沿距离 */
-const CGFloat kUDAvatarToVerticalEdgeSpacing = 15.0;
+const CGFloat kUDMAvatarToVerticalEdgeSpacing = 15.0;
 /** 头像与聊天气泡之间的距离 */
-const CGFloat kUDAvatarToBubbleSpacing = 8.0;
+const CGFloat kUDMAvatarToBubbleSpacing = 8.0;
 /** 聊天气泡和Indicator的间距 */
-const CGFloat kUDCellBubbleToIndicatorSpacing = 5.0;
+const CGFloat kUDMCellBubbleToIndicatorSpacing = 5.0;
 /** 聊天头像大小 */
-const CGFloat kUDAvatarDiameter = 40.0;
+const CGFloat kUDMAvatarDiameter = 40.0;
 /** 时间高度 */
-const CGFloat kUDChatMessageDateCellHeight = 10.0f;
+const CGFloat kUDMChatMessageDateCellHeight = 10.0f;
 /** 发送状态大小 */
-const CGFloat kUDSendStatusDiameter = 20.0;
+const CGFloat kUDMSendStatusDiameter = 20.0;
 /** 发送状态与气泡的距离 */
-const CGFloat kUDBubbleToSendStatusSpacing = 10.0;
+const CGFloat kUDMBubbleToSendStatusSpacing = 10.0;
 /** 时间 Y */
-const CGFloat kUDChatMessageDateLabelY   = 10.0f;
+const CGFloat kUDMChatMessageDateLabelY   = 10.0f;
 /** 气泡箭头宽度 */
 const CGFloat kUDArrowMarginWidth        = 10.5f;
 /** 底部留白 */
-const CGFloat kUDCellBottomMargin = 10.0;
+const CGFloat kUDMCellBottomMargin = 10.0;
 
 @interface UMCBaseMessage()
 
@@ -77,7 +77,7 @@ const CGFloat kUDCellBottomMargin = 10.0;
     self.failureImage = [UIImage umcDefaultRefreshImage];
     
     _cellHeight += _dateHeight;
-    _cellHeight += kUDCellBottomMargin;
+    _cellHeight += kUDMCellBottomMargin;
 }
 
 //时间
@@ -88,8 +88,8 @@ const CGFloat kUDCellBottomMargin = 10.0;
     NSString *time = [[NSDate dateWithString:self.message.createdAt format:kUMCDateFormat] umcStyleDate];
     if (time.length == 0) return;
     
-    _dateFrame = CGRectMake(0, kUDChatMessageDateLabelY, kUMCScreenWidth-(kUDAvatarToHorizontalEdgeSpacing*2+kUDAvatarDiameter), kUDChatMessageDateCellHeight);
-    _dateHeight = kUDChatMessageDateCellHeight;
+    _dateFrame = CGRectMake(0, kUDMChatMessageDateLabelY, kUMCScreenWidth-(kUDMAvatarToHorizontalEdgeSpacing*2+kUDMAvatarDiameter), kUDMChatMessageDateCellHeight);
+    _dateHeight = kUDMChatMessageDateCellHeight;
 }
 
 //头像
@@ -100,11 +100,11 @@ const CGFloat kUDCellBottomMargin = 10.0;
         //布局
         if (self.message.direction == UMCMessageDirectionOut) {
             //客服头像frame
-            self.avatarFrame = CGRectMake(kUDAvatarToHorizontalEdgeSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, kUDAvatarDiameter, kUDAvatarDiameter);
+            self.avatarFrame = CGRectMake(kUDMAvatarToHorizontalEdgeSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDMAvatarToVerticalEdgeSpacing, kUDMAvatarDiameter, kUDMAvatarDiameter);
         }
         else if (self.message.direction == UMCMessageDirectionIn) {
             
-            self.avatarFrame = CGRectMake(kUMCScreenWidth-kUDAvatarToHorizontalEdgeSpacing-kUDAvatarDiameter, self.dateFrame.origin.y+self.dateFrame.size.height+ kUDAvatarToVerticalEdgeSpacing, kUDAvatarDiameter, kUDAvatarDiameter);
+            self.avatarFrame = CGRectMake(kUMCScreenWidth-kUDMAvatarToHorizontalEdgeSpacing-kUDMAvatarDiameter, self.dateFrame.origin.y+self.dateFrame.size.height+ kUDMAvatarToVerticalEdgeSpacing, kUDMAvatarDiameter, kUDMAvatarDiameter);
         }
     }    
 }

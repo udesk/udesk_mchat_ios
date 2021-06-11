@@ -85,12 +85,12 @@ static CGFloat const kUDGoodsParamsVerticalSpacing = 10.0;
             CGFloat bubbleHeight = MAX(kUDGoodsImageHeight+kUDGoodsImageVerticalSpacing, CGRectGetMaxY(self.textFrame));
             self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x-kUDArrowMarginWidth-bubbleWidth, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight+kUDGoodsParamsVerticalSpacing);
             //加载中frame
-            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDBubbleToSendStatusSpacing-kUDSendStatusDiameter, self.bubbleFrame.origin.y+kUDCellBubbleToIndicatorSpacing, kUDSendStatusDiameter, kUDSendStatusDiameter);
+            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDMBubbleToSendStatusSpacing-kUDMSendStatusDiameter, self.bubbleFrame.origin.y+kUDMCellBubbleToIndicatorSpacing, kUDMSendStatusDiameter, kUDMSendStatusDiameter);
             
             //加载失败frame
             self.failureFrame = self.loadingFrame;
             //cell高度
-            self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDCellBottomMargin;
+            self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDMCellBottomMargin;
         }
         
     } @catch (NSException *exception) {

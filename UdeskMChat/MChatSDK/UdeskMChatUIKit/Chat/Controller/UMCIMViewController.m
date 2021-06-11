@@ -25,10 +25,10 @@
 #import "UMCVideoCell.h"
 #import "UMCImageCell.h"
 #import "UMCFileCell.h"
-#import "UdeskSmallVideoViewController.h"
-#import "UdeskSmallVideoNavigationController.h"
+#import "UeskUMCSmallVideoViewController.h"
+#import "UdeskUMCSmallVideoNavigationController.h"
 
-#import "Udesk_YYKeyboardManager.h"
+#import "UMC_YYKeyboardManager.h"
 
 static CGFloat const InputBarHeight = 52.0f;
 
@@ -127,7 +127,7 @@ static CGFloat const InputBarHeight = 52.0f;
     self.navigationController.navigationBar.translucent = NO;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     //获取键盘管理器
-    [[Udesk_YYKeyboardManager defaultManager] addObserver:self];
+    [[UMC_YYKeyboardManager defaultManager] addObserver:self];
     
     //监听app是否从后台进入前台
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(umcIMApplicationBecomeActive) name:UIApplicationWillEnterForegroundNotification object:nil];
@@ -681,16 +681,16 @@ static CGFloat const InputBarHeight = 52.0f;
     //检查权限
     [UMCPrivacyUtil checkPermissionsOfCamera:^{
         
-        if ([[UMCHelper currentViewController] isKindOfClass:[UdeskSmallVideoViewController class]]) {
+        if ([[UMCHelper currentViewController] isKindOfClass:[UeskUMCSmallVideoViewController class]]) {
             return ;
         }
         
         [UMCPrivacyUtil checkPermissionsOfAudio:^{
             
-            UdeskSmallVideoViewController *smallVideoVC = [[UdeskSmallVideoViewController alloc] init];
+            UeskUMCSmallVideoViewController *smallVideoVC = [[UeskUMCSmallVideoViewController alloc] init];
             smallVideoVC.delegate = self;
             
-            UdeskSmallVideoNavigationController *nav = [[UdeskSmallVideoNavigationController alloc] initWithRootViewController:smallVideoVC];
+            UdeskUMCSmallVideoNavigationController *nav = [[UdeskUMCSmallVideoNavigationController alloc] initWithRootViewController:smallVideoVC];
             nav.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:nav animated:YES completion:nil];
         }];
@@ -806,7 +806,7 @@ static CGFloat const InputBarHeight = 52.0f;
         return;
     }
     
-    CGRect toFrame =  [[Udesk_YYKeyboardManager defaultManager] convertRect:transition.toFrame toView:self.view];
+    CGRect toFrame =  [[UMC_YYKeyboardManager defaultManager] convertRect:transition.toFrame toView:self.view];
     [UIView animateWithDuration:0.35 animations:^{
         self.inputBar.umcBottom = CGRectGetMinY(toFrame) + (kUMCIPhoneXSeries?34:0);
         if (!transition.toVisible && kUMCIPhoneXSeries) {
@@ -1129,7 +1129,7 @@ static CGFloat const InputBarHeight = 52.0f;
 
 - (void)dealloc {
     NSLog(@"%@销毁了",[self class]);
-    [[Udesk_YYKeyboardManager defaultManager] removeObserver:self];
+    [[UMC_YYKeyboardManager defaultManager] removeObserver:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UMC_LOGIN_SUCCESS_NOTIFICATION object:nil];
 }

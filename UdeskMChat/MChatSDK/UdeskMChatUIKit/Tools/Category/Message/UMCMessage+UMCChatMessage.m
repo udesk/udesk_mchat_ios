@@ -12,7 +12,7 @@
 #import "UMCHelper.h"
 #import "UMCVideoCache.h"
 
-#import "Udesk_YYCache.h"
+#import "UMC_YYCache.h"
 #import "UMCImageHelper.h"
 
 @implementation UMCMessage (UMCChatMessage)
@@ -94,7 +94,7 @@
         self.sourceData = voiceData;
         
         //缓存
-        Udesk_YYCache *cache = [[Udesk_YYCache alloc] initWithName:UMCVoiceCache];
+        UMC_YYCache *cache = [[UMC_YYCache alloc] initWithName:UMCVoiceCache];
         [cache setObject:voiceData forKey:self.UUID];
     }
     

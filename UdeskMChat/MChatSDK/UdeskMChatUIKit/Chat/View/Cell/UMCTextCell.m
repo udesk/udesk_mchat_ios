@@ -14,11 +14,11 @@
 #import "UMCUIMacro.h"
 #import "UIView+UMC.h"
 
-#import "UDTTTAttributedLabel.h"
+#import "UDMTTTAttributedLabel.h"
 
 @interface UMCTextCell()<UDTTTAttributedLabelDelegate>
 
-@property (nonatomic, strong) UDTTTAttributedLabel *textContentLabel;
+@property (nonatomic, strong) UDMTTTAttributedLabel *textContentLabel;
 
 @end
 
@@ -36,7 +36,7 @@
 
 - (void)setup {
     
-    _textContentLabel = [[UDTTTAttributedLabel alloc] initWithFrame:CGRectZero];
+    _textContentLabel = [[UDMTTTAttributedLabel alloc] initWithFrame:CGRectZero];
     _textContentLabel.numberOfLines = 0;
     _textContentLabel.delegate = self;
     _textContentLabel.textAlignment = NSTextAlignmentLeft;
@@ -100,7 +100,7 @@
     }
 }
 
-- (void)attributedLabel:(UDTTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+- (void)attributedLabel:(UDMTTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
     
     if ([url.absoluteString rangeOfString:@"://"].location == NSNotFound) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", url.absoluteString]]];
@@ -109,7 +109,7 @@
     }
 }
 
-- (void)attributedLabel:(UDTTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
+- (void)attributedLabel:(UDMTTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
     
     UIAlertController *sheet = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"%@\n可能是一个电话号码，你可以",phoneNumber] preferredStyle:UIAlertControllerStyleActionSheet];
     

@@ -19,3 +19,7 @@ FOUNDATION_EXPORT const unsigned char UdeskMChatSDKVersionString[];
 #import <UdeskMChatSDK/UMCManager.h>
 #import <UdeskMChatSDK/UMCDelegate.h>
 #import <UdeskMChatSDK/UMCLanguage.h>
+#import <UdeskMChatSDK/UMCCustomer.h>
+#import <UdeskMChatSDK/UMCMerchant.h>
+#import <UdeskMChatSDK/UMCMessage.h>
+#import <UdeskMChatSDK/UMCSystem.h>

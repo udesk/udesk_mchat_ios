@@ -13,9 +13,9 @@
 #import "UIView+UMC.h"
 
 /** 按钮间距 */
-const CGFloat kUDTextSurveyButtonToVerticalEdgeSpacing = 18;
+const CGFloat kUDMTextSurveyButtonToVerticalEdgeSpacing = 18;
 /** 按钮高度 */
-const CGFloat kUDTextSurveyButtonHeight = 22;
+const CGFloat kUDMTextSurveyButtonHeight = 22;
 
 @interface UMCTextSurveyView()
 
@@ -80,7 +80,7 @@ const CGFloat kUDTextSurveyButtonHeight = 22;
     for (UMCButton *button in self.subviews) {
         if ([button isKindOfClass:[UMCButton class]]) {
             NSInteger index = [self.subviews indexOfObject:button];
-            button.frame = CGRectMake(0, index*(kUDTextSurveyButtonToVerticalEdgeSpacing+kUDTextSurveyButtonHeight), self.umcWidth, kUDTextSurveyButtonHeight);
+            button.frame = CGRectMake(0, index*(kUDMTextSurveyButtonToVerticalEdgeSpacing+kUDMTextSurveyButtonHeight), self.umcWidth, kUDMTextSurveyButtonHeight);
         }
     }
 }

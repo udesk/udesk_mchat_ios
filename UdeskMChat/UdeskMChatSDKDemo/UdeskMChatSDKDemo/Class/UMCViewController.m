@@ -46,9 +46,9 @@ static CGFloat const kUMCHUDDuration = 1.2f;
     self.keyTextField.text = @"8d99703ffa2b06cd2609aa3c20be7128";
     self.euidTextField.text = @"abcefg";
 #elif 1
-    self.uuidTextField.text = @"d1468098-aca6-4490-a684-c2af1064d6a0";
-    self.keyTextField.text = @"37e8dee9f6a346e2a0e0f9011a07d043";
-    self.euidTextField.text = @"abcdefg";
+    self.uuidTextField.text = @"7aacc075-3b99-477a-8dab-19109a2a5f5b";
+    self.keyTextField.text = @"a4db8cf1a0dd4abfad3fce02728f8357";
+    self.euidTextField.text = @"tz";
     self.nameTextField.text = @"TestName";
 #endif
     //点击键盘消失

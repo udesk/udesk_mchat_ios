@@ -66,7 +66,7 @@ static CGFloat const kUMCFileVerticalSpacing = 8.0;
             //进度条
             self.proressFrame = CGRectMake(5, CGRectGetHeight(self.bubbleFrame)-2, bubbleWidth-kUDArrowMarginWidth-5, 5);
             //发送中frame
-            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDBubbleToSendStatusSpacing-kUDSendStatusDiameter, self.bubbleFrame.origin.y+kUDCellBubbleToIndicatorSpacing, kUDSendStatusDiameter, kUDSendStatusDiameter);
+            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDMBubbleToSendStatusSpacing-kUDMSendStatusDiameter, self.bubbleFrame.origin.y+kUDMCellBubbleToIndicatorSpacing, kUDMSendStatusDiameter, kUDMSendStatusDiameter);
             //发送失败frame
             self.failureFrame = self.loadingFrame;
             
@@ -75,7 +75,7 @@ static CGFloat const kUMCFileVerticalSpacing = 8.0;
         case UMCMessageDirectionOut: {
             
             //图片气泡frame
-            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDAvatarDiameter+kUDAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, bubbleWidth, nameSize.height+kUMCFileSizeHeight+(kUMCFileVerticalSpacing*2)+kUMCFileSizeToVerticalSpacing);
+            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDMAvatarDiameter+kUDMAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDMAvatarToVerticalEdgeSpacing, bubbleWidth, nameSize.height+kUMCFileSizeHeight+(kUMCFileVerticalSpacing*2)+kUMCFileSizeToVerticalSpacing);
             //icon位置
             self.iconFrame = CGRectMake(kUMCFileHorizontalSpacing, kUMCFileVerticalSpacing, kUMCFileIconSize, kUMCFileIconSize);
             //label位置
@@ -91,7 +91,7 @@ static CGFloat const kUMCFileVerticalSpacing = 8.0;
     }
     
     //cell高度
-    self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDCellBottomMargin;
+    self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDMCellBottomMargin;
 }
 
 - (void)parseFileIcon {

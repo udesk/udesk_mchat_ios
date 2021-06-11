@@ -13,7 +13,7 @@
 #import "NSDate+UMC.h"
 #import "UIView+UMC.h"
 
-#import "Udesk_YYWebImage.h"
+#import "UMC_YYWebImage.h"
 
 @implementation UMCBaseCell
 
@@ -62,7 +62,7 @@
     }
     else {
         self.dateLabel.text = [[NSDate dateWithString:baseMessage.message.createdAt format:kUMCDateFormat] umcStyleDate];
-        self.dateLabel.umcBottom = self.bubbleImageView.umcTop - kUDCellBubbleToIndicatorSpacing;
+        self.dateLabel.umcBottom = self.bubbleImageView.umcTop - kUDMCellBubbleToIndicatorSpacing;
     }
     
     if (baseMessage.message.category == UMCMessageCategoryTypeChat) {

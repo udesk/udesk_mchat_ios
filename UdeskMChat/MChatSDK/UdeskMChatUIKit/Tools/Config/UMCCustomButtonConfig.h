@@ -18,14 +18,14 @@ typedef NS_ENUM(NSUInteger, UMCCustomButtonType) {
 };
 
 //点击回调，返回按钮所在的控制器
-typedef void(^CustomButtonClickBlock)(UMCCustomButtonConfig *customButton,UMCIMViewController *viewController);
+typedef void(^UMCCustomButtonClickBlock)(UMCCustomButtonConfig *customButton,UMCIMViewController *viewController);
 
 @interface UMCCustomButtonConfig : NSObject
 
 @property (nonatomic, copy  ) NSString *title;
 @property (nonatomic, strong) UIImage  *image;
 @property (nonatomic, assign) UMCCustomButtonType type;
-@property (nonatomic, copy  ) CustomButtonClickBlock clickBlock;
+@property (nonatomic, copy  ) UMCCustomButtonClickBlock clickBlock;
 
 /**
  初始化自定义按钮
@@ -34,6 +34,6 @@ typedef void(^CustomButtonClickBlock)(UMCCustomButtonConfig *customButton,UMCIMV
  @param clickBlock 点击回调
  @return 自定义按钮
  */
-- (instancetype)initWithTitle:(NSString *)title clickBlock:(CustomButtonClickBlock)clickBlock;
+- (instancetype)initWithTitle:(NSString *)title clickBlock:(UMCCustomButtonClickBlock)clickBlock;
 
 @end

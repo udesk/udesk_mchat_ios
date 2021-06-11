@@ -11,27 +11,27 @@
 #import <UdeskMChatSDK/UdeskMChatSDK.h>
 
 /** 头像距离屏幕水平边沿距离 */
-extern const CGFloat kUDAvatarToHorizontalEdgeSpacing;
+extern const CGFloat kUDMAvatarToHorizontalEdgeSpacing;
 /** 头像距离屏幕垂直边沿距离 */
-extern const CGFloat kUDAvatarToVerticalEdgeSpacing;
+extern const CGFloat kUDMAvatarToVerticalEdgeSpacing;
 /** 头像与聊天气泡之间的距离 */
-extern const CGFloat kUDAvatarToBubbleSpacing;
+extern const CGFloat kUDMAvatarToBubbleSpacing;
 /** 聊天气泡和Indicator的间距 */
-extern const CGFloat kUDCellBubbleToIndicatorSpacing;
+extern const CGFloat kUDMCellBubbleToIndicatorSpacing;
 /** 聊天头像大小 */
-extern const CGFloat kUDAvatarDiameter;
+extern const CGFloat kUDMAvatarDiameter;
 /** 时间高度 */
-extern const CGFloat kUDChatMessageDateCellHeight;
+extern const CGFloat kUDMChatMessageDateCellHeight;
 /** 发送状态大小 */
-extern const CGFloat kUDSendStatusDiameter;
+extern const CGFloat kUDMSendStatusDiameter;
 /** 发送状态与气泡的距离 */
-extern const CGFloat kUDBubbleToSendStatusSpacing;
+extern const CGFloat kUDMBubbleToSendStatusSpacing;
 /** 时间 Y */
-extern const CGFloat kUDChatMessageDateLabelY;
+extern const CGFloat kUDMChatMessageDateLabelY;
 /** 气泡箭头宽度 */
 extern const CGFloat kUDArrowMarginWidth;
 /** 底部留白 */
-extern const CGFloat kUDCellBottomMargin;
+extern const CGFloat kUDMCellBottomMargin;
 
 @interface UMCBaseMessage : NSObject
 

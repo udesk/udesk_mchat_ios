@@ -22,7 +22,7 @@ static CGFloat const kUDImageHeight = 150.0;
 @property (nonatomic, assign, readwrite) CGRect  shadowFrame;
 @property (nonatomic, assign, readwrite) CGRect  imageLoadingFrame;
 @property (nonatomic, assign, readwrite) CGRect  imageProgressFrame;
-@property (nonatomic, strong, readwrite) Udesk_YYImage *image;
+@property (nonatomic, strong, readwrite) UMC_YYImage *image;
 
 @end
 
@@ -34,7 +34,7 @@ static CGFloat const kUDImageHeight = 150.0;
     if (self) {
         
         if (self.message.sourceData) {
-            self.image = [Udesk_YYImage imageWithData:self.message.sourceData];
+            self.image = [UMC_YYImage imageWithData:self.message.sourceData];
         }
         [self layoutImageMessage];
     }
@@ -49,17 +49,17 @@ static CGFloat const kUDImageHeight = 150.0;
         case UMCMessageDirectionIn:{
             
             //图片气泡位置
-            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x-kUDArrowMarginWidth-kUDBubbleToImageHorizontalSpacing*2-kUDAvatarToBubbleSpacing-imageSize.width, self.avatarFrame.origin.y, imageSize.width+(kUDBubbleToImageHorizontalSpacing*4), imageSize.height+(kUDBubbleToImageHorizontalSpacing*2));
+            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x-kUDArrowMarginWidth-kUDBubbleToImageHorizontalSpacing*2-kUDMAvatarToBubbleSpacing-imageSize.width, self.avatarFrame.origin.y, imageSize.width+(kUDBubbleToImageHorizontalSpacing*4), imageSize.height+(kUDBubbleToImageHorizontalSpacing*2));
             //图片位置
             self.imageFrame = CGRectMake(0, 0, CGRectGetWidth(self.bubbleFrame), CGRectGetHeight(self.bubbleFrame));
             //阴影
             self.shadowFrame = self.imageFrame;
             //loading
-            self.imageLoadingFrame = CGRectMake((CGRectGetWidth(self.imageFrame)-kUDSendStatusDiameter)/2, (CGRectGetHeight(self.imageFrame)-kUDSendStatusDiameter)/2-kUDImageUploadProgressHeight, kUDSendStatusDiameter, kUDSendStatusDiameter);
+            self.imageLoadingFrame = CGRectMake((CGRectGetWidth(self.imageFrame)-kUDMSendStatusDiameter)/2, (CGRectGetHeight(self.imageFrame)-kUDMSendStatusDiameter)/2-kUDImageUploadProgressHeight, kUDMSendStatusDiameter, kUDMSendStatusDiameter);
             //进度
             self.imageProgressFrame = CGRectMake(0, CGRectGetMaxY(self.imageLoadingFrame)+kUDBubbleToImageHorizontalSpacing, CGRectGetWidth(self.imageFrame), kUDImageUploadProgressHeight);
             //发送中frame
-            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDBubbleToSendStatusSpacing-kUDSendStatusDiameter, self.bubbleFrame.origin.y+kUDCellBubbleToIndicatorSpacing, kUDSendStatusDiameter, kUDSendStatusDiameter);
+            self.loadingFrame = CGRectMake(self.bubbleFrame.origin.x-kUDMBubbleToSendStatusSpacing-kUDMSendStatusDiameter, self.bubbleFrame.origin.y+kUDMCellBubbleToIndicatorSpacing, kUDMSendStatusDiameter, kUDMSendStatusDiameter);
             //发送失败frame
             self.failureFrame = self.loadingFrame;
             
@@ -68,7 +68,7 @@ static CGFloat const kUDImageHeight = 150.0;
         case UMCMessageDirectionOut: {
             
             //图片气泡frame
-            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDAvatarDiameter+kUDAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDAvatarToVerticalEdgeSpacing, imageSize.width+(kUDBubbleToImageHorizontalSpacing*4), imageSize.height+(kUDBubbleToImageHorizontalSpacing*2));
+            self.bubbleFrame = CGRectMake(self.avatarFrame.origin.x+kUDMAvatarDiameter+kUDMAvatarToBubbleSpacing, self.dateFrame.origin.y+self.dateFrame.size.height+kUDMAvatarToVerticalEdgeSpacing, imageSize.width+(kUDBubbleToImageHorizontalSpacing*4), imageSize.height+(kUDBubbleToImageHorizontalSpacing*2));
             //图片frame
             self.imageFrame = CGRectMake(0, 0, CGRectGetWidth(self.bubbleFrame), CGRectGetHeight(self.bubbleFrame));
             
@@ -80,7 +80,7 @@ static CGFloat const kUDImageHeight = 150.0;
     }
     
     //cell高度
-    self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDCellBottomMargin;
+    self.cellHeight = self.bubbleFrame.size.height+self.bubbleFrame.origin.y+kUDMCellBottomMargin;
 }
 
 - (UITableViewCell *)getCellWithReuseIdentifier:(NSString *)cellReuseIdentifer {

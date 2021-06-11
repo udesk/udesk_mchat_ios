@@ -15,22 +15,22 @@
 #import "UMCHelper.h"
 #import "NSString+UMC.h"
 
-const CGFloat kUDSurveyRemarkTextViewHeight = 38;
-const CGFloat kUDSurveyRemarkTextViewMaxHeight = 80;
-const CGFloat kUDSurveySubmitButtonSpacing = 25;
-const CGFloat kUDSurveySubmitButtonHeight = 44;
-const CGFloat kUDSurveyContentSpacing = 40;
-const CGFloat kUDSurveyCollectionViewItemSizeHeight = 30;
-const CGFloat kUDSurveyCollectionViewItemSizeWidth = 135;
-const CGFloat kUDSurveyCollectionViewItemToVerticalEdgeSpacing = 18;
-const CGFloat kUDSurveyTagsCollectionViewMinimumLineSpacing = 14;
-const CGFloat kUDSurveyTagsCollectionViewMinimumInteritemSpacing = 5;
-const CGFloat kUDSurveyTagsCollectionViewMaxHeight = 120;
-const CGFloat kUDSurveyStarOptionHeight = 100;
-const CGFloat kUDSurveyExpressionOptionHeight = 100;
-const CGFloat kUDSurveyOptionToVerticalEdgeSpacing = 25;
-const CGFloat kUDSurveyTitleHeight = 58;
-const CGFloat kUDSurveyRemarkRequiredLabelToVerticalEdgeSpacing = 5;
+const CGFloat kUDMSurveyRemarkTextViewHeight = 38;
+const CGFloat kUDMSurveyRemarkTextViewMaxHeight = 80;
+const CGFloat kUDMSurveySubmitButtonSpacing = 25;
+const CGFloat kUDMSurveySubmitButtonHeight = 44;
+const CGFloat kUDMSurveyContentSpacing = 40;
+const CGFloat kUDMSurveyCollectionViewItemSizeHeight = 30;
+const CGFloat kUDMSurveyCollectionViewItemSizeWidth = 135;
+const CGFloat kUDMSurveyCollectionViewItemToVerticalEdgeSpacing = 18;
+const CGFloat kUDMSurveyTagsCollectionViewMinimumLineSpacing = 14;
+const CGFloat kUDMSurveyTagsCollectionViewMinimumInteritemSpacing = 5;
+const CGFloat kUDMSurveyTagsCollectionViewMaxHeight = 120;
+const CGFloat kUDMSurveyStarOptionHeight = 100;
+const CGFloat kUDMSurveyExpressionOptionHeight = 100;
+const CGFloat kUDMSurveyOptionToVerticalEdgeSpacing = 25;
+const CGFloat kUDMSurveyTitleHeight = 58;
+const CGFloat kUDMSurveyRemarkRequiredLabelToVerticalEdgeSpacing = 5;
 
 static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTagsCollectionViewCellReuseIdentifier";
 
@@ -66,9 +66,9 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
     [_contentScrollerView addGestureRecognizer:tap];
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(kUDSurveyCollectionViewItemSizeWidth / 375.0 * [UIScreen mainScreen].bounds.size.width, kUDSurveyCollectionViewItemSizeHeight);
-    layout.minimumInteritemSpacing = kUDSurveyTagsCollectionViewMinimumInteritemSpacing;
-    layout.minimumLineSpacing = kUDSurveyTagsCollectionViewMinimumLineSpacing;
+    layout.itemSize = CGSizeMake(kUDMSurveyCollectionViewItemSizeWidth / 375.0 * [UIScreen mainScreen].bounds.size.width, kUDMSurveyCollectionViewItemSizeHeight);
+    layout.minimumInteritemSpacing = kUDMSurveyTagsCollectionViewMinimumInteritemSpacing;
+    layout.minimumLineSpacing = kUDMSurveyTagsCollectionViewMinimumLineSpacing;
     
     _tagsCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     _tagsCollectionView.delegate = self;
@@ -77,7 +77,7 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
     [_tagsCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kUDSurveyTagsCollectionViewCellReuseIdentifier];
     [_contentScrollerView addSubview:_tagsCollectionView];
     
-    _remarkTextView = [[UdeskHPGrowingTextView alloc] initWithFrame:CGRectZero];
+    _remarkTextView = [[UMCHPGrowingTextView alloc] initWithFrame:CGRectZero];
     _remarkTextView.font = [UIFont systemFontOfSize:15];
     _remarkTextView.backgroundColor = [UIColor colorWithRed:0.969f  green:0.969f  blue:0.969f alpha:1];
     _remarkTextView.returnKeyType = UIReturnKeyDone;
@@ -121,7 +121,7 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
             if (!self.surveyModel.star || self.surveyModel.star == (id)kCFNull) return ;
             if (!self.surveyModel.star.options || self.surveyModel.star.options == (id)kCFNull) return ;
             
-            surveyOptionHeight = kUDSurveyStarOptionHeight;
+            surveyOptionHeight = kUDMSurveyStarOptionHeight;
             options = self.surveyModel.star.options;
             
             break;
@@ -133,7 +133,7 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
             
             NSArray *array = [self.surveyModel.text.options filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"enabled>0"]];
             
-            surveyOptionHeight = array.count * ((kUDTextSurveyButtonToVerticalEdgeSpacing+kUDTextSurveyButtonHeight)) - kUDTextSurveyButtonToVerticalEdgeSpacing;
+            surveyOptionHeight = array.count * ((kUDMTextSurveyButtonToVerticalEdgeSpacing+kUDMTextSurveyButtonHeight)) - kUDMTextSurveyButtonToVerticalEdgeSpacing;
             options = self.surveyModel.text.options;
             
             break;
@@ -143,7 +143,7 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
             if (!self.surveyModel.expression || self.surveyModel.expression == (id)kCFNull) return ;
             if (!self.surveyModel.expression.options || self.surveyModel.expression.options == (id)kCFNull) return ;
             
-            surveyOptionHeight = kUDSurveyExpressionOptionHeight;
+            surveyOptionHeight = kUDMSurveyExpressionOptionHeight;
             options = self.surveyModel.expression.options;
             
             break;
@@ -153,13 +153,13 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
     }
     
     //载体
-    CGFloat scrollerViewHeight = self.umcHeight > kUMCScreenHeight ? (kUMCScreenHeight-kUDSurveyTitleHeight) : self.umcHeight;
+    CGFloat scrollerViewHeight = self.umcHeight > kUMCScreenHeight ? (kUMCScreenHeight-kUDMSurveyTitleHeight) : self.umcHeight;
     _contentScrollerView.frame = self.bounds;
     _contentScrollerView.umcHeight = scrollerViewHeight;
     _contentScrollerView.contentSize = self.bounds.size;
     
     //选项
-    CGRect surveyOptionViewFrame = CGRectMake(kUDSurveyContentSpacing, kUDSurveyOptionToVerticalEdgeSpacing, self.umcWidth-(kUDSurveyContentSpacing*2), surveyOptionHeight);
+    CGRect surveyOptionViewFrame = CGRectMake(kUDMSurveyContentSpacing, kUDMSurveyOptionToVerticalEdgeSpacing, self.umcWidth-(kUDMSurveyContentSpacing*2), surveyOptionHeight);
     
     if (self.surveyModel.optionType == UMCSurveyOptionTypeText) {
         self.textSurveyView.frame = surveyOptionViewFrame;
@@ -173,35 +173,35 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
     
     //标签
     CGFloat tagsHeight = [self tagsHeightWidthOptions:options];
-    CGFloat tagsCollectionHeight = tagsHeight > kUDSurveyTagsCollectionViewMaxHeight ? kUDSurveyTagsCollectionViewMaxHeight : tagsHeight;
-    self.tagsCollectionView.frame = CGRectMake(kUDSurveyContentSpacing, CGRectGetMaxY(surveyOptionViewFrame)+kUDSurveyOptionToVerticalEdgeSpacing, self.umcWidth-(kUDSurveyContentSpacing*2), tagsCollectionHeight);
-    self.tagsCollectionView.contentSize = CGSizeMake(self.umcWidth-(kUDSurveyContentSpacing*2), tagsHeight);
+    CGFloat tagsCollectionHeight = tagsHeight > kUDMSurveyTagsCollectionViewMaxHeight ? kUDMSurveyTagsCollectionViewMaxHeight : tagsHeight;
+    self.tagsCollectionView.frame = CGRectMake(kUDMSurveyContentSpacing, CGRectGetMaxY(surveyOptionViewFrame)+kUDMSurveyOptionToVerticalEdgeSpacing, self.umcWidth-(kUDMSurveyContentSpacing*2), tagsCollectionHeight);
+    self.tagsCollectionView.contentSize = CGSizeMake(self.umcWidth-(kUDMSurveyContentSpacing*2), tagsHeight);
     
     UMCRemarkOptionType optionType = [self remarkOptionTypeWithOptions:options];
     //备注
-    CGFloat remarkY = tagsCollectionHeight ? self.tagsCollectionView.umcBottom+kUDSurveyCollectionViewItemToVerticalEdgeSpacing : kUDSurveyOptionToVerticalEdgeSpacing + CGRectGetMaxY(surveyOptionViewFrame);
+    CGFloat remarkY = tagsCollectionHeight ? self.tagsCollectionView.umcBottom+kUDMSurveyCollectionViewItemToVerticalEdgeSpacing : kUDMSurveyOptionToVerticalEdgeSpacing + CGRectGetMaxY(surveyOptionViewFrame);
     CGFloat remarkEnabled = self.surveyModel.remarkEnabled.boolValue && optionType != UMCRemarkOptionTypeHide;
     if (remarkEnabled) {
         
-        CGFloat remarkHeight = kUDSurveyRemarkTextViewMaxHeight;
+        CGFloat remarkHeight = kUDMSurveyRemarkTextViewMaxHeight;
         if (self.keyboardHeight) {
-            remarkHeight = MAX(kUDSurveyRemarkTextViewMaxHeight, self.remarkTextView.umcHeight);
+            remarkHeight = MAX(kUDMSurveyRemarkTextViewMaxHeight, self.remarkTextView.umcHeight);
         }
         else {
             if (!self.remarkTextView.text.length) {
-                CGFloat remarkPlaceholderHeight = [self.remarkTextView.placeholder umcSizeForFont:self.remarkTextView.font size:CGSizeMake(self.umcWidth-(kUDSurveyContentSpacing*3), MAXFLOAT) mode:NSLineBreakByTruncatingTail].height + 15;
-                remarkHeight = MAX(kUDSurveyRemarkTextViewHeight, remarkPlaceholderHeight);
+                CGFloat remarkPlaceholderHeight = [self.remarkTextView.placeholder umcSizeForFont:self.remarkTextView.font size:CGSizeMake(self.umcWidth-(kUDMSurveyContentSpacing*3), MAXFLOAT) mode:NSLineBreakByTruncatingTail].height + 15;
+                remarkHeight = MAX(kUDMSurveyRemarkTextViewHeight, remarkPlaceholderHeight);
             }
             else {
-                remarkHeight = kUDSurveyRemarkTextViewMaxHeight;
+                remarkHeight = kUDMSurveyRemarkTextViewMaxHeight;
             }
         }
 
         self.remarkTextView.minHeight = remarkHeight;
-        self.remarkTextView.frame = CGRectMake(kUDSurveyContentSpacing, remarkY, self.umcWidth-(kUDSurveyContentSpacing*2), MAX(CGRectGetHeight(self.remarkTextView.frame), remarkHeight));
+        self.remarkTextView.frame = CGRectMake(kUDMSurveyContentSpacing, remarkY, self.umcWidth-(kUDMSurveyContentSpacing*2), MAX(CGRectGetHeight(self.remarkTextView.frame), remarkHeight));
         
         if (optionType == UMCRemarkOptionTypeRequired) {
-            self.remarkRequiredLabel.frame = CGRectMake(kUDSurveyContentSpacing, self.remarkTextView.umcBottom + kUDSurveyRemarkRequiredLabelToVerticalEdgeSpacing, self.umcWidth-(kUDSurveyContentSpacing*2), 10);
+            self.remarkRequiredLabel.frame = CGRectMake(kUDMSurveyContentSpacing, self.remarkTextView.umcBottom + kUDMSurveyRemarkRequiredLabelToVerticalEdgeSpacing, self.umcWidth-(kUDMSurveyContentSpacing*2), 10);
         }
         else {
             self.remarkRequiredLabel.frame = CGRectZero;
@@ -212,9 +212,9 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
         self.remarkRequiredLabel.frame = CGRectZero;
     }
     
-    CGFloat submitY = remarkEnabled ? self.remarkTextView.umcBottom+kUDSurveySubmitButtonSpacing : remarkY;
+    CGFloat submitY = remarkEnabled ? self.remarkTextView.umcBottom+kUDMSurveySubmitButtonSpacing : remarkY;
     //提交按钮
-    self.submitButton.frame = CGRectMake(kUDSurveyContentSpacing, submitY, self.umcWidth-(kUDSurveyContentSpacing*2), kUDSurveySubmitButtonHeight);
+    self.submitButton.frame = CGRectMake(kUDMSurveyContentSpacing, submitY, self.umcWidth-(kUDMSurveyContentSpacing*2), kUDMSurveySubmitButtonHeight);
     
     [self.tagsCollectionView reloadData];
 }
@@ -241,7 +241,7 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
         }
         
         self.allOptionTags = [optionModel.tags componentsSeparatedByString:@","];
-        return (ceilf(self.allOptionTags.count/2.0)) * (kUDSurveyCollectionViewItemSizeHeight+kUDSurveyCollectionViewItemToVerticalEdgeSpacing) - (kUDSurveyCollectionViewItemToVerticalEdgeSpacing);
+        return (ceilf(self.allOptionTags.count/2.0)) * (kUDMSurveyCollectionViewItemSizeHeight+kUDMSurveyCollectionViewItemToVerticalEdgeSpacing) - (kUDMSurveyCollectionViewItemToVerticalEdgeSpacing);
     } @catch (NSException *exception) {
         NSLog(@"%@",exception);
     } @finally {
@@ -350,26 +350,26 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
     _keyboardHeight = keyboardHeight;
     
     if (_keyboardHeight) {
-        _remarkTextView.minHeight = MAX(kUDSurveyRemarkTextViewMaxHeight, _remarkTextView.umcHeight);
-        _remarkTextView.umcHeight = MAX(kUDSurveyRemarkTextViewMaxHeight, _remarkTextView.umcHeight);
-        _remarkRequiredLabel.umcTop = self.remarkTextView.umcBottom+kUDSurveyRemarkRequiredLabelToVerticalEdgeSpacing;
-        _submitButton.umcTop = self.remarkTextView.umcBottom+kUDSurveySubmitButtonSpacing;
+        _remarkTextView.minHeight = MAX(kUDMSurveyRemarkTextViewMaxHeight, _remarkTextView.umcHeight);
+        _remarkTextView.umcHeight = MAX(kUDMSurveyRemarkTextViewMaxHeight, _remarkTextView.umcHeight);
+        _remarkRequiredLabel.umcTop = self.remarkTextView.umcBottom+kUDMSurveyRemarkRequiredLabelToVerticalEdgeSpacing;
+        _submitButton.umcTop = self.remarkTextView.umcBottom+kUDMSurveySubmitButtonSpacing;
     }
     else {
         if (!_remarkTextView.text.length) {
-            CGFloat remarkPlaceholderHeight = [self.remarkTextView.placeholder umcSizeForFont:self.remarkTextView.font size:CGSizeMake(self.umcWidth-(kUDSurveyContentSpacing*3), MAXFLOAT) mode:NSLineBreakByTruncatingTail].height + 15;
+            CGFloat remarkPlaceholderHeight = [self.remarkTextView.placeholder umcSizeForFont:self.remarkTextView.font size:CGSizeMake(self.umcWidth-(kUDMSurveyContentSpacing*3), MAXFLOAT) mode:NSLineBreakByTruncatingTail].height + 15;
             if ([UMCHelper isBlankString:self.remarkTextView.placeholder]) {
                 remarkPlaceholderHeight = 0;
             }
-            _remarkTextView.minHeight = MAX(kUDSurveyRemarkTextViewHeight, remarkPlaceholderHeight);
-            _remarkTextView.umcHeight = MAX(kUDSurveyRemarkTextViewHeight, remarkPlaceholderHeight);
+            _remarkTextView.minHeight = MAX(kUDMSurveyRemarkTextViewHeight, remarkPlaceholderHeight);
+            _remarkTextView.umcHeight = MAX(kUDMSurveyRemarkTextViewHeight, remarkPlaceholderHeight);
         }
         else {
-            _remarkTextView.minHeight = kUDSurveyRemarkTextViewMaxHeight;
-            _remarkTextView.umcHeight = kUDSurveyRemarkTextViewMaxHeight;
+            _remarkTextView.minHeight = kUDMSurveyRemarkTextViewMaxHeight;
+            _remarkTextView.umcHeight = kUDMSurveyRemarkTextViewMaxHeight;
         }
-        _submitButton.umcTop = self.remarkTextView.umcBottom+kUDSurveySubmitButtonSpacing;
-        _remarkRequiredLabel.umcTop = self.remarkTextView.umcBottom+kUDSurveyRemarkRequiredLabelToVerticalEdgeSpacing;
+        _submitButton.umcTop = self.remarkTextView.umcBottom+kUDMSurveySubmitButtonSpacing;
+        _remarkRequiredLabel.umcTop = self.remarkTextView.umcBottom+kUDMSurveyRemarkRequiredLabelToVerticalEdgeSpacing;
     }
     [self checkRemarkTextViewHeight];
 }
@@ -443,7 +443,7 @@ static NSString *kUDSurveyTagsCollectionViewCellReuseIdentifier = @"kUDSurveyTag
 }
 
 #pragma mark - UITextViewDelegate
-- (BOOL)growingTextView:(UdeskHPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+- (BOOL)growingTextView:(UMCHPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     
     if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
         [growingTextView resignFirstResponder];

@@ -7,7 +7,7 @@
 //
 
 #import "UdeskPhotoManeger.h"
-#import "UdeskPhotoView.h"
+#import "UMCPhotoView.h"
 
 @implementation UdeskPhotoManeger
 
@@ -26,7 +26,7 @@
 -(void)showLocalPhoto:(UIImageView *)selecView withMessageURL:(NSString *)url
 {
     
-    UdeskPhotoView *photoView = [[UdeskPhotoView alloc] init];
+    UMCPhotoView *photoView = [[UMCPhotoView alloc] init];
     [photoView setPhotoData:selecView withMessageURL:url];
     
     [self show:photoView];

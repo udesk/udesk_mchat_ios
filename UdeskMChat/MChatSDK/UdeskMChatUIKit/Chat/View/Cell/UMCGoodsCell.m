@@ -11,12 +11,12 @@
 #import "UMCSDKConfig.h"
 #import "UMCHelper.h"
 
-#import "UDTTTAttributedLabel.h"
-#import "Udesk_YYWebImage.h"
+#import "UDMTTTAttributedLabel.h"
+#import "UMC_YYWebImage.h"
 
 @interface UMCGoodsCell()<UDTTTAttributedLabelDelegate>
 
-@property (nonatomic, strong) UDTTTAttributedLabel *goodsMessageLabel;
+@property (nonatomic, strong) UDMTTTAttributedLabel *goodsMessageLabel;
 @property (nonatomic, strong) UIImageView        *goodsMessageImageView;
 
 @end
@@ -35,7 +35,7 @@
 
 - (void)setup {
     
-    _goodsMessageLabel = [[UDTTTAttributedLabel alloc] initWithFrame:CGRectZero];
+    _goodsMessageLabel = [[UDMTTTAttributedLabel alloc] initWithFrame:CGRectZero];
     _goodsMessageLabel.numberOfLines = 0;
     _goodsMessageLabel.delegate = self;
     _goodsMessageLabel.textAlignment = NSTextAlignmentLeft;

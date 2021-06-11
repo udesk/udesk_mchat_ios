@@ -10,7 +10,7 @@
 
 @implementation UMCCustomButtonConfig
 
-- (instancetype)initWithTitle:(NSString *)title clickBlock:(CustomButtonClickBlock)clickBlock
+- (instancetype)initWithTitle:(NSString *)title clickBlock:(UMCCustomButtonClickBlock)clickBlock
 {
     self = [super init];
     if (self) {

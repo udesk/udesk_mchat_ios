@@ -11,8 +11,8 @@
 @class UMCTextSurvey;
 
 /** 头像距离屏幕水平边沿距离 */
-extern const CGFloat kUDTextSurveyButtonToVerticalEdgeSpacing;
-extern const CGFloat kUDTextSurveyButtonHeight;
+extern const CGFloat kUDMTextSurveyButtonToVerticalEdgeSpacing;
+extern const CGFloat kUDMTextSurveyButtonHeight;
 
 @interface UMCTextSurveyView : UIView
 

@@ -16,9 +16,9 @@
 #import "UIColor+UMC.h"
 #import "UMCHelper.h"
 
-#import "Udesk_YYWebImage.h"
-#import "Udesk_JSCustomBadge.h"
-#import "UDTTTAttributedLabel.h"
+#import "UMC_YYWebImage.h"
+#import "UMC_JSCustomBadge.h"
+#import "UDMTTTAttributedLabel.h"
 
 /** 商户视图之间的空隙 */
 static CGFloat const kUDMerchantPadding = 10.0;
@@ -40,8 +40,8 @@ static CGFloat const kUDMerchantUnreadY = 5;
 @property (nonatomic, strong) UIImageView   *avatarImageView;
 @property (nonatomic, strong) UILabel       *nickNameLabel;
 @property (nonatomic, strong) UILabel       *dateLabel;
-@property (nonatomic, strong) Udesk_JSCustomBadge *badgeView;
-@property (nonatomic, strong) UDTTTAttributedLabel  *contentLabel;
+@property (nonatomic, strong) UMC_JSCustomBadge *badgeView;
+@property (nonatomic, strong) UDMTTTAttributedLabel  *contentLabel;
 
 @end
 
@@ -82,14 +82,14 @@ static CGFloat const kUDMerchantUnreadY = 5;
     [self.contentView addSubview:_nickNameLabel];
     
     //最后一条消息
-    _contentLabel = [[UDTTTAttributedLabel alloc] initWithFrame:CGRectMake(_nickNameLabel.umcLeft, _nickNameLabel.umcBottom, kUMCScreenWidth-_avatarImageView.umcWidth-(kUDMerchantPadding*3), kUDMerchantLastContentTextHeight)];
+    _contentLabel = [[UDMTTTAttributedLabel alloc] initWithFrame:CGRectMake(_nickNameLabel.umcLeft, _nickNameLabel.umcBottom, kUMCScreenWidth-_avatarImageView.umcWidth-(kUDMerchantPadding*3), kUDMerchantLastContentTextHeight)];
     _contentLabel.userInteractionEnabled = YES;
     _contentLabel.font = [UIFont systemFontOfSize:14.f];
     _contentLabel.textColor = [UIColor umcColorWithHexString:@"#999999"];
     [self.contentView addSubview:_contentLabel];
     
     //未读条数view
-    _badgeView = [Udesk_JSCustomBadge customBadgeWithString:nil
+    _badgeView = [UMC_JSCustomBadge customBadgeWithString:nil
                                            withStringColor:[UIColor whiteColor]
                                             withInsetColor:[UIColor redColor]
                                             withBadgeFrame:YES

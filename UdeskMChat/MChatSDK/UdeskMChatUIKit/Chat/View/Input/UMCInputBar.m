@@ -86,7 +86,7 @@ static CGFloat const kInputToolBarIconToVerticalEdgeSpacing = 12.0;
     }
     
     //初始化输入框
-    _inputTextView = [[UdeskHPGrowingTextView alloc] initWithFrame:CGRectZero];
+    _inputTextView = [[UMCHPGrowingTextView alloc] initWithFrame:CGRectZero];
     _inputTextView.placeholder = UMCLocalizedString(@"udesk_typing");
     _inputTextView.delegate = (id)self;
     _inputTextView.returnKeyType = UIReturnKeySend;
@@ -309,7 +309,7 @@ static CGFloat const kInputToolBarIconToVerticalEdgeSpacing = 12.0;
 }
 
 #pragma mark - Text view delegate
-- (BOOL)growingTextViewShouldBeginEditing:(UdeskHPGrowingTextView *)growingTextView {
+- (BOOL)growingTextViewShouldBeginEditing:(UMCHPGrowingTextView *)growingTextView {
     
     self.selectInputBarType = UMCInputBarTypeText;
     
@@ -324,15 +324,15 @@ static CGFloat const kInputToolBarIconToVerticalEdgeSpacing = 12.0;
     return YES;
 }
 
-- (void)growingTextViewDidBeginEditing:(UdeskHPGrowingTextView *)growingTextView {
+- (void)growingTextViewDidBeginEditing:(UMCHPGrowingTextView *)growingTextView {
     [growingTextView becomeFirstResponder];
 }
 
-- (void)growingTextViewDidEndEditing:(UdeskHPGrowingTextView *)growingTextView {
+- (void)growingTextViewDidEndEditing:(UMCHPGrowingTextView *)growingTextView {
     [growingTextView resignFirstResponder];
 }
 
-- (BOOL)growingTextView:(UdeskHPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+- (BOOL)growingTextView:(UMCHPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     
     self.selectInputBarType = UMCInputBarTypeText;
     if ([text isEqualToString:@"\n"]) {
@@ -345,7 +345,7 @@ static CGFloat const kInputToolBarIconToVerticalEdgeSpacing = 12.0;
     return YES;
 }
 
-- (void)growingTextView:(UdeskHPGrowingTextView *)growingTextView willChangeHeight:(float)height {
+- (void)growingTextView:(UMCHPGrowingTextView *)growingTextView willChangeHeight:(float)height {
     
     float diff = (self.inputTextView.frame.size.height - height);
     //确保tableView的y不大于原始的y

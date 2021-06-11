@@ -12,7 +12,7 @@
 #import "UIImage+UMC.h"
 #import "UIView+UMC.h"
 
-#import "Udesk_YYWebImage.h"
+#import "UMC_YYWebImage.h"
 
 /** 咨询对象图片距离屏幕水平边沿距离 */
 static CGFloat const kUDProductImageToHorizontalEdgeSpacing = 10.0;

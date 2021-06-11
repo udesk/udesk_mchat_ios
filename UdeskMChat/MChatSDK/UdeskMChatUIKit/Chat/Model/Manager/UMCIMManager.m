@@ -24,7 +24,7 @@
 #import "UMCToast.h"
 #import "UMCWebViewController.h"
 
-#import "Udesk_YYWebImage.h"
+#import "UMC_YYWebImage.h"
 
 @interface UMCIMManager()<UMCMessageDelegate>
 
@@ -217,7 +217,7 @@
     
     UMCMessage *message = [[UMCMessage alloc] initWithImage:image];
     
-    [[Udesk_YYWebImageManager sharedManager].cache setImage:[Udesk_YYImage imageWithData:message.sourceData] forKey:message.UUID];
+    [[UMC_YYWebImageManager sharedManager].cache setImage:[UMC_YYImage imageWithData:message.sourceData] forKey:message.UUID];
     [self createMediaMessage:message mediaData:message.sourceData fileName:message.extras.filename progress:progress completion:completion];
 }
 
@@ -229,7 +229,7 @@
     UMCMessage *message = [[UMCMessage alloc] initWithGIFImage:gifData];
     
     //缓存图片
-    [[Udesk_YYWebImageManager sharedManager].cache setImage:[Udesk_YYImage imageWithData:gifData] forKey:message.UUID];
+    [[UMC_YYWebImageManager sharedManager].cache setImage:[UMC_YYImage imageWithData:gifData] forKey:message.UUID];
     [self createMediaMessage:message mediaData:message.sourceData fileName:message.extras.filename progress:progress completion:completion];
 }
 
@@ -382,15 +382,15 @@
     switch (oldMessage.contentType) {
         case UMCMessageContentTypeImage:{
             
-            Udesk_YYImage *image = (Udesk_YYImage *)[[Udesk_YYWebImageManager sharedManager].cache getImageForKey:oldMessage.UUID];
+            UMC_YYImage *image = (UMC_YYImage *)[[UMC_YYWebImageManager sharedManager].cache getImageForKey:oldMessage.UUID];
             
-            [[Udesk_YYWebImageManager sharedManager].cache removeImageForKey:oldMessage.UUID];
-            [[Udesk_YYWebImageManager sharedManager].cache setImage:image forKey:newMessage.content];
+            [[UMC_YYWebImageManager sharedManager].cache removeImageForKey:oldMessage.UUID];
+            [[UMC_YYWebImageManager sharedManager].cache setImage:image forKey:newMessage.content];
             break;
         }
         case UMCMessageContentTypeVoice:{
          
-            Udesk_YYCache *cache = [[Udesk_YYCache alloc] initWithName:UMCVoiceCache];
+            UMC_YYCache *cache = [[UMC_YYCache alloc] initWithName:UMCVoiceCache];
             NSData *data = (NSData *)[cache objectForKey:oldMessage.UUID];
             [cache removeObjectForKey:oldMessage.UUID];
             [cache setObject:data forKey:newMessage.UUID];

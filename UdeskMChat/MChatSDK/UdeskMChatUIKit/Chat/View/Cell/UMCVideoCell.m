@@ -11,8 +11,8 @@
 #import "UMCHelper.h"
 #import "UMCBundleHelper.h"
 #import "UMCVideoCache.h"
-#import "Udesk_WHC_HttpManager.h"
-#import "Udesk_WHC_DownloadObject.h"
+#import "UMC_WHC_HttpManager.h"
+#import "UMC_WHC_DownloadObject.h"
 #import "UMCToast.h"
 #import "UMCUIMacro.h"
 #import "UIImage+UMC.h"
@@ -108,35 +108,35 @@
     self.downloadButton.hidden = YES;
     
     @udWeakify(self);
-    [[Udesk_WHC_HttpManager shared] download:videoMessage.message.content
+    [[UMC_WHC_HttpManager shared] download:videoMessage.message.content
                                     savePath:[[UMCVideoCache sharedManager] filePath]
                                 saveFileName:videoMessage.message.UUID
-                                    response:^(Udesk_WHC_BaseOperation *operation, NSError *error, BOOL isOK) {
+                                    response:^(UMC_WHC_BaseOperation *operation, NSError *error, BOOL isOK) {
                                   
                                   @try {
                                       
                                       @udStrongify(self);
                                       if (isOK) {
-                                          Udesk_WHC_DownloadOperation * downloadOperation = (Udesk_WHC_DownloadOperation*)operation;
-                                          Udesk_WHC_DownloadObject * downloadObject = [Udesk_WHC_DownloadObject readDiskCache:operation.strUrl];
+                                          UMC_WHC_DownloadOperation * downloadOperation = (UMC_WHC_DownloadOperation*)operation;
+                                          UMC_WHC_DownloadObject * downloadObject = [UMC_WHC_DownloadObject readDiskCache:operation.strUrl];
                                           if (downloadObject == nil) {
-                                              downloadObject = [Udesk_WHC_DownloadObject new];
+                                              downloadObject = [UMC_WHC_DownloadObject new];
                                           }
                                           downloadObject.fileName = downloadOperation.saveFileName;
                                           downloadObject.downloadPath = downloadOperation.strUrl;
-                                          downloadObject.downloadState = Udesk_WHCDownloading;
+                                          downloadObject.downloadState = UMC_WHCDownloading;
                                           downloadObject.currentDownloadLenght = downloadOperation.recvDataLenght;
                                           downloadObject.totalLenght = downloadOperation.fileTotalLenght;
                                           
                                           [downloadObject writeDiskCache];
                                       }else {
-                                          [self errorHandle:(Udesk_WHC_DownloadOperation *)operation error:error];
+                                          [self errorHandle:(UMC_WHC_DownloadOperation *)operation error:error];
                                       }
                                   } @catch (NSException *exception) {
                                       NSLog(@"%@",exception);
                                   } @finally {
                                   }
-                              } process:^(Udesk_WHC_BaseOperation *operation, uint64_t recvLength, uint64_t totalLength, NSString *speed) {
+                              } process:^(UMC_WHC_BaseOperation *operation, uint64_t recvLength, uint64_t totalLength, NSString *speed) {
                                   
                                   dispatch_async(dispatch_get_main_queue(), ^{
                                       @udStrongify(self);
@@ -146,7 +146,7 @@
                                       self.uploadProgressLabel.text = [NSString stringWithFormat:@"%.f%%",progress*100];
                                   });
                                   
-                              } didFinished:^(Udesk_WHC_BaseOperation *operation, NSData *data, NSError *error, BOOL isSuccess) {
+                              } didFinished:^(UMC_WHC_BaseOperation *operation, NSData *data, NSError *error, BOOL isSuccess) {
                                   
                                   @udStrongify(self);
                                   if (isSuccess) {
@@ -155,15 +155,15 @@
                                           self.uploadProgressLabel.hidden = YES;
                                           self.playButton.hidden = NO;
                                       });
-                                      [self saveDownloadStateOperation:(Udesk_WHC_DownloadOperation *)operation];
+                                      [self saveDownloadStateOperation:(UMC_WHC_DownloadOperation *)operation];
                                   }
                                   else {
-                                      [self errorHandle:(Udesk_WHC_DownloadOperation *)operation error:error];
+                                      [self errorHandle:(UMC_WHC_DownloadOperation *)operation error:error];
                                   }
                               }];
 }
 
-- (void)errorHandle:(Udesk_WHC_DownloadOperation *)operation error:(NSError *)error {
+- (void)errorHandle:(UMC_WHC_DownloadOperation *)operation error:(NSError *)error {
     NSString * errInfo = error.userInfo[NSLocalizedDescriptionKey];
     if (!errInfo || errInfo == (id)kCFNull) return ;
     if (![errInfo isKindOfClass:[NSString class]]) return ;
@@ -186,8 +186,8 @@
     [self removeDownloadStateOperation:operation];
 }
 
-- (void)saveDownloadStateOperation:(Udesk_WHC_DownloadOperation *)operation {
-    Udesk_WHC_DownloadObject * downloadObject = [Udesk_WHC_DownloadObject readDiskCache:operation.saveFileName];
+- (void)saveDownloadStateOperation:(UMC_WHC_DownloadOperation *)operation {
+    UMC_WHC_DownloadObject * downloadObject = [UMC_WHC_DownloadObject readDiskCache:operation.saveFileName];
     if (downloadObject != nil) {
         downloadObject.currentDownloadLenght = operation.recvDataLenght;
         downloadObject.totalLenght = operation.fileTotalLenght;
@@ -195,8 +195,8 @@
     }
 }
 
-- (void)removeDownloadStateOperation:(Udesk_WHC_DownloadOperation *)operation {
-    Udesk_WHC_DownloadObject * downloadObject = [Udesk_WHC_DownloadObject readDiskCache:operation.saveFileName];
+- (void)removeDownloadStateOperation:(UMC_WHC_DownloadOperation *)operation {
+    UMC_WHC_DownloadObject * downloadObject = [UMC_WHC_DownloadObject readDiskCache:operation.saveFileName];
     if (downloadObject != nil) {
         [downloadObject removeFromDisk];
     }
@@ -234,7 +234,7 @@
 
 - (void)dealloc
 {
-    [[Udesk_WHC_HttpManager shared] cancelAllDownloadTaskAndDelFile:YES];
+    [[UMC_WHC_HttpManager shared] cancelAllDownloadTaskAndDelFile:YES];
 }
 
 - (void)updateCellWithMessage:(UMCBaseMessage *)baseMessage {

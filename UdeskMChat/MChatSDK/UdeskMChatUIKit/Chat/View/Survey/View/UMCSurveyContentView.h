@@ -11,28 +11,28 @@
 #import "UMCTextSurveyView.h"
 #import "UMCExpressionSurveyView.h"
 #import "UMCStarSurveyView.h"
-#import "UdeskHPGrowingTextView.h"
+#import "UMCHPGrowingTextView.h"
 #import "UMCButton.h"
 
 @class UMCSurveyModel;
 @class UMCSurveyContentView;
 
-extern const CGFloat kUDSurveyRemarkTextViewHeight;
-extern const CGFloat kUDSurveyRemarkTextViewMaxHeight;
-extern const CGFloat kUDSurveySubmitButtonSpacing;
-extern const CGFloat kUDSurveySubmitButtonHeight;
-extern const CGFloat kUDSurveyContentSpacing;
-extern const CGFloat kUDSurveyCollectionViewItemSizeHeight;
-extern const CGFloat kUDSurveyCollectionViewItemSizeWidth;
-extern const CGFloat kUDSurveyCollectionViewItemToVerticalEdgeSpacing;
-extern const CGFloat kUDSurveyTagsCollectionViewMinimumLineSpacing;
-extern const CGFloat kUDSurveyTagsCollectionViewMinimumInteritemSpacing;
-extern const CGFloat kUDSurveyTagsCollectionViewMaxHeight;
-extern const CGFloat kUDSurveyStarOptionHeight;
-extern const CGFloat kUDSurveyExpressionOptionHeight;
-extern const CGFloat kUDSurveyOptionToVerticalEdgeSpacing;
-extern const CGFloat kUDSurveyTitleHeight;
-extern const CGFloat kUDSurveyRemarkRequiredLabelToVerticalEdgeSpacing;
+extern const CGFloat kUDMSurveyRemarkTextViewHeight;
+extern const CGFloat kUDMSurveyRemarkTextViewMaxHeight;
+extern const CGFloat kUDMSurveySubmitButtonSpacing;
+extern const CGFloat kUDMSurveySubmitButtonHeight;
+extern const CGFloat kUDMSurveyContentSpacing;
+extern const CGFloat kUDMSurveyCollectionViewItemSizeHeight;
+extern const CGFloat kUDMSurveyCollectionViewItemSizeWidth;
+extern const CGFloat kUDMSurveyCollectionViewItemToVerticalEdgeSpacing;
+extern const CGFloat kUDMSurveyTagsCollectionViewMinimumLineSpacing;
+extern const CGFloat kUDMSurveyTagsCollectionViewMinimumInteritemSpacing;
+extern const CGFloat kUDMSurveyTagsCollectionViewMaxHeight;
+extern const CGFloat kUDMSurveyStarOptionHeight;
+extern const CGFloat kUDMSurveyExpressionOptionHeight;
+extern const CGFloat kUDMSurveyOptionToVerticalEdgeSpacing;
+extern const CGFloat kUDMSurveyTitleHeight;
+extern const CGFloat kUDMSurveyRemarkRequiredLabelToVerticalEdgeSpacing;
 
 @protocol UMCSurveyViewDelegate <NSObject>
 
@@ -54,7 +54,7 @@ extern const CGFloat kUDSurveyRemarkRequiredLabelToVerticalEdgeSpacing;
 /** 标签 */
 @property (nonatomic, strong) UICollectionView *tagsCollectionView;
 /** 备注 */
-@property (nonatomic, strong) UdeskHPGrowingTextView *remarkTextView;
+@property (nonatomic, strong) UMCHPGrowingTextView *remarkTextView;
 /** 备注必填 */
 @property (nonatomic, strong) UILabel           *remarkRequiredLabel;
 /** 提交按钮 */
