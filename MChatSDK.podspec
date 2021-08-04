@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "MChatSDK"
-  spec.version      = "2.0.1"
+  spec.version      = "2.0.2"
   spec.summary      = "This is Pod for MChatSDK."
 
   # This description is used to generate tags and improve search results.

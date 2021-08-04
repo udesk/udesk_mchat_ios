@@ -910,10 +910,10 @@
 		D4541A1226734FAF00F544F0 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				D4541A1326734FAF00F544F0 /* UMCWebViewController.m */,
+				D4541A1626734FAF00F544F0 /* UMCIMViewController.h */,
 				D4541A1426734FAF00F544F0 /* UMCIMViewController.m */,
 				D4541A1526734FAF00F544F0 /* UMCWebViewController.h */,
-				D4541A1626734FAF00F544F0 /* UMCIMViewController.h */,
+				D4541A1326734FAF00F544F0 /* UMCWebViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1649,6 +1649,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../MChatSDK/\"",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo",
+					"$(PROJECT_DIR)/UdeskMChatSDKDemo/thied/YYImage",
 				);
 				INFOPLIST_FILE = UdeskMChatSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1677,6 +1678,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../MChatSDK/\"",
 					"$(PROJECT_DIR)/UdeskMChatSDKDemo",
+					"$(PROJECT_DIR)/UdeskMChatSDKDemo/thied/YYImage",
 				);
 				INFOPLIST_FILE = UdeskMChatSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
