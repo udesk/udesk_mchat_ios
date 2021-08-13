@@ -32,6 +32,24 @@
     return [formatter dateFromString:dateString];
 }
 
++ (NSDate *)dateFetchWithString:(NSString *)dateString
+{
+    if (!dateString) {
+        return nil;
+    }
+    NSDate *date;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    if (dateString.length == 19) {
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
+        date = [formatter dateFromString:dateString];
+    }else{
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+        date = [formatter dateFromString:dateString];
+    }
+    
+    return date;
+}
+
 + (NSDate *)dateWithString:(NSString *)dateString format:(NSString *)format timeZone:(NSTimeZone *)timeZone locale:(NSLocale *)locale {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:format];

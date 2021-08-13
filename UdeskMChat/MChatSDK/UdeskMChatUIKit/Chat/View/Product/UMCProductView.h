@@ -19,5 +19,7 @@ static CGFloat const kUDProductHeight = 70;
 @property (nonatomic, strong) UIImageView  *productImageView;
 @property (nonatomic, strong) UILabel      *productTitleLabel;
 @property (nonatomic, strong) UILabel      *productDetailLabel;
+@property (nonatomic, strong) UIButton     *productSendButton;
+@property (nonatomic, copy) void(^didTapProductSendBlock)(UMCProduct *productModel);
 
 @end

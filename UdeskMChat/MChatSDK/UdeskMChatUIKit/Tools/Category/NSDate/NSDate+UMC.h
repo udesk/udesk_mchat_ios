@@ -18,6 +18,8 @@
 
 + (NSDate *)dateWithString:(NSString *)dateString format:(NSString *)format;
 
++ (NSDate *)dateFetchWithString:(NSString *)dateString;
+
 + (NSDate *)dateWithString:(NSString *)dateString
                     format:(NSString *)format
                   timeZone:(NSTimeZone *)timeZone

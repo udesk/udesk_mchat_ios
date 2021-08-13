@@ -16,4 +16,6 @@
 
 - (CGFloat)umcHeightForFont:(UIFont *)font width:(CGFloat)width;
 
+- (NSString *)umcLimitOmitLength:(int)limit;
+
 @end

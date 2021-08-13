@@ -85,7 +85,7 @@ const CGFloat kUDMCellBottomMargin = 10.0;
     
     _dateHeight = 0;
     
-    NSString *time = [[NSDate dateWithString:self.message.createdAt format:kUMCDateFormat] umcStyleDate];
+    NSString *time = [[NSDate dateFetchWithString:self.message.createdAt] umcStyleDate];
     if (time.length == 0) return;
     
     _dateFrame = CGRectMake(0, kUDMChatMessageDateLabelY, kUMCScreenWidth-(kUDMAvatarToHorizontalEdgeSpacing*2+kUDMAvatarDiameter), kUDMChatMessageDateCellHeight);

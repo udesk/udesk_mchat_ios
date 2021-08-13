@@ -12,6 +12,7 @@
 #import "UIImage+UMC.h"
 #import "UIView+UMC.h"
 
+#import "UMCBundleHelper.h"
 #import "UMC_YYWebImage.h"
 
 /** 咨询对象图片距离屏幕水平边沿距离 */
@@ -30,6 +31,31 @@ static CGFloat const kUDProductTitleHeight = 20.0;
 static CGFloat const kUDProductDetailToTitleVerticalEdgeSpacing = 10.0;
 /** 咨询对象副标题高度 */
 static CGFloat const kUDProductDetailHeight = 20;
+
+
+/** 咨询对象发送按钮右侧距离 */
+static CGFloat const kUDProductSendButtonToRightHorizontalEdgeSpacing = 19.0;
+/** 咨询对象发送按钮距离标题垂直距离 */
+static CGFloat const kUDProductSendButtonToTitleVerticalEdgeSpacing = 5.0;
+/** 咨询对象发送按钮距width */
+static CGFloat const kUDProductSendButtonWidth = 65.0;
+/** 咨询对象发送按钮距height */
+static CGFloat const kUDProductSendButtonHeight = 25.0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @implementation UMCProductView
 
@@ -97,9 +123,23 @@ static CGFloat const kUDProductDetailHeight = 20;
     return _productDetailLabel;
 }
 
+- (UIButton *)productSendButton {
+    
+    if (!_productSendButton) {
+        _productSendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _productSendButton.frame = CGRectZero;
+        _productSendButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [_productSendButton setTitleColor:[UMCSDKConfig sharedConfig].sdkStyle.productSendTitleColor forState:UIControlStateNormal];
+        _productSendButton.backgroundColor = [UMCSDKConfig sharedConfig].sdkStyle.productSendBackGroundColor;
+        [_productSendButton addTarget:self action:@selector(sendProductUrlAction:) forControlEvents:UIControlEventTouchUpInside];
+        kUMCViewRadius(_productSendButton, 2);
+        [self.productBackGroundView addSubview:_productSendButton];
+    }
+    
+    return _productSendButton;
+}
 - (void)setProductModel:(UMCProduct *)productModel {
     _productModel = productModel;
-    
     //咨询对象图片
     self.productImageView.frame = CGRectMake(kUDProductImageToHorizontalEdgeSpacing, kUDProductImageToVerticalEdgeSpacing, kUDProductImageDiameter, kUDProductImageDiameter);
     if (productModel.image && [productModel.image isKindOfClass:[NSString class]]) {
@@ -112,7 +152,12 @@ static CGFloat const kUDProductDetailHeight = 20;
     self.productTitleLabel.text = productModel.title;
     
     //咨询对象副标题
-    self.productDetailLabel.frame = CGRectMake(CGRectGetMinX(self.productTitleLabel.frame), self.productTitleLabel.umcBottom+ kUDProductDetailToTitleVerticalEdgeSpacing, kUMCScreenWidth-productTitleX-kUDProductTitleToProductImageHorizontalEdgeSpacing, kUDProductDetailHeight);
+    self.productDetailLabel.frame = CGRectMake(CGRectGetMinX(self.productTitleLabel.frame), self.productTitleLabel.umcBottom+ kUDProductDetailToTitleVerticalEdgeSpacing, self.productTitleLabel.umcWidth-kUDProductTitleToProductImageHorizontalEdgeSpacing - kUDProductSendButtonWidth, kUDProductDetailHeight);
+    
+    //咨询对象发送按钮
+    NSString *productSendText = UMCLocalizedString(@"udesk_send_link");
+    [self.productSendButton setTitle:productSendText forState:UIControlStateNormal];
+    self.productSendButton.frame = CGRectMake(kUMCScreenWidth - kUDProductSendButtonWidth-kUDProductSendButtonToRightHorizontalEdgeSpacing, CGRectGetMaxY(self.productTitleLabel.frame)+kUDProductSendButtonToTitleVerticalEdgeSpacing, kUDProductSendButtonWidth, kUDProductSendButtonHeight);
     
     NSArray *array = [productModel.extras valueForKey:@"content"];
     if (![UMCHelper isBlankString:array.firstObject]) {
@@ -123,12 +168,11 @@ static CGFloat const kUDProductDetailHeight = 20;
     self.productBackGroundView.frame = CGRectMake(0, 0, kUMCScreenWidth, kUDProductHeight);
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (void)sendProductUrlAction:(UIButton *)button {
+    
+    if (self.didTapProductSendBlock) {
+        self.didTapProductSendBlock(self.productModel);
+    }
 }
-*/
 
 @end

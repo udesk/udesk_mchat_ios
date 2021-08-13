@@ -12,7 +12,7 @@
 #import "UIImage+UMC.h"
 #import "NSDate+UMC.h"
 #import "UIView+UMC.h"
-
+#import "NSString+UMC.h"
 #import "UMC_YYWebImage.h"
 
 @implementation UMCBaseCell
@@ -55,13 +55,13 @@
     self.dateLabel.frame = baseMessage.dateFrame;
     if (baseMessage.message.category == UMCMessageCategoryTypeEvent) {
         
-        NSString *date = [[NSDate dateWithString:baseMessage.message.createdAt format:kUMCDateFormat] stringWithFormat:kUMCShowDateFormat];
+        NSString *date = [[NSDate dateFetchWithString:baseMessage.message.createdAt] stringWithFormat:kUMCShowDateFormat];
         self.dateLabel.text = [NSString stringWithFormat:@"——— %@ ———",date];
         self.dateLabel.textAlignment = NSTextAlignmentCenter;
         self.dateLabel.umcWidth = self.contentView.umcWidth;
     }
     else {
-        self.dateLabel.text = [[NSDate dateWithString:baseMessage.message.createdAt format:kUMCDateFormat] umcStyleDate];
+        self.dateLabel.text = [[NSDate dateFetchWithString:baseMessage.message.createdAt] umcStyleDate];
         self.dateLabel.umcBottom = self.bubbleImageView.umcTop - kUDMCellBubbleToIndicatorSpacing;
     }
     
@@ -76,7 +76,9 @@
                 if ([UMCSDKConfig sharedConfig].sdkStyle.agentBubbleColor) {
                     bubbleImage = [bubbleImage umcConvertImageColor:[UMCSDKConfig sharedConfig].sdkStyle.agentBubbleColor];
                 }
-                
+                NSString *timeText = [[NSDate dateFetchWithString:baseMessage.message.createdAt] umcStyleDate] ?: @"";
+                NSString *nameText = [[UMCSDKConfig sharedConfig].merchantNickName umcLimitOmitLength:20];
+                self.dateLabel.text = [NSString stringWithFormat:@"%@ %@",nameText,timeText];
                 self.bubbleImageView.image = [bubbleImage stretchableImageWithLeftCapWidth:bubbleImage.size.width*0.5f topCapHeight:bubbleImage.size.height*0.8f];
                 self.dateLabel.textAlignment = NSTextAlignmentLeft;
                 self.dateLabel.umcLeft = self.bubbleImageView.umcLeft+kUDArrowMarginWidth;

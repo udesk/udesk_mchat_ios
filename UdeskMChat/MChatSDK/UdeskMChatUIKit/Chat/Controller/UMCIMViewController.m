@@ -371,6 +371,7 @@ static CGFloat const InputBarHeight = 52.0f;
         @udStrongify(self);
         self.title = merchant.name;
         self.sdkConfig.merchantImageURL = merchant.logoURL;
+        self.sdkConfig.merchantNickName = merchant.name;
         if (merchant.euid) { self.merchantEuid = merchant.euid;}
         [self checkIsBlocked:merchant.isBlocked];
     }];
@@ -550,6 +551,11 @@ static CGFloat const InputBarHeight = 52.0f;
     
     if (!_productView) {
         _productView = [[UMCProductView alloc] initWithFrame:CGRectMake(0, 0, kUMCScreenWidth, kUDProductHeight)];
+        @udWeakify(self);
+        _productView.didTapProductSendBlock = ^(UMCProduct *productModel) {
+            @udStrongify(self);
+            [self sendProduct:productModel];
+        };
         [self.view addSubview:_productView];
     }
     return _productView;
@@ -974,6 +980,30 @@ static CGFloat const InputBarHeight = 52.0f;
         [self updateSendCompletedMessage:message];
     }];
 }
+
+#pragma mark - 发送咨询对象
+- (void)sendProduct:(UMCProduct *)product {
+    
+    UMCGoodsModel *goodsModel1 = [[UMCGoodsModel alloc] init];
+    goodsModel1.name = product.title;
+    goodsModel1.url = product.url;
+    goodsModel1.imgUrl = product.image;
+
+    NSArray *array = [product.extras valueForKey:@"content"];
+    if (![UMCHelper isBlankString:array.firstObject]) {
+        UMCGoodsParamModel *paramModel1 = [UMCGoodsParamModel new];
+        paramModel1.text = array.firstObject;
+        paramModel1.color = @"#FF0000";
+        paramModel1.udBreak = @(0);
+        paramModel1.size = @(14);
+        goodsModel1.params = @[paramModel1];
+    }
+    [self sendGoodsMessageWithModel:goodsModel1];
+    
+    [self.UIManager sendProduct:product];
+
+}
+
 
 #pragma mark - 消息发送完成回调
 - (void)updateSendCompletedMessage:(UMCMessage *)message {

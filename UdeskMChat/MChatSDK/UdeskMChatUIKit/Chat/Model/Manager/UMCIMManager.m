@@ -201,7 +201,16 @@
         [self addMessageToChatMessageArray:merchantsArray];
     }];
 }
+/** 发送咨询对象 */
+- (void)sendProduct:(UMCProduct *)product {
+    
+    if (!product || ![product isKindOfClass:[UMCProduct class]]) {
+        return;
+    }
+    
+    [UMCManager createProductWithMerchantsEuid:self.merchantEuid menuId:self.menuId product:product completion:nil];
 
+}
 /** 发送文本消息 */
 - (void)sendTextMessage:(NSString *)text
              completion:(void(^)(UMCMessage *message))completion {

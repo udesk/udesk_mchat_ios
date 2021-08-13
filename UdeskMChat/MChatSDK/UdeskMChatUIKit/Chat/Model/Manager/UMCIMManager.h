@@ -51,6 +51,9 @@
 /** 下一页消息记录 */
 - (void)nextMessages:(void (^)(void))completion;
 
+/** 发送咨询对象 */
+- (void)sendProduct:(UMCProduct *)product;
+
 /** 发送文本消息 */
 - (void)sendTextMessage:(NSString *)text
              completion:(void(^)(UMCMessage *message))completion;

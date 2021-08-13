@@ -44,4 +44,36 @@
     return size.height;
 }
 
+- (NSString *)umcLimitOmitLength:(int)limit
+{
+    int charLength = 0;
+    int limitIndex = limit;
+    char* p = (char*)[self cStringUsingEncoding:NSUnicodeStringEncoding];
+    NSInteger stringLength = [self lengthOfBytesUsingEncoding:NSUnicodeStringEncoding];
+    for (int i=0 ; i< stringLength; i++) {
+        if (*p) {
+            int a = p[0];
+            if(a > 0x4e00 && a < 0x9fff) {
+                charLength+=2;
+            }
+            charLength+=1;
+            p++;
+        }
+        else {
+            p++;
+        }
+        if (charLength >= limit -1) {
+            limitIndex = i/2;
+            break;
+        }
+    }
+    
+    if (limitIndex >= self.length - 1) {
+        return self;
+    }
+    
+    NSString *subString = [self substringToIndex:limitIndex];
+    return [subString stringByAppendingString:@"..."];
+}
+
 @end

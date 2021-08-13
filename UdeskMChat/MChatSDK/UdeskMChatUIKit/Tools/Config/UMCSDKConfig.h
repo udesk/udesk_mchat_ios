@@ -37,6 +37,8 @@ typedef NS_ENUM(NSUInteger, UMCSmallVideoResolutionType) {
 @property (nonatomic, strong) UIImage  *merchantImage;
 /** 商户头像URL */
 @property (nonatomic, copy  ) NSString *merchantImageURL;
+/** 商户昵称 */
+@property (nonatomic, copy  ) NSString *merchantNickName;
 
 /** 咨询对象消息 */
 @property (nonatomic, strong) UMCProduct *product;
