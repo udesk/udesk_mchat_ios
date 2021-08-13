@@ -21,7 +21,7 @@ https://github.com/udesk/udesk_mchat_ios
 
 ### 通过Pod导入SDK
 
-- pod 'MChatSDK', :git => 'https://github.com/udesk/udesk_mchat_ios', :branch => 'v2.0'
+- pod 'MChatSDK', :git => 'https://github.com/udesk/udesk_mchat_ios'
 
 ### 手动导入SDK
 
