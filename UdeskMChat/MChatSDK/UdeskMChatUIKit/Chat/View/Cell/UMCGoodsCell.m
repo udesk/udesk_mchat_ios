@@ -75,7 +75,7 @@
     self.goodsMessageLabel.frame = goodsMessage.textFrame;
     
     self.goodsMessageImageView.frame = goodsMessage.imageFrame;
-    [self.goodsMessageImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[goodsMessage.imgUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:[UIImage umcDefaultLoadingImage]];
+    [self.goodsMessageImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[goodsMessage.imgUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] placeholder:[UIImage umcDefaultLoadingImage]];
 }
 
 - (void)awakeFromNib {

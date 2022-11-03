@@ -106,7 +106,7 @@ static CGFloat const kUDMerchantUnreadY = 5;
     _merchant = merchant;
     
     self.dateLabel.text = [[NSDate dateFetchWithString:merchant.lastMessage.createdAt] umcStyleDate];
-    [self.avatarImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[merchant.logoURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:[UIImage umcContactsMerchantAvatarImage]];
+    [self.avatarImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[merchant.logoURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] placeholder:[UIImage umcContactsMerchantAvatarImage]];
     self.nickNameLabel.text = merchant.name;
     self.contentLabel.text = [self getLastMessageContent:merchant.lastMessage];
     

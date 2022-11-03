@@ -67,7 +67,7 @@
 
 - (void)tapVoicePlay:(UITapGestureRecognizer *)tap {
     
-    NSString *url = [[self.baseMessage.message.content stringByRemovingPercentEncoding] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *url = [[self.baseMessage.message.content stringByRemovingPercentEncoding] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     if (@available(iOS 9.0, *)) {
         SFSafariViewController *sfVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:url]];
         [[UMCHelper currentViewController] presentViewController:sfVC animated:YES completion:nil];

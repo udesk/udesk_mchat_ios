@@ -143,7 +143,7 @@ static CGFloat const kUDProductSendButtonHeight = 25.0;
     //咨询对象图片
     self.productImageView.frame = CGRectMake(kUDProductImageToHorizontalEdgeSpacing, kUDProductImageToVerticalEdgeSpacing, kUDProductImageDiameter, kUDProductImageDiameter);
     if (productModel.image && [productModel.image isKindOfClass:[NSString class]]) {
-        [self.productImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[productModel.image stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:[UIImage umcDefaultLoadingImage]];
+        [self.productImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[productModel.image stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] placeholder:[UIImage umcDefaultLoadingImage]];
     }
     
     //咨询对象标题

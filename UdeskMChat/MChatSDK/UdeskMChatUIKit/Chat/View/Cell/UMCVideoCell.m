@@ -210,7 +210,7 @@
         url = [NSURL fileURLWithPath:path];
     }
     else {
-        url = [NSURL URLWithString:[contentURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        url = [NSURL URLWithString:[contentURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
     }
      
     AVPlayerViewController *playerVC = [[AVPlayerViewController alloc] init];

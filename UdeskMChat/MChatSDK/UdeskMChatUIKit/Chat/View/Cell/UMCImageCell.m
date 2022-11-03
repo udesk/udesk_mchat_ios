@@ -92,7 +92,7 @@
     else {
         NSRange range = [UMCHelper linkRegexsMatch:imageUrl];
         if (range.location != NSNotFound) {
-            [self.chatImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[imageUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:[UIImage umcDefaultLoadingImage]];
+            [self.chatImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[imageUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] placeholder:[UIImage umcDefaultLoadingImage]];
         }
     }
     

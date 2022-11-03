@@ -146,7 +146,7 @@
             return voiceData;
         }
         
-        NSString *content = [voiceMessage.message.content stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *content = [voiceMessage.message.content stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         NSURL *url = [[NSURL alloc]initWithString:content];
         NSData *voiceData = [NSData dataWithContentsOfURL:url];
         

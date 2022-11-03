@@ -72,14 +72,27 @@ _Pragma("clang diagnostic pop")
 #define kUMCIsPad                   (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
 //刘海系列
-#define kUMCIPhoneXSeries ([UIScreen instancesRespondToSelector:@selector(currentMode)] ?\
-(\
-CGSizeEqualToSize(CGSizeMake(375, 812),[UIScreen mainScreen].bounds.size)\
-||\
-CGSizeEqualToSize(CGSizeMake(414, 896),[UIScreen mainScreen].bounds.size)\
-)\
-:\
-NO)
+#define kUMCIPhoneXSeries ({ \
+BOOL ipX = NO; \
+if (@available(iOS 11.0, *)) { \
+    UIWindow *window = [[UIApplication sharedApplication].windows firstObject]; \
+    ipX = window.safeAreaInsets.bottom > 0; \
+} \
+  ipX; \
+})
+
+#define kUMCStatusHeight ({\
+CGFloat statusBarHeight = 0;\
+if (@available(iOS 13.0, *)) { \
+    statusBarHeight = [UIApplication sharedApplication].windows.firstObject.windowScene.statusBarManager.statusBarFrame.size.height;\
+} else {\
+    statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;\
+}\
+statusBarHeight;\
+})
+#define kUMCNavBarHeight (kUMCStatusHeight + 44.0f)
+
+
 
 // View 圆角和加边框
 #define kUMCViewBorderRadius(View, Radius, Width, Color)\

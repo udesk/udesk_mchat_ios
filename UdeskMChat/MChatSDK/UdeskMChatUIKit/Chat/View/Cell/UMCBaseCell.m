@@ -44,7 +44,7 @@
         avatarImage = [UMCSDKConfig sharedConfig].customerImage;
     }
 
-    [self.avatarImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[avatarUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholder:avatarImage];
+    [self.avatarImageView udesk_yy_setImageWithURL:[NSURL URLWithString:[avatarUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] placeholder:avatarImage];
     
     //气泡
     self.bubbleImageView.frame = baseMessage.bubbleFrame;
